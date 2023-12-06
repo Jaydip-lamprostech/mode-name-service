@@ -1,0 +1,12 @@
+.popup-open {
+  overflow: hidden;
+}
+
+.app-inside {
+  margin: 0;
+  padding: 0;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+    url("./asset/images/bg.svg");
+  background-position: 0 0, 0 0;
+  background-size: auto, auto;
+}

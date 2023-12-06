@@ -1,0 +1,262 @@
+/* ProfilePage.css */
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  max-width: 1100px;
+  margin: 50px auto;
+  min-height: 75vh;
+}
+
+.domain-title {
+  color: #dffe00;
+  font-weight: 900;
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 2rem;
+  line-height: 120%;
+  text-align: left;
+  width: 100%;
+  margin: 30px 20px;
+  margin-top: 100px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.domain-title > svg {
+  border-radius: 5px;
+  padding: 6px;
+  border: 1px solid #000000;
+}
+.domain-title > svg:hover {
+  background-color: black;
+  border: 1px solid #dffe00;
+}
+
+.profile-section {
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 80px 20px;
+  margin-top: 20px;
+  /* margin-bottom: 50px; */
+  gap: 50px;
+}
+
+.profile-picture {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.address-div {
+  width: auto;
+}
+.wallet-address-title {
+  font-size: x-large;
+  font-weight: 600;
+  font-family: "IBM Plex Sans", sans-serif;
+  /* letter-spacing: -0.05em; */
+  color: rgba(255, 255, 255, 0.5);
+  font-size: larger;
+  text-align: left;
+  line-height: 100%;
+  word-break: break-all;
+  margin-top: 30px;
+  margin-bottom: 5px;
+}
+.wallet-address {
+  color: #ffffff;
+  font-weight: 900;
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 2rem;
+  line-height: 120%;
+  text-align: left;
+  width: 100%;
+  margin: auto;
+  word-break: break-all;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.wallet-address > svg {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.wallet-address > svg:hover {
+  transform: scale(1.05);
+}
+.info-section {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+  width: 100%;
+  margin: auto;
+  padding-bottom: 100px;
+}
+
+.info-column {
+  flex-basis: calc(
+    33.33% - 10px
+  ); /* Distribute columns equally with some spacing */
+  padding: 10px;
+  background-color: rgba(10, 10, 10, 0.8);
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  text-align: center;
+  margin-right: 20px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.info_title {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 600;
+  /* letter-spacing: -0.05em; */
+  color: rgba(255, 255, 255, 0.5);
+  font-size: x-large;
+  text-align: center;
+  line-height: 180%;
+  margin-top: 20px;
+}
+
+.info_value_main {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 600;
+  /* letter-spacing: -0.05em; */
+  color: white;
+  font-size: 22px;
+  text-align: center;
+  line-height: 180%;
+  margin-top: 30px;
+}
+.info_value_sub {
+  font-size: medium;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 600;
+  /* letter-spacing: -0.05em; */
+  color: rgba(255, 255, 255, 0.5);
+  font-size: large;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+/* wallet not connected profile module styling */
+.wallect-not-connected-main {
+  margin-top: 100px;
+}
+.wallect-not-connected-main .info-section {
+  display: block;
+}
+.wallect-not-connected-main .info-column {
+  margin: 0 auto;
+  width: 80%;
+  max-width: 500px;
+}
+.wallect-not-connected-main .info_value_sub {
+  margin: 30px 0px;
+}
+.wnc-connect-wallet {
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  background-color: #dffe00;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 600;
+  /* letter-spacing: -0.05em; */
+  color: black;
+  font-size: 22px;
+  text-align: center;
+  line-height: 120%;
+}
+
+.domain_profile_page_title {
+  color: #ffffff;
+}
+
+.claim-domain-btn {
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  background-color: #dffe00;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 600;
+  /* letter-spacing: -0.05em; */
+  color: black;
+  font-size: 22px;
+  text-align: center;
+  line-height: 120%;
+  margin: auto;
+  transition: all 0.5s ease;
+}
+.claim-domain-btn:hover {
+  transform: translateY(-5px);
+}
+.dnf-address-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.dnf-info {
+  text-align: center;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 600;
+  margin: 30px 0;
+  font-size: 1.5rem;
+  line-height: 150%;
+  width: 70%;
+  word-wrap: break-word;
+}
+.wallect-not-connected-main {
+  min-height: 75vh;
+}
+@media (max-width: 768px) {
+  .profile-section {
+    margin: 80px 5px;
+    margin-top: 20px;
+    flex-direction: row;
+    /* margin-bottom: 50px; */
+    gap: 20px;
+  }
+  .profile-picture {
+    width: 100px;
+    height: 100px;
+  }
+  .wallet-address-title {
+    font-size: medium;
+    text-align: left;
+    line-height: 100%;
+    word-break: break-all;
+    margin-top: 0px;
+    margin-bottom: 5px;
+  }
+  .wallet-address {
+    font-size: 1.1rem;
+    line-height: 120%;
+    text-align: left;
+    margin-bottom: 10px;
+  }
+  .info-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: auto;
+  }
+  .info-column {
+    margin-right: 0;
+  }
+  .dnf-info {
+    font-size: 1.2rem;
+    line-height: 150%;
+    width: 95%;
+  }
+  .claim-domain-btn {
+    padding: 8px 15px;
+    font-size: 18px;
+  }
+}

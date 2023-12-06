@@ -1,0 +1,121 @@
+/* .search-main {
+  width: 70%;
+  max-width: 600px;
+  margin: auto;
+  height: 20px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 100px;
+  border: 10px solid black;
+  background-color: white;
+  outline: 4px solid #dffe00;
+  padding: 20px 30px;
+  padding-right: 5px;
+  position: relative;
+}
+.search-main > svg {
+  width: 30px;
+}
+.search-main > input {
+  flex: 1;
+  font-size: 1.3rem;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  padding-left: 10px;
+}
+.search-main > input:focus {
+  outline: none;
+}
+
+.dot-mode {
+  margin-left: auto;
+  color: black;
+  background-color: #dffe00;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-family: "Chakra Petch", sans-serif;
+  font-weight: 700;
+  font-size: larger;
+  border-top-right-radius: 100px;
+  border-bottom-right-radius: 100px;
+}
+ */
+
+.search-main {
+  width: 70%;
+  max-width: 600px;
+  margin: auto;
+  height: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px;
+  border: 1px solid #787878;
+  background-color: #2b2b2b;
+  outline: none;
+  height: 50px;
+  /* padding-right: 5px; */
+  position: relative;
+}
+.search-one {
+  width: 80%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 20px 0;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.search-main svg {
+  width: 30px;
+  fill: white;
+}
+.search-main input {
+  flex: 1;
+  font-size: 1.3rem;
+  background-color: transparent;
+  border: none;
+  color: white;
+  box-shadow: none;
+  padding-left: 10px;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 400;
+}
+.search-main input:focus {
+  outline: none;
+}
+
+.dot-mode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+  color: white;
+  text-transform: uppercase;
+  /* background-color: #dffe00; */
+  border-left: 1px solid #787878;
+  height: 100%;
+  /* padding: 20px 20px; */
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 500;
+  letter-spacing: 2px;
+  font-size: larger;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+@media (max-width: 768px) {
+  .search-one {
+    padding: 0px 10px;
+  }
+  .search-main svg {
+    width: 20px;
+  }
+  .search-main input {
+    font-size: 1rem;
+  }
+  .dot-mode {
+  }
+}

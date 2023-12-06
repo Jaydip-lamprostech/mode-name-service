@@ -1,0 +1,54 @@
+.footer-main {
+  margin: 10px 0px;
+  border-top: 2px solid rgba(255, 255, 255, 0.18);
+  padding: 10px 0px;
+  text-align: center;
+  margin-top: auto;
+}
+
+.footer {
+  /* width: 80%; */
+  display: flex;
+  width: 95%;
+  margin: auto;
+  justify-content: space-between;
+  align-items: center;
+}
+
+span a {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: #ffffff;
+  margin-right: 20px;
+  text-decoration: none;
+}
+span a:hover {
+  color: #dffe00;
+}
+
+.social-media {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+.social-media > svg {
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  padding: 6px;
+  border-radius: 8px;
+  background-color: rgba(10, 10, 10, 0.8);
+  border: 2px solid rgba(255, 255, 255, 0.18);
+}
+.social-media > svg:hover {
+  border-color: #dffe00;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    flex-direction: column;
+    gap: 20px;
+  }
+}

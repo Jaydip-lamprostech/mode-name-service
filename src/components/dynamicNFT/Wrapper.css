@@ -1,0 +1,83 @@
+.wrapper {
+  /* border-radius: 20px; */
+  border: 1px solid #333333;
+  overflow: hidden;
+  /* background-color: #000; */
+}
+
+.content {
+  height: 100%;
+  min-height: 500px;
+  width: 100%;
+  position: relative;
+}
+
+.overlay2 {
+  height: 500px;
+  width: 500px;
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  background-image: url("../../asset/images/lamda-lambda-lambda.png");
+  background-color: transparent;
+  opacity: 1;
+}
+
+.text-wrapper {
+  /* min-height: 100px;   */
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 20px;
+  white-space: nowrap;
+  text-transform: lowercase;
+  font-family: "Chakra Petch", sans-serif;
+  font-weight: 500;
+  line-height: 100%;
+}
+.text-wrapper p {
+  margin: 25px 0;
+}
+.PremiumyellowBackgroundText {
+  background-color: #dffe00;
+  color: black;
+}
+.NormalblackBackgroundText {
+  background-color: black;
+  color: white;
+}
+
+.nftGenImg {
+  width: 100%;
+  height: 430px;
+  pointer-events: none;
+}
+
+.hidden {
+  display: none;
+  /* visibility: hidden; */
+}
+.mainNFTDiv {
+  width: 500px;
+  height: 500px;
+}
+
+.nftMain {
+  width: 500px;
+  height: 500px;
+}
+@media screen and (max-width: 768px) {
+  .wrapper {
+    /* overflow-x: auto; */
+    /* margin: 5px; */
+
+    width: 350px;
+    margin: 20px auto;
+  }
+  .text-wrapper {
+    padding: 0 10px;
+  }
+  .content {
+    min-height: 350px;
+  }
+}
