@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { useAccount } from "wagmi";
 import "../styles/Loader.css";
 import { Tooltip } from "react-tooltip";
-import InfoPopup from "./InfoPopup";
 import { motion } from "framer-motion";
 
 function RegistrationPopup(props) {
@@ -78,7 +77,7 @@ function RegistrationPopup(props) {
                     style={{
                       maxWidth: "200px",
                       wordBreak: "break-word",
-                      fontFamily: "Inter, sans-serif",
+                      fontFamily: "IBM Plex Sans, sans-serif",
                     }}
                   />
                 </div>
@@ -145,7 +144,7 @@ function RegistrationPopup(props) {
               <div className="registration_field_item">
                 <div className="registration_field_title">
                   <span className="field_title">
-                    Domain Cost{" "}
+                    Domain Cost
                     <span className="field-sub-title">
                       (Excluding Gas Fees)
                     </span>

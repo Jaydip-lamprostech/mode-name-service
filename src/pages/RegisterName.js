@@ -468,15 +468,16 @@ function RegisterName(props) {
                       {!loading.status ? (
                         <span
                           className={
-                            domainNameAvailability === "Registered"
+                            domainNameAvailability === "registered"
                               ? "domain-name-checking domain-name registered-domain"
-                              : domainNameAvailability === "Available"
+                              : domainNameAvailability === "available"
                               ? "domain-name-checking domain-name available-domain"
-                              : domainNameAvailability === "Too Short"
+                              : domainNameAvailability === "too short"
                               ? "domain-name-checking domain-name not-valid-domain"
                               : "domain-name-checking"
                           }
                         >
+                          <span className="domain-name-square"></span>{" "}
                           {domainNameAvailability}
                         </span>
                       ) : (

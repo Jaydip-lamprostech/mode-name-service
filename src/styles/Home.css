@@ -161,28 +161,34 @@ p.domain-card-name {
 .domain-name-checking {
   margin-left: 10px;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
 }
 .domain-name-checking.domain-name {
-  border-radius: 100px;
+  border-radius: 4px;
   font-size: medium;
-  font-weight: 900;
+  font-weight: 700;
   font-family: "Chakra Petch", sans-serif;
-  padding: 4px 10px;
+  padding: 4px 8px;
+  border: 1px solid #787878;
 }
-.registered-domain {
-  background-color: rgb(51, 150, 255, 0.08);
-  color: rgb(51, 150, 255);
-  border: 1px solid rgb(51, 150, 255);
+.domain-name-square {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
 }
-.available-domain {
-  background-color: rgb(16, 187, 53, 0.08);
-  color: rgb(16, 187, 53);
-  border: 1px solid rgb(16, 187, 53);
+.registered-domain .domain-name-square {
+  background-color: rgb(51, 150, 255);
 }
-.not-valid-domain {
-  background-color: rgb(242, 104, 91, 0.08);
-  color: rgb(242, 104, 91);
-  border: 1px solid rgb(242, 104, 91);
+.available-domain .domain-name-square {
+  background-color: rgb(16, 187, 53);
+  /* color: rgb(16, 187, 53); */
+}
+.not-valid-domain .domain-name-square {
+  background-color: rgb(242, 104, 91);
+  /* color: rgb(242, 104, 91); */
 }
 
 .disabled {

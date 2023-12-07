@@ -8,6 +8,11 @@ import { useAccount } from "wagmi";
 import WalletNotConnected from "../components/profile/WalletNotConnected";
 import AccordionPanel from "../components/profile/AccordionPanel";
 import { getNameByAddress } from "../components/getNameByAddress";
+import ProfileDetails from "../components/profile/ProfileDetails";
+import Subnames from "../components/profile/Subnames";
+import PermissionsOfDomain from "../components/profile/PermissionsOfDomain";
+import MoreAboutDomains from "../components/profile/MoreAboutDomains";
+import DomainOwnership from "../components/profile/DomainOwnership";
 
 function Profile() {
   const { address } = useAccount();
@@ -22,6 +27,11 @@ function Profile() {
   });
 
   const [domainFound, setDomainFound] = useState(false);
+  const [activeItem, setActiveItem] = useState("Details");
+
+  const handleClick = (itemName) => {
+    setActiveItem(itemName);
+  };
 
   useEffect(() => {
     if (!address) {
@@ -98,31 +108,82 @@ function Profile() {
   if (address)
     return (
       <div className="profile-container">
-        <h1 className="domain_profile_page_title">Domains</h1>
-        <AccordionPanel
-          title={domainDetails.domain ? domainDetails.domain : "Fetching..."}
-        >
-          {domainFound ? (
-            <>
-              <div className="profile-section">
-                <img
-                  className="profile-picture"
-                  src={modenft}
-                  alt="mode nft domain name"
+        <h1 className="domain_profile_page_title">Your Domain Names</h1>
+        {domainFound ? (
+          <>
+            <AccordionPanel
+              title={
+                domainDetails.domain ? domainDetails.domain : "Fetching..."
+              }
+            >
+              <ul className="profileNavbar">
+                <li
+                  className={
+                    activeItem === "Details"
+                      ? "active profileNavbarItem"
+                      : "profileNavbarItem"
+                  }
+                  onClick={() => handleClick("Details")}
+                >
+                  Details
+                </li>
+                <li
+                  className={
+                    activeItem === "Ownership"
+                      ? "active profileNavbarItem"
+                      : "profileNavbarItem"
+                  }
+                  onClick={() => handleClick("Ownership")}
+                >
+                  Ownership
+                </li>
+                <li
+                  className={
+                    activeItem === "Subnames"
+                      ? "active profileNavbarItem"
+                      : "profileNavbarItem"
+                  }
+                  onClick={() => handleClick("Subnames")}
+                >
+                  Subnames
+                </li>
+                <li
+                  className={
+                    activeItem === "Permissions"
+                      ? "active profileNavbarItem"
+                      : "profileNavbarItem"
+                  }
+                  onClick={() => handleClick("Permissions")}
+                >
+                  Permissions
+                </li>
+                <li
+                  className={
+                    activeItem === "More"
+                      ? "active profileNavbarItem"
+                      : "profileNavbarItem"
+                  }
+                  onClick={() => handleClick("More")}
+                >
+                  More
+                </li>
+              </ul>
+
+              {activeItem === "Details" ? (
+                <ProfileDetails modenft={modenft} address={address} />
+              ) : activeItem === "Ownership" ? (
+                <DomainOwnership
+                  address={address}
+                  domainName={domainDetails.domain}
                 />
-                <div className="address-div">
-                  <p className="wallet-address-title">Address</p>
-                  <p className="wallet-address">
-                    {address
-                      ? address.slice(0, 6) +
-                        "..." +
-                        address.slice(address.length - 6, address.length)
-                      : "Connect Your Wallet"}
-                  </p>
-                  <p className="wallet-address-title">Parent</p>
-                  <p className="wallet-address">mode</p>
-                </div>
-              </div>
+              ) : activeItem === "Subnames" ? (
+                <Subnames />
+              ) : activeItem === "Permissions" ? (
+                <PermissionsOfDomain />
+              ) : (
+                <MoreAboutDomains />
+              )}
+
               <div className="info-section">
                 <div className="info-column">
                   <div className="info_title">Registered Date</div>
@@ -157,24 +218,25 @@ function Profile() {
                   </div>
                 </div>
               </div>
-            </>
-          ) : (
-            <>
-              <div className="profile-section">
-                <div className="dnf-address-div">
-                  <p className="dnf-info">
-                    {" "}
-                    Experience seamless, user-centric blockchain engagement on
-                    the MODE network with ModeDomains.
-                  </p>
-                  <a className="claim-domain-btn" href="/">
-                    Claim Domain
-                  </a>
-                </div>
+            </AccordionPanel>
+          </>
+        ) : (
+          <AccordionPanel
+            title={domainDetails.domain ? domainDetails.domain : "Fetching..."}
+          >
+            <div className="profile-section">
+              <div className="dnf-address-div">
+                <p className="dnf-info">
+                  Experience seamless, user-centric blockchain engagement on the
+                  MODE network with ModeDomains.
+                </p>
+                <a className="claim-domain-btn" href="/">
+                  Claim Domain
+                </a>
               </div>
-            </>
-          )}
-        </AccordionPanel>
+            </div>
+          </AccordionPanel>
+        )}
       </div>
     );
   else {

@@ -10,7 +10,7 @@ function SearchQuery(props) {
     // const timer = setTimeout(() => {
     if (searchQuery.length < 3) {
       // Set static values for card here
-      props.setDomainAvailability("Too Short");
+      props.setDomainAvailability("too short");
       props.setDomainPrice("N/A");
       props.setDomainExpiryDate("N/A");
       props.setDomainRegisteredPrice("N/A");
@@ -87,7 +87,7 @@ function SearchQuery(props) {
       );
       const details = await con.getNameDetails(name);
       console.log(details);
-      props.setDomainAvailability("Registered");
+      props.setDomainAvailability("registered");
       const timestampExp = details.expiryTimestamp;
       const humanDateExp = new Date(timestampExp * 1000).toLocaleDateString(
         "en-US",
@@ -119,7 +119,7 @@ function SearchQuery(props) {
     } catch (error) {
       if (error.message.includes("Name is not registered")) {
         console.log("Name is not registered");
-        props.setDomainAvailability("Available");
+        props.setDomainAvailability("available");
         props.setDomainExpiryDate("N/A");
         await domainPriceCheck(name);
         // Handle the case when the name is not registered

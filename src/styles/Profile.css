@@ -38,8 +38,8 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 80px 20px;
-  margin-top: 20px;
+  margin: 20px;
+  margin-bottom: 80px;
   /* margin-bottom: 50px; */
   gap: 50px;
 }
@@ -174,6 +174,9 @@
 
 .domain_profile_page_title {
   color: #ffffff;
+  font-size: x-large;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 300;
 }
 
 .claim-domain-btn {
@@ -214,6 +217,89 @@
 }
 .wallect-not-connected-main {
   min-height: 75vh;
+}
+
+.profileNavbar {
+  background-color: rgba(10, 10, 10, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  max-width: fit-content;
+  list-style-type: none;
+  margin: 10px auto;
+  margin-bottom: 40px;
+  overflow: hidden;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.profileNavbarItem {
+  float: left;
+  display: block;
+  color: #ffffff80;
+  text-align: center;
+  padding: 10px 16px;
+  text-decoration: none;
+  margin-right: 10px;
+  position: relative;
+  font-size: medium;
+}
+
+.profileNavbarItem::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #dffe00;
+  transition: all 0.2s linear;
+  transform-origin: center;
+  right: 0;
+  -webkit-transform: scale(0);
+  transform: scale(0);
+}
+
+.profileNavbarItem:hover::after {
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}
+
+.profileNavbarItem.active {
+  color: white;
+  border-bottom: 2px solid #dffe00;
+}
+.profileNavbarItem.active:hover::after {
+  -webkit-transform: scale(0);
+  transform: scale(0);
+}
+
+.profileChildComponent {
+  margin: 20px;
+  margin-bottom: 80px;
+}
+
+.profileComingSoonTitle {
+  font-weight: 700;
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 2.2rem;
+  line-height: 120%;
+  text-align: center;
+  width: 85%;
+  max-width: 800px;
+  margin: auto;
+  margin-top: 100px;
+  word-break: keep-all;
+  color: #dffe00;
+}
+.profileNavbarComponentInfo {
+  font-size: small;
+  font-family: "IBM Plex Sans", sans-serif;
+  color: #ababab;
+  font-size: larger;
+  text-align: center;
+  width: 80%;
+  line-height: 180%;
+  margin: 30px auto;
+  word-break: break-word;
 }
 @media (max-width: 768px) {
   .profile-section {
@@ -258,5 +344,26 @@
   .claim-domain-btn {
     padding: 8px 15px;
     font-size: 18px;
+  }
+  .profileNavbar {
+    overflow-x: auto;
+    display: flex;
+  }
+  .profileNavbarItem {
+    padding: 8px 10px;
+    font-size: medium;
+  }
+  .profileComingSoonTitle {
+    font-size: 1.5rem;
+    margin-top: 50px;
+  }
+  .profileNavbarComponentInfo {
+    font-size: 14px;
+    width: 90%;
+  }
+  .profileChildComponent {
+    margin: 0px;
+    margin-top: 20px;
+    margin-bottom: 50px;
   }
 }

@@ -1,0 +1,99 @@
+.DomainOwnershipRolesTitle {
+  display: flex;
+  justify-content: space-between;
+}
+.DomainOwnershipRolesTitle > span {
+  font-weight: 400;
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 2rem;
+  line-height: 120%;
+  text-align: left;
+  width: max-content;
+  word-break: keep-all;
+  color: #ffffff80;
+}
+.domainTranferButton {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.domainTranferButton > button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  font-weight: 600;
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 1.2rem;
+
+  padding: 5px 20px;
+  background-color: #dffe00;
+  border: 1px solid #dffe00;
+  color: black;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+.domainTranferButton > button > svg {
+  margin-right: 4px;
+  fill: black;
+}
+.domainTranferButton > button:hover {
+  transform: translateY(-4px);
+}
+
+.domainownership-list {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  margin: 20px auto;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.domainownership-list-item {
+  padding: 20px 16px;
+  text-decoration: none;
+  background-color: rgba(10, 10, 10, 0.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.domainownership-list-item:last-of-type {
+  border: none;
+}
+.domainownership-item-left {
+  display: flex;
+  align-items: center;
+}
+
+.domainownership-item-left > svg {
+  fill: rgba(255, 255, 255, 0.2);
+  margin-left: 10px;
+}
+.domainownership-list-address {
+  margin-left: 10px;
+  font-weight: 500;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 1.3rem;
+  color: #ffffff;
+}
+
+.domainownership-item-right {
+  color: #ffffff80;
+  font-size: large;
+  font-weight: 500;
+  font-family: "IBM Plex Sans", sans-serif;
+  /* border: 1px solid #ffffff80; */
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.domainownership-item-right > svg {
+  fill: #ffffff80;
+  margin-left: 4px;
+  width: 20px;
+}

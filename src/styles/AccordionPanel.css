@@ -59,7 +59,7 @@
 }
 
 .open .accordion-content {
-  max-height: 1000px; /* Set to a value large enough to accommodate the content */
+  max-height: max-content; /* Set to a value large enough to accommodate the content */
   opacity: 1;
   padding: 1rem;
 }
