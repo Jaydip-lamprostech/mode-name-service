@@ -35,12 +35,30 @@ function SearchQuery(props) {
     if (name && name.length === 3) {
       props.setIsPremium(false);
       props.setIsVip(true);
+      props.setIsRegular(false);
+      props.setDisableDomainNameType({
+        vip: false,
+        premium: true,
+        normal: true,
+      });
     } else if (name && name.length === 4) {
       props.setIsVip(false);
       props.setIsPremium(true);
+      props.setIsRegular(false);
+      props.setDisableDomainNameType({
+        vip: false,
+        premium: false,
+        normal: true,
+      });
     } else if (name && name.length > 4) {
       props.setIsPremium(false);
       props.setIsVip(false);
+      props.setIsRegular(true);
+      props.setDisableDomainNameType({
+        vip: false,
+        premium: false,
+        normal: false,
+      });
     }
     setSearchQuery(event.target.value.toLowerCase());
     props.setDomainName(event.target.value.toLowerCase());

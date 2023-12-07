@@ -3,7 +3,15 @@ import "./Wrapper.css"; // Import your CSS file
 import html2canvas from "html2canvas";
 import CanvasNew from "./CanvasNew";
 
-const Wrapper = ({ input, isPremium, isVip, setIsPremium, setIsVip }) => {
+const Wrapper = ({
+  input,
+  isPremium,
+  isVip,
+  setIsPremium,
+  setIsVip,
+  isRegular,
+  setIsRegular,
+}) => {
   const [canvas, setCanvas] = useState(null);
   const [imgUrl, setImgUrl] = useState();
   const textElementRef = useRef(null);
@@ -108,8 +116,7 @@ const Wrapper = ({ input, isPremium, isVip, setIsPremium, setIsVip }) => {
               canvas={canvas}
               isVip={isVip}
               setCanvasUrl={setCanvasUrl}
-              setIsPremium={setIsPremium}
-              setIsVip={setIsVip}
+              isRegular={isRegular}
             />
           )}
 

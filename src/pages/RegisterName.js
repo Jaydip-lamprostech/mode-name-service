@@ -36,6 +36,13 @@ function RegisterName(props) {
 
   const [isPremium, setIsPremium] = useState(false);
   const [isVip, setIsVip] = useState(false);
+  const [isRegular, setIsRegular] = useState(false);
+
+  const [disabledomainNameType, setDisableDomainNameType] = useState({
+    vip: false,
+    premium: false,
+    normal: false,
+  });
   // const [registrationPeriod, setRegistrationPeriod] = useState(1);
   const [highGasPopup, setHighGasPopup] = useState(false);
   const [registerdomainPriceInWei, setRegisterdomainPriceInWei] = useState("");
@@ -291,7 +298,23 @@ function RegisterName(props) {
       // setErrorMessage(error.message);
     }
   };
-
+  const handleDomainNameTypeChange = (event) => {
+    let type = event.target.value;
+    if (type === "vip") {
+      setIsVip(true);
+      setIsPremium(false);
+      setIsRegular(false);
+    } else if (type === "premium") {
+      setIsVip(false);
+      setIsPremium(true);
+      setIsRegular(false);
+    } else {
+      console.log("changed to normal");
+      setIsPremium(false);
+      setIsRegular(true);
+      setIsVip(false);
+    }
+  };
   return (
     <div>
       <div className="home-main">
@@ -339,6 +362,8 @@ function RegisterName(props) {
               loading={loading}
               setIsPremium={setIsPremium}
               setIsVip={setIsVip}
+              setIsRegular={setIsRegular}
+              setDisableDomainNameType={setDisableDomainNameType}
             />
           </div>
         </div>
@@ -363,6 +388,8 @@ function RegisterName(props) {
                     setIsPremium={setIsPremium}
                     isVip={isVip}
                     setIsVip={setIsVip}
+                    isRegular={isRegular}
+                    setIsRegular={setIsRegular}
                   />
                 </div>
 
@@ -375,15 +402,66 @@ function RegisterName(props) {
                       /> */}
                     <p className="domain-card-name">
                       {domainName.length > 0 ? domainName + ".mode" : ".mode"}{" "}
-                      <span className="domainType">
+                      {/* <span className="domainType">
                         {domainName.length > 2 && isVip
                           ? "( VIP )"
                           : isPremium
                           ? "( Premium )"
                           : ""}
-                      </span>
+                      </span> */}
                     </p>
                   </div>
+                  <p className="domain-card-sub-item">
+                    <label
+                      className={disabledomainNameType.vip ? "disabled" : ""}
+                    >
+                      <input
+                        type="radio"
+                        name="domainNameTypeInput"
+                        value="vip"
+                        className="custom-radio-name-type"
+                        checked={domainName.length > 2 && isVip}
+                        onChange={handleDomainNameTypeChange}
+                        disabled={disabledomainNameType.vip}
+                      />
+                      Vip
+                    </label>
+                    <label
+                      className={
+                        disabledomainNameType.premium ? "disabled" : ""
+                      }
+                    >
+                      <input
+                        type="radio"
+                        name="domainNameTypeInput"
+                        value="premium"
+                        className="custom-radio-name-type"
+                        checked={domainName.length > 2 && isPremium}
+                        onChange={handleDomainNameTypeChange}
+                        disabled={disabledomainNameType.premium}
+                      />
+                      Premium
+                    </label>
+                    <label
+                      className={disabledomainNameType.normal ? "disabled" : ""}
+                    >
+                      <input
+                        type="radio"
+                        name="domainNameTypeInput"
+                        value="normal"
+                        className="custom-radio-name-type"
+                        checked={
+                          domainName.length > 2 &&
+                          !isVip &&
+                          !isPremium &&
+                          isRegular
+                        }
+                        onChange={handleDomainNameTypeChange}
+                        disabled={disabledomainNameType.normal}
+                      />
+                      Normal
+                    </label>
+                  </p>
                   <p className="domain-card-sub-item">
                     Status:
                     <span className="domain-card-sub-item-value">

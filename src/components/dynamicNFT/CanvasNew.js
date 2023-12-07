@@ -17,6 +17,7 @@ const CanvasNew = ({
   canvas,
   setCanvas,
   setCanvasUrl,
+  isRegular,
 }) => {
   const [alpha, setAlpha] = useState(1);
   const [decreasing, setDecreasing] = useState(true);
@@ -49,19 +50,23 @@ const CanvasNew = ({
         }
 
         setCanvasUrl("");
-        if (isPremium && !isVip) {
+        if (isPremium && !isVip && !isRegular) {
           rendererRef.current.setClearColor(new THREE.Color("rgb(2, 2, 2)"));
           boxColor = "#494949";
           neonColors = ["#000000", "#494949", "#d2d0cb"];
           updateHelixAndLights();
-        } else if (!isPremium && isVip) {
+          animate();
+        } else if (!isPremium && isVip && !isRegular) {
           rendererRef.current.setClearColor(new THREE.Color("#dffe00"));
-          //   updateHelixAndLights();
           updateHelixAndLights();
-        } else if (!isPremium && !isVip) {
+          animate();
+        } else if (isRegular && !isVip && !isPremium) {
+          rendererRef.current.setClearColor(new THREE.Color("#000"));
+          console.log("normal domain name");
           updateHelixAndLights();
+          animate();
         }
-        animate();
+
         setCanvasUrl(canvas.toDataURL());
       }
     }
@@ -122,7 +127,7 @@ const CanvasNew = ({
         sceneRef.current.clear();
       }
     };
-  }, [input, isPremium, isVip]);
+  }, [input, isPremium, isVip, isRegular]);
 
   useEffect(() => {
     if (canvas) {
@@ -131,15 +136,16 @@ const CanvasNew = ({
         setCanvasUrl("");
         animate();
 
-        if (isPremium && !isVip) {
+        if (isPremium && !isVip && !isRegular) {
           rendererRef.current.setClearColor(new THREE.Color("rgb(2, 2, 2)"));
           boxColor = "#494949";
           neonColors = ["#000000", "#494949", "#d2d0cb"];
           updateHelixAndLights();
-        } else if (!isPremium && isVip) {
+        } else if (!isPremium && isVip && !isRegular) {
           rendererRef.current.setClearColor(new THREE.Color("#dffe00"));
           updateHelixAndLights();
-        } else if (!isPremium && !isVip) {
+        } else if (isRegular && !isPremium && !isVip) {
+          rendererRef.current.setClearColor(new THREE.Color("#000"));
           updateHelixAndLights();
         }
         setCanvasUrl(canvas.toDataURL());
