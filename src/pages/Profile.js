@@ -170,11 +170,16 @@ function Profile() {
               </ul>
 
               {activeItem === "Details" ? (
-                <ProfileDetails modenft={modenft} address={address} />
+                <ProfileDetails
+                  modenft={modenft}
+                  address={address}
+                  domainDetails={domainDetails}
+                />
               ) : activeItem === "Ownership" ? (
                 <DomainOwnership
                   address={address}
                   domainName={domainDetails.domain}
+                  domainDetails={domainDetails}
                 />
               ) : activeItem === "Subnames" ? (
                 <Subnames />
@@ -183,41 +188,6 @@ function Profile() {
               ) : (
                 <MoreAboutDomains />
               )}
-
-              <div className="info-section">
-                <div className="info-column">
-                  <div className="info_title">Registered Date</div>
-                  <div className="info_value_main">
-                    {domainDetails.registeredDate
-                      ? domainDetails.registeredDate
-                      : "Fetching..."}
-                  </div>
-                  <div className="info_value_sub">
-                    {domainDetails.registeredTime
-                      ? domainDetails.registeredTime
-                      : ""}
-                  </div>
-                </div>
-                <div className="info-column">
-                  <div className="info_title">Expiry Date</div>
-                  <div className="info_value_main">
-                    {domainDetails.expiryDate
-                      ? domainDetails.expiryDate
-                      : "Fetching..."}
-                  </div>
-                  <div className="info_value_sub">
-                    {domainDetails.expiryTime ? domainDetails.expiryTime : ""}
-                  </div>
-                </div>
-                <div className="info-column">
-                  <div className="info_title">Last Sale</div>
-                  <div className="info_value_main">
-                    {domainDetails.registeredPrice
-                      ? domainDetails.registeredPrice
-                      : "Fetching..."}
-                  </div>
-                </div>
-              </div>
             </AccordionPanel>
           </>
         ) : (
