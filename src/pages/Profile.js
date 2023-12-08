@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "../styles/Profile.css";
 import modenft from "../asset/images/modenft.png";
 import "../styles/AccordionPanel.css";
@@ -13,6 +13,7 @@ import Subnames from "../components/profile/Subnames";
 import PermissionsOfDomain from "../components/profile/PermissionsOfDomain";
 import MoreAboutDomains from "../components/profile/MoreAboutDomains";
 import DomainOwnership from "../components/profile/DomainOwnership";
+import ProfileDomainNavbar from "../components/profile/ProfileDomainNavbar";
 
 function Profile() {
   const { address } = useAccount();
@@ -27,11 +28,61 @@ function Profile() {
   });
 
   const [domainFound, setDomainFound] = useState(false);
-  const [activeItem, setActiveItem] = useState("Details");
+  const [activeItems, setActiveItems] = useState(""); // Track active items for each instance
 
-  const handleClick = (itemName) => {
-    setActiveItem(itemName);
+  const handleNavbarClick = (instanceId, itemName) => {
+    setActiveItems((prevActiveItems) => ({
+      ...prevActiveItems,
+      [instanceId]: itemName,
+    }));
   };
+
+  const fetchName = useCallback(async () => {
+    setDomainDetails({
+      domain: "Fetching...",
+      expiryDate: "Fetching...",
+      expiryTime: "",
+      registeredPrice: "Fetching...",
+      registeredDate: "Fetching...",
+      registeredTime: "",
+    });
+    try {
+      const name = await getNameByAddress(address);
+      console.log(name);
+      if (name) {
+        setDomainDetails({
+          domain: name.domain,
+          expiryDate: name.expiryDate,
+          expiryTime: name.expiryTime,
+          registeredDate: name.registeredDate,
+          registeredTime: name.registeredTime,
+          registeredPrice: name.registeredPrice,
+        });
+        setDomainFound(true);
+      } else {
+        setDomainFound(false);
+        setDomainDetails({
+          domain: "Domain not found for this address",
+          expiryDate: "N/A",
+          expiryTime: "",
+          registeredPrice: "N/A",
+          registeredDate: "N/A",
+          registeredTime: "",
+        });
+      }
+    } catch (err) {
+      setDomainFound(false);
+      setDomainDetails({
+        domain: "Domain not found for this address",
+        expiryDate: "N/A",
+        expiryTime: "",
+        registeredPrice: "N/A",
+        registeredDate: "N/A",
+        registeredTime: "",
+      });
+      // console.log(err);
+    }
+  }, [address]);
 
   useEffect(() => {
     if (!address) {
@@ -44,52 +95,6 @@ function Profile() {
         registeredTime: "",
       });
     } else {
-      const fetchName = async () => {
-        setDomainDetails({
-          domain: "Fetching...",
-          expiryDate: "Fetching...",
-          expiryTime: "",
-          registeredPrice: "Fetching...",
-          registeredDate: "Fetching...",
-          registeredTime: "",
-        });
-        try {
-          const name = await getNameByAddress(address);
-          // console.log(name);
-          if (name) {
-            setDomainDetails({
-              domain: name.domain,
-              expiryDate: name.expiryDate,
-              expiryTime: name.expiryTime,
-              registeredDate: name.registeredDate,
-              registeredTime: name.registeredTime,
-              registeredPrice: name.registeredPrice,
-            });
-            setDomainFound(true);
-          } else {
-            setDomainFound(false);
-            setDomainDetails({
-              domain: "Domain not found for this address",
-              expiryDate: "N/A",
-              expiryTime: "",
-              registeredPrice: "N/A",
-              registeredDate: "N/A",
-              registeredTime: "",
-            });
-          }
-        } catch (err) {
-          setDomainFound(false);
-          setDomainDetails({
-            domain: "Domain not found for this address",
-            expiryDate: "N/A",
-            expiryTime: "",
-            registeredPrice: "N/A",
-            registeredDate: "N/A",
-            registeredTime: "",
-          });
-          // console.log(err);
-        }
-      };
       fetchName();
     }
 
@@ -103,7 +108,7 @@ function Profile() {
         registeredTime: "",
       });
     };
-  }, [address]);
+  }, [address, fetchName]);
 
   if (address)
     return (
@@ -116,78 +121,30 @@ function Profile() {
                 domainDetails.domain ? domainDetails.domain : "Fetching..."
               }
             >
-              <ul className="profileNavbar">
-                <li
-                  className={
-                    activeItem === "Details"
-                      ? "active profileNavbarItem"
-                      : "profileNavbarItem"
-                  }
-                  onClick={() => handleClick("Details")}
-                >
-                  Details
-                </li>
-                <li
-                  className={
-                    activeItem === "Ownership"
-                      ? "active profileNavbarItem"
-                      : "profileNavbarItem"
-                  }
-                  onClick={() => handleClick("Ownership")}
-                >
-                  Ownership
-                </li>
-                <li
-                  className={
-                    activeItem === "Subnames"
-                      ? "active profileNavbarItem"
-                      : "profileNavbarItem"
-                  }
-                  onClick={() => handleClick("Subnames")}
-                >
-                  Subnames
-                </li>
-                <li
-                  className={
-                    activeItem === "Permissions"
-                      ? "active profileNavbarItem"
-                      : "profileNavbarItem"
-                  }
-                  onClick={() => handleClick("Permissions")}
-                >
-                  Permissions
-                </li>
-                <li
-                  className={
-                    activeItem === "More"
-                      ? "active profileNavbarItem"
-                      : "profileNavbarItem"
-                  }
-                  onClick={() => handleClick("More")}
-                >
-                  More
-                </li>
-              </ul>
+              <ProfileDomainNavbar
+                instanceId="instance1"
+                onClick={(itemName) => handleNavbarClick("instance1", itemName)}
+              />
 
-              {activeItem === "Details" ? (
+              {activeItems["instance1"] === "Details" || activeItems === "" ? (
                 <ProfileDetails
                   modenft={modenft}
                   address={address}
                   domainDetails={domainDetails}
                 />
-              ) : activeItem === "Ownership" ? (
+              ) : activeItems["instance1"] === "Ownership" ? (
                 <DomainOwnership
                   address={address}
                   domainName={domainDetails.domain}
                   domainDetails={domainDetails}
                 />
-              ) : activeItem === "Subnames" ? (
+              ) : activeItems["instance1"] === "Subnames" ? (
                 <Subnames />
-              ) : activeItem === "Permissions" ? (
+              ) : activeItems["instance1"] === "Permissions" ? (
                 <PermissionsOfDomain />
-              ) : (
+              ) : activeItems["instance1"] === "MoreDetails" ? (
                 <MoreAboutDomains />
-              )}
+              ) : null}
             </AccordionPanel>
           </>
         ) : (

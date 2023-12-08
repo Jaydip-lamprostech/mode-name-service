@@ -3,7 +3,7 @@ import downArrowIcon from "../../asset/images/down-arrow.svg";
 import upArrowIcon from "../../asset/images/up-arrow.svg";
 
 const AccordionPanel = ({ title, children }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleAccordion = () => {
     setIsOpen(!isOpen);

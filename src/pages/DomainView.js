@@ -83,7 +83,7 @@ function DomainView() {
                     {showCopyIcon ? (
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        enable-background="new 0 0 20 20"
+                        enableBackground="new 0 0 20 20"
                         height="36px"
                         viewBox="0 0 20 20"
                         width="36px"

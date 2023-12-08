@@ -18,7 +18,7 @@ const Wrapper = ({
   const contentRef = useRef(null);
   const wrapperElementRef = useRef(null);
   const [canvasUrl, setCanvasUrl] = useState("");
-  let fontForName = 40;
+  let fontForName = window.innerWidth < 700 ? 30 : 40;
 
   useEffect(() => {
     const horizontalPadding = 20 * 2;
@@ -156,7 +156,7 @@ const Wrapper = ({
           </div>
         </div>
       ) : null} */}
-      <button onClick={combineAndDownload}>Download</button>
+      {/* <button onClick={combineAndDownload}>Download</button> */}
     </>
   );
 };

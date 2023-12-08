@@ -185,7 +185,7 @@ function TransferDomainPopup(props) {
                   props.setTransferDomainPopup(false);
                 }}
               >
-                Tranfer
+                Transfer
               </button>
             </div>
           </div>

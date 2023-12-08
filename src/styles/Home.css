@@ -294,6 +294,10 @@ p.domain-card-name {
   .domain-card-sub-item {
     padding-left: 10px;
   }
+
+  p.domain-card-name {
+    margin: 20px 10px;
+  }
 }
 
 .glitch {

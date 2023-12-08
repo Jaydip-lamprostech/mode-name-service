@@ -8,7 +8,31 @@ function SearchQuery(props) {
 
   useEffect(() => {
     // const timer = setTimeout(() => {
-    if (searchQuery.length < 3) {
+    if (searchQuery.length === 0) {
+      props.setDomainAvailability("-");
+      props.setDomainPrice("N/A");
+      props.setDomainExpiryDate("N/A");
+      props.setDomainRegisteredPrice("N/A");
+      props.setLoading({
+        status: false,
+        cost: false,
+        expiry: false,
+        lastSale: false,
+      });
+    } else if (!/^[a-zA-Z0-9\p{Emoji}]+$/u.test(searchQuery)) {
+      // Input is valid, proceed with your logic
+      console.log("Invalid Input");
+      props.setDomainAvailability("invalid input");
+      props.setDomainPrice("N/A");
+      props.setDomainExpiryDate("N/A");
+      props.setDomainRegisteredPrice("N/A");
+      props.setLoading({
+        status: false,
+        cost: false,
+        expiry: false,
+        lastSale: false,
+      });
+    } else if (searchQuery.length < 3) {
       // Set static values for card here
       props.setDomainAvailability("too short");
       props.setDomainPrice("N/A");

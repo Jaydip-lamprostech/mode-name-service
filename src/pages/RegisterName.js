@@ -477,7 +477,7 @@ function RegisterName(props) {
                               : "domain-name-checking"
                           }
                         >
-                          <span className="domain-name-square"></span>{" "}
+                          <span className="domain-name-square"></span>
                           {domainNameAvailability}
                         </span>
                       ) : (
