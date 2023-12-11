@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import "./Wrapper.css"; // Import your CSS file
 import html2canvas from "html2canvas";
 import CanvasNew from "./CanvasNew";
+import logo_yellow from "../../asset/images/logo.png";
+import logo_black from "../../asset/images/logo_black.png";
 
 const Wrapper = ({
   input,
@@ -18,7 +20,7 @@ const Wrapper = ({
   const contentRef = useRef(null);
   const wrapperElementRef = useRef(null);
   const [canvasUrl, setCanvasUrl] = useState("");
-  let fontForName = window.innerWidth < 700 ? 30 : 40;
+  let fontForName = window.innerWidth < 700 ? 25 : 30;
 
   useEffect(() => {
     const horizontalPadding = 20 * 2;
@@ -129,6 +131,11 @@ const Wrapper = ({
               }`}
               ref={wrapperElementRef}
             >
+              <img
+                src={isPremium ? logo_black : logo_yellow}
+                alt=""
+                className="nft_logo"
+              />
               <p ref={textElementRef} style={{ fontSize: `${fontForName}px` }}>
                 {input ? `${input}.mode` : ".mode"}
               </p>
@@ -156,7 +163,7 @@ const Wrapper = ({
           </div>
         </div>
       ) : null} */}
-      {/* <button onClick={combineAndDownload}>Download</button> */}
+      <button onClick={combineAndDownload}>Download</button>
     </>
   );
 };

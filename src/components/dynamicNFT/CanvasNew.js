@@ -44,7 +44,7 @@ const CanvasNew = ({
     if (canvas) {
       if (input) {
         if (window.innerWidth > 500) {
-          setWindowSize({ width: 500, height: 500 });
+          setWindowSize({ width: 550, height: 550 });
         } else {
           setWindowSize({ width: 350, height: 350 });
         }
@@ -395,7 +395,7 @@ const CanvasNew = ({
     });
 
     if (window.innerWidth > 500) {
-      rendererRef.current.setSize(500, 500);
+      rendererRef.current.setSize(550, 550);
     } else {
       rendererRef.current.setSize(350, 350);
     }
@@ -488,11 +488,11 @@ const CanvasNew = ({
         ref={(ref) => setCanvas(ref)}
         style={{
           backgroundColor: isPremium ? "#D1F544" : "#000",
-          width: "500px",
-          height: "500px",
+          width: "550px",
+          height: "550px",
         }}
-        width={500}
-        height={500}
+        width={550}
+        height={550}
       ></canvas>
 
       {/* {input ? (

@@ -1,0 +1,21 @@
+.banner_container {
+  padding: 8px;
+  background-color: #dffe00;
+  overflow: hidden;
+  width: 100%;
+  color: black;
+}
+
+.marquee-list {
+  padding: 0;
+  display: flex;
+  gap: 1.6rem;
+}
+
+.marquee-list li {
+  width: fit-content;
+
+  /* white-space: nowrap; */
+  color: black;
+  margin: 0 20px;
+}
