@@ -54,7 +54,7 @@ function SecondSection() {
   //   return () => ctx.revert();
   // }, []);
   return (
-    <div className="sc-main" ref={secondSectionRef}>
+    <div id="secondSection" className="sc-main" ref={secondSectionRef}>
       <div className="sc-left">
         <h2 className="second-title-gsap">
           FIND YOUR INDENTITY ON THE RAPIDLY GROWING MODE NETWORK

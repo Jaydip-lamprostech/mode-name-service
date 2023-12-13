@@ -6,6 +6,7 @@ import i3 from "../assets/3.png";
 import i4 from "../assets/4.png";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Link } from "react-scroll";
 
 function FirstSection() {
   const firstSectionRef = useRef();
@@ -240,26 +241,28 @@ function FirstSection() {
             // whileTap={{ scale: 0.9 }}
             className="arrow-down-btn"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="51"
-              height="51"
-              viewBox="0 0 51 51"
-              fill="none"
-            >
-              <circle cx="25.5" cy="25.5" r="25" stroke="#DEFF02" />
-              <circle
-                cx="25.5"
-                cy="25.5"
-                r="24.5"
-                stroke="#DEFF02"
+            <Link to="secondSection" smooth duration={1000} offset={-250}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="51"
+                height="51"
+                viewBox="0 0 51 51"
+                fill="none"
+              >
+                <circle cx="25.5" cy="25.5" r="25" stroke="#DEFF02" />
+                <circle
+                  cx="25.5"
+                  cy="25.5"
+                  r="24.5"
+                  stroke="#DEFF02"
                 // stroke-width="2"
-              />
-              <path
-                d="M27 18C27 17.4477 26.5523 17 26 17C25.4477 17 25 17.4477 25 18H27ZM25.2929 34.7071C25.6834 35.0976 26.3166 35.0976 26.7071 34.7071L33.0711 28.3431C33.4616 27.9526 33.4616 27.3195 33.0711 26.9289C32.6805 26.5384 32.0474 26.5384 31.6569 26.9289L26 32.5858L20.3431 26.9289C19.9526 26.5384 19.3195 26.5384 18.9289 26.9289C18.5384 27.3195 18.5384 27.9526 18.9289 28.3431L25.2929 34.7071ZM25 18V34H27V18H25Z"
-                fill="#DEFF02"
-              />
-            </svg>
+                />
+                <path
+                  d="M27 18C27 17.4477 26.5523 17 26 17C25.4477 17 25 17.4477 25 18H27ZM25.2929 34.7071C25.6834 35.0976 26.3166 35.0976 26.7071 34.7071L33.0711 28.3431C33.4616 27.9526 33.4616 27.3195 33.0711 26.9289C32.6805 26.5384 32.0474 26.5384 31.6569 26.9289L26 32.5858L20.3431 26.9289C19.9526 26.5384 19.3195 26.5384 18.9289 26.9289C18.5384 27.3195 18.5384 27.9526 18.9289 28.3431L25.2929 34.7071ZM25 18V34H27V18H25Z"
+                  fill="#DEFF02"
+                />
+              </svg>
+            </Link>
           </button>
         </div>
         <div className="bg-hexagon-parent">
