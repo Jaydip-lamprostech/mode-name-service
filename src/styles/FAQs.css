@@ -35,13 +35,14 @@
 .faqs-main p span:hover {
   color: #deff02;
 }
-.ellipsis {
+
+/* .ellipsis {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-}
+} */
 
 .faqs-grid-boxes {
   display: grid;
@@ -56,9 +57,11 @@
   border: 1px solid white;
   border-radius: 16px;
   margin: 19px;
-  padding: 35px;
+  padding: 25px;
   transition: all 1s ease;
   cursor: pointer;
+
+  height: fit-content;
 }
 .faqs-box.active {
   max-height: 500px;
@@ -80,6 +83,7 @@
 }
 .faq-details {
   padding-right: 40px;
+  width: 90%;
 }
 .faq {
   font-family: "IBM Plex Sans", sans-serif;
