@@ -25,12 +25,12 @@
   display: flex;
   justify-content: center;
   max-width: fit-content;
+  gap: 35px;
   /* border: 1px solid red; */
 }
 .social_icons img {
   width: 44px;
   height: 44px;
-  margin-right: 40px;
 }
 .copyrights span {
   color: #000;

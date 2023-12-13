@@ -146,4 +146,10 @@
   .fifth-label {
     width: 70%;
   }
+
+  .fifth-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
