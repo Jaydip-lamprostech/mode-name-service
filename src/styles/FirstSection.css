@@ -72,14 +72,14 @@
   color: #191918;
   text-align: center;
   font-family: "IBM Plex Sans", sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   font-style: normal;
   width: 200px;
-  font-weight: 300;
+  font-weight: 500;
   line-height: 161%; /* 22.54px */
 }
 .hero-buttons .first:hover {
-  font-weight: 900;
+  font-weight: 800;
 }
 .hero-buttons button {
   position: relative;
