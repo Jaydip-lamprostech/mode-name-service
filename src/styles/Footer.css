@@ -1,0 +1,120 @@
+.footer_container {
+  background-color: #deff02;
+  padding: 2rem 3rem;
+
+  /* border: 1px solid red; */
+}
+.footer_main {
+  max-width: 1920px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  /* border: 1px solid black; */
+}
+.footer_left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100px;
+}
+.footer_right {
+  width: fit-content;
+}
+.social_icons {
+  display: flex;
+  justify-content: center;
+  max-width: fit-content;
+  /* border: 1px solid red; */
+}
+.social_icons img {
+  width: 44px;
+  height: 44px;
+  margin-right: 40px;
+}
+.copyrights span {
+  color: #000;
+  text-align: center;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 154.1%; /* 18.492px */
+  letter-spacing: 0.66px;
+  text-transform: uppercase;
+}
+.footer_navmenu {
+  /* border: 1px solid red; */
+  width: fit-content;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+  gap: 10px;
+  list-style-type: none;
+  color: black;
+  /* border: 1px solid red; */
+  min-width: 200px;
+}
+.footer_navmenu_item {
+  font-size: 14px;
+  font-family: "Chakra Petch", sans-serif;
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: 0em;
+  text-align: center;
+  margin-left: 20px;
+}
+.footer_submenu_parent {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15px;
+}
+.footer_submenu_item {
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 15px;
+  letter-spacing: 0em;
+  text-align: left;
+  margin: 5px 0;
+}
+.footer_submenu_item a {
+  text-decoration: none;
+  color: black;
+}
+@media (max-width: 768px) {
+  .footer_container {
+    padding: 30px 10px;
+  }
+  .footer_main {
+    flex-wrap: wrap;
+    flex-direction: column-reverse;
+  }
+  .footer_left {
+    width: 100%;
+    min-height: fit-content;
+  }
+  .social_icons {
+    flex: 1;
+    max-width: none;
+    margin: 20px auto;
+    width: 100%;
+  }
+  .social_icons img {
+    height: 35px;
+    width: 35px;
+    margin: 0 10px;
+  }
+  .copyrights {
+    text-align: center;
+  }
+  .copyrights span {
+    text-align: center;
+    font-size: 10px;
+  }
+  .footer_navmenu {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}

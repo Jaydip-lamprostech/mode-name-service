@@ -1,0 +1,21 @@
+.i4-parent {
+  position: absolute;
+  z-index: 2;
+  top: 15%;
+  right: -15%;
+  width: 30%;
+  transform: rotate(-10deg);
+}
+.i4-parent:hover img {
+  transform: scale(1.1);
+  /* filter: drop-shadow(0px 4px 50px rgba(222, 255, 2, 0.25)); */
+}
+.i4-parent img {
+  width: 80%;
+  transition: all 1s ease;
+}
+@media (max-width: 768px) {
+  .i4-parent {
+    display: none;
+  }
+}

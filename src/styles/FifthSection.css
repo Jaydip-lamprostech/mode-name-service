@@ -1,0 +1,144 @@
+.fifth-container {
+  position: relative;
+  min-height: 600px;
+}
+.fifth-main {
+  width: 50%;
+  max-width: 1240px;
+  margin: 0px auto;
+  position: relative;
+  z-index: 100;
+  padding-top: 10%;
+  margin-left: 30%;
+}
+.fifth-main h2 {
+  width: 90%;
+  word-wrap: break-word;
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 52px;
+  letter-spacing: 0.08em;
+  text-align: left;
+  color: white;
+}
+.fifth-main p {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 38px;
+  letter-spacing: 0.025em;
+  text-align: left;
+}
+.fifth-details {
+  margin: 50px 0;
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+.fifth-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.fifth-label {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 26px;
+  letter-spacing: 0.08em;
+  text-align: left;
+  color: #ffffffb4;
+}
+.fifth-count {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 65px;
+  letter-spacing: 0.08em;
+  text-align: left;
+  color: #deff02;
+}
+
+.fifthsection-i8 {
+  position: absolute;
+  top: 0;
+  left: -15%;
+  width: 45%;
+  max-width: 700px;
+  transition: all 1s ease;
+}
+.fifthsection-i8:hover {
+  transform: scale(1.1) !important;
+  filter: drop-shadow(0px 4px 50px rgba(222, 255, 2, 0.25));
+}
+.fifthsection-i7 {
+  width: 30%;
+  position: absolute;
+  bottom: -20%;
+  right: -10%;
+  max-width: 700px;
+  z-index: 10;
+  /* transform: rotate(-45deg); */
+  transition: all 1s ease;
+}
+.fifthsection-i7:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0px 4px 50px rgba(222, 255, 2, 0.25));
+}
+.fifthsection-i7 img {
+  width: 100%;
+  transform: rotate(-45deg);
+}
+.mobile-i7 {
+  position: absolute;
+  top: -1%;
+  width: 150px;
+  transform: rotate(-45deg);
+  right: -10%;
+  z-index: 1000;
+}
+@media (max-width: 768px) {
+  .fifth-container {
+    min-height: max-content;
+    margin-top: -10%;
+  }
+  .fifth-main {
+    padding-bottom: 150px;
+    padding-top: 150px;
+    width: auto;
+    max-width: none;
+    overflow-x: hidden;
+    margin-left: 0;
+  }
+  .fifth-main h2 {
+    font-size: 1.8rem;
+    width: 80%;
+    margin: 0 auto;
+  }
+  .fifth-main p {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .fifthsection-i7 {
+    display: none;
+  }
+  .fifthsection-i8 {
+    bottom: -10px;
+    top: auto;
+  }
+  .fifth-details {
+    margin: 40px auto;
+    margin-left: 00;
+    gap: 10px;
+    justify-content: center;
+  }
+  .fifth-count {
+    font-size: 2rem;
+    line-height: 130%;
+  }
+  .fifth-label {
+    width: 70%;
+  }
+}
