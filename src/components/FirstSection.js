@@ -6,7 +6,8 @@ import i3 from "../assets/3.png";
 import i4 from "../assets/4.png";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Link } from "react-scroll";
+// import { Link } from "react-scroll";
+import { Link } from "react-router-dom";
 
 function FirstSection() {
   const firstSectionRef = useRef();

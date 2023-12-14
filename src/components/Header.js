@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "../styles/Header.css";
 import { FaBars, FaTimes } from "react-icons/fa";
-import logo from "../assets/ModeDomains_Logo.png";
+import logo from "../assets/ModeDomains_Logo_modified.png";
 
 function Header() {
   const [showMenu, setShowMenu] = useState(false);
