@@ -1,7 +1,10 @@
 import React from "react";
+import RoadmapSection from "../components/RoadmapSection";
 
 function Roadmap() {
-  return <div>Roadmap</div>;
+  return <>
+    <RoadmapSection />
+  </>;
 }
 
 export default Roadmap;

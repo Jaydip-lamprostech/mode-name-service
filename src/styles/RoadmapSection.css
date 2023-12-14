@@ -1,0 +1,132 @@
+.roadmap-title-main {
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 6rem;
+}
+
+.roadmap-title-main h2 {
+  color: #deff02;
+  text-align: center;
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 35px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 131%;
+  letter-spacing: 0.02em;
+  margin: 0 auto;
+}
+
+.roadmap-title-main p {
+  color: #fff;
+  text-align: center;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 145.5%;
+  letter-spacing: 1.44px;
+  margin: 20px 0;
+}
+
+.roadmap-journey {
+  display: flex;
+  flex-direction: column;
+  margin: 3% auto;
+}
+
+.roadmap-item {
+  display: flex;
+  align-items: center;
+  margin: 30px auto;
+  width: 55%;
+}
+
+.roadmap-date {
+  color: #deff02;
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1.44px;
+  width: 35%;
+  letter-spacing: 7.5%;
+  display: flex;
+  /* justify-content: flex-end; */
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.roadmap-icon-title {
+  display: flex;
+  cursor: default;
+  align-items: center;
+  width: 100%;
+  margin-left: 4%;
+  height: 90px;
+}
+
+.roadmap-icon-outermain {
+  width: 17%;
+}
+.roadmap-icon-main {
+  background-color: #fff;
+  border-radius: 2rem;
+  padding: 13px;
+  width: 50%;
+  height: 50px;
+  font-size: 2px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.roadmap-title-text-main {
+  width: 82%;
+}
+
+.roadmap-title-text {
+  border: 1px solid #fff;
+  padding: 2rem;
+  border-radius: 11px;
+  font-family: "Chakra Petch";
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.075em;
+  text-align: center;
+  margin: 15px 0;
+}
+
+.roadmap-icon-title:hover .roadmap-title-text {
+  box-shadow: 0px 0px 32.5px 0px #deff026e;
+  color: #deff02;
+  border-color: #deff02;
+}
+
+.roadmap-icon-title:hover .roadmap-icon-main {
+  background-color: #deff02;
+  box-shadow: 0px 0px 32.5px 0px #deff026e;
+}
+
+.rmMain-parent {
+  /* position: absolute;
+  z-index: 2;
+  top: -8vw;
+  right: -30vw;
+  width: 50vw;
+  transform: rotate(0deg); */
+
+  position: absolute;
+  z-index: 5;
+  top: -3vw;
+  right: -29vw;
+  width: 52vw;
+  transform: rotate(3598deg);
+}
+.rmMain-parent:hover img {
+  transform: scale(1.1);
+  /* filter: drop-shadow(0px 0 15px #ddff0262); */
+}
+.rmMain-parent img {
+  width: 80%;
+  transition: all 1s ease;
+}
