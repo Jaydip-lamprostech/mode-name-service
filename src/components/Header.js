@@ -43,8 +43,9 @@ function Header() {
 
   return (
     <div
-      className={`navbar-parent ${navbarClass} ${showMenu ? "backdrop-filter" : ""
-        }`}
+      className={`navbar-parent ${navbarClass} ${
+        showMenu ? "backdrop-filter" : ""
+      }`}
     >
       <div className="navbar">
         <a href="/" style={{ textDecoration: "none" }}>
