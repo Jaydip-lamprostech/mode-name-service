@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "../styles/Header.css";
 import { FaBars, FaTimes } from "react-icons/fa";
-import logo from "../assets/logo.png";
+import logo from "../assets/ModeDomains_Logo.png";
 
 function Header() {
   const [showMenu, setShowMenu] = useState(false);
@@ -24,6 +24,7 @@ function Header() {
       setScrollPosition(position);
     };
     console.log(scrollPosition);
+    window.addEventListener("scroll", handleScroll);
     // Clean up the event listener on component unmount
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -42,14 +43,13 @@ function Header() {
 
   return (
     <div
-      className={`navbar-parent ${navbarClass} ${
-        showMenu ? "backdrop-filter" : ""
-      }`}
+      className={`navbar-parent ${navbarClass} ${showMenu ? "backdrop-filter" : ""
+        }`}
     >
       <div className="navbar">
         <a href="/" style={{ textDecoration: "none" }}>
           <div className="logo">
-            <img src={logo} alt="modedomains logo" /> ModeDomains
+            <img src={logo} alt="modedomains logo" />
           </div>
         </a>
         <div className="mobile-menu-icon close" onClick={toggleMenu}>
