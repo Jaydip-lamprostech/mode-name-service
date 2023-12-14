@@ -108,13 +108,6 @@
 }
 
 .rmMain-parent {
-  /* position: absolute;
-  z-index: 2;
-  top: -8vw;
-  right: -30vw;
-  width: 50vw;
-  transform: rotate(0deg); */
-
   position: absolute;
   z-index: 5;
   top: -3vw;
@@ -129,4 +122,5 @@
 .rmMain-parent img {
   width: 80%;
   transition: all 1s ease;
+  filter: brightness(65%);
 }
