@@ -4,6 +4,25 @@
   margin-top: 6rem;
 }
 
+.rmMain-parent {
+  position: absolute;
+  z-index: 5;
+  top: -3vw;
+  right: -29vw;
+  width: 52vw;
+  transform: rotate(3598deg);
+}
+.rmMain-parent img {
+  width: 75%;
+  transition: all 1s ease;
+  /* filter: brightness(65%); */
+}
+
+.rmMain-parent:hover img {
+  transform: scale(1.1);
+  filter: drop-shadow(0px 0 15px #ddff0262);
+}
+
 .roadmap-title-main h2 {
   color: #deff02;
   text-align: center;
@@ -53,7 +72,7 @@
   display: flex;
   /* justify-content: flex-end; */
   justify-content: center;
-  margin-right: 10px;
+  margin-right: -13px;
 }
 
 .roadmap-icon-title {
@@ -66,7 +85,7 @@
 }
 
 .roadmap-icon-outermain {
-  width: 25%;
+  width: 20%;
 }
 .roadmap-icon-main {
   background-color: #fff;
@@ -108,61 +127,51 @@
   box-shadow: 0px 0px 32.5px 0px #deff026e;
 }
 
-.rmMain-parent {
-  position: absolute;
-  z-index: 5;
-  top: -3vw;
-  right: -29vw;
-  width: 52vw;
-  transform: rotate(3598deg);
-}
-.rmMain-parent img {
-  width: 80%;
-  transition: all 1s ease;
-  filter: brightness(65%) !important;
-}
-
-.rmMain-parent:hover img {
-  transform: scale(1.1);
-  filter: drop-shadow(0px 0 15px #ddff0262);
-}
-
 @media (max-width: 768px) {
+  .roadmap-title-main {
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  .roadmap-title-main h2 {
+    font-size: 28px;
+  }
+
+  .roadmap-title-main p {
+    font-size: 14px;
+  }
+
+  .roadmap-journey {
+    width: 90%;
+    margin: 3% auto;
+  }
+
   .roadmap-item {
-    width: 80%; /* Adjust the width for smaller screens */
-    flex-direction: column; /* Stack items vertically on smaller screens */
-    text-align: center; /* Center text for smaller screens */
+    width: 80%;
+    margin-right: 0;
   }
 
   .roadmap-date {
-    width: 100%; /* Full width for date on smaller screens */
-    margin-bottom: 10px; /* Add some space between date and icon */
+    font-size: 16px;
+    width: 25%;
   }
 
   .roadmap-icon-title {
-    flex-direction: column; /* Stack icon and title vertically on smaller screens */
-    text-align: center; /* Center text for smaller screens */
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .roadmap-icon-outermain {
-    width: 100%; /* Full width for icon container on smaller screens */
-    margin-bottom: 10px; /* Add some space between icon and title */
-  }
-
-  .roadmap-icon-main {
-    width: 80%; /* Adjust the width for smaller screens */
+    width: 100%;
+    margin-bottom: 10px;
   }
 
   .roadmap-title-text-main {
-    width: 100%; /* Full width for title on smaller screens */
+    width: 100%;
   }
 
   .roadmap-title-text {
-    padding: 1rem; /* Adjust padding for smaller screens */
-    font-size: 14px; /* Adjust font size for smaller screens */
-  }
-
-  .rmMain-parent {
-    display: none; /* Hide the image on smaller screens */
+    padding: 1rem;
   }
 }
