@@ -76,9 +76,9 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route path="/roadmap" element={<Roadmap />} />
         </Routes>
+        <Footer />
       </Router>
       <InitialLoadingAnimation />
-      <Footer />
     </div>
   );
 }

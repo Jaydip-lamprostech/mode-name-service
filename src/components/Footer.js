@@ -3,6 +3,8 @@ import "../styles/Footer.css";
 import modedark from "../assets/logoiconblack.png";
 import twitterdark from "../assets/twitterdark.png";
 import discorddark from "../assets/discorddark.png";
+import telegramdark from "../assets/telegram.png";
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
@@ -18,6 +20,9 @@ function Footer() {
             </a>
             <a href="https://discord.com/invite/XdmEgUDGGf" target="_blank" rel="noreferrer" aria-label="Discord Mode Domains">
               <img src={discorddark} alt="discord mode domains" />
+            </a>
+            <a href="https://t.me/modedomains" target="_blank" rel="noreferrer" aria-label="Telegram Mode Domains">
+              <img src={telegramdark} alt="telegram mode domains" />
             </a>
 
           </div>
@@ -86,7 +91,7 @@ function Footer() {
               Roadmap
               <ul className="footer_submenu_parent">
                 <li className="footer_submenu_item">
-                  <a href="/roadmap">Our Journey</a>
+                  <Link to="/roadmap">Our Journey</Link>
                 </li>
               </ul>
             </li>

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "../styles/Header.css";
 import { FaBars, FaTimes } from "react-icons/fa";
 import logo from "../assets/ModeDomains_Logo_modified.png";
+import { Link } from "react-router-dom";
 
 function Header() {
   const [showMenu, setShowMenu] = useState(false);
@@ -43,9 +44,8 @@ function Header() {
 
   return (
     <div
-      className={`navbar-parent ${navbarClass} ${
-        showMenu ? "backdrop-filter" : ""
-      }`}
+      className={`navbar-parent ${navbarClass} ${showMenu ? "backdrop-filter" : ""
+        }`}
     >
       <div className="navbar">
         <a href="/" style={{ textDecoration: "none" }}>
@@ -160,7 +160,7 @@ function Header() {
                 </svg>
               </li>
               <li className="subMenuItem">
-                <a href="/roadmap">Our Journey</a>
+                <Link to="/roadmap">Our Journey</Link>
               </li>
             </ul>
           </span>
@@ -198,6 +198,15 @@ function Header() {
                   rel="noreferrer"
                 >
                   Discord
+                </a>
+              </li>
+              <li className="subMenuItem">
+                <a
+                  href="https://t.me/modedomains"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Telegram
                 </a>
               </li>
             </ul>
@@ -346,6 +355,15 @@ function Header() {
                   rel="noreferrer"
                 >
                   Discord
+                </a>
+              </li>
+              <li className="mobile_header_submenu_item">
+                <a
+                  href="https://t.me/modedomains"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Telegram
                 </a>
               </li>
             </ul>
