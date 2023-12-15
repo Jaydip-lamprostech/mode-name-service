@@ -130,11 +130,23 @@
 
 @media (max-width: 1245px) {
   .rmMain-parent {
-    z-index: -1;
+    display: none;
+  }
+
+  .rmMain-parent img {
+    display: none;
   }
 }
 
 @media (max-width: 768px) {
+  .rmMain-parent {
+    display: none;
+  }
+
+  .rmMain-parent img {
+    display: none;
+  }
+
   .roadmap-title-main {
     width: 90%;
     margin: 45px auto;
