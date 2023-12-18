@@ -57,7 +57,7 @@ function SecondSection() {
     <div id="secondSection" className="sc-main" ref={secondSectionRef}>
       <div className="sc-left">
         <h2 className="second-title-gsap">
-          FIND YOUR INDENTITY ON THE RAPIDLY GROWING MODE NETWORK
+          FIND YOUR IDENTITY ON THE RAPIDLY GROWING MODE NETWORK
         </h2>
         <p className="second-subtitle-gsap">
           Mode Domains makes it easier for you to find, register & manage your
