@@ -12,19 +12,38 @@ function Footer() {
       <div className="footer_main">
         <div className="footer_left">
           <div className="social_icons">
-            <a href="https://modedomains.xyz/" target="_blank" rel="noreferrer" aria-label="Mode Domains">
+            <a
+              href="https://modedomains.xyz/"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Mode Domains"
+            >
               <img src={modedark} alt="mode domains" />
             </a>
-            <a href="https://twitter.com/Mode_Domains" target="_blank" rel="noreferrer" aria-label="Twitter Mode Domains">
+            <a
+              href="https://twitter.com/Mode_Domains"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Twitter Mode Domains"
+            >
               <img src={twitterdark} alt="twitter mode domains" />
             </a>
-            <a href="https://discord.com/invite/XdmEgUDGGf" target="_blank" rel="noreferrer" aria-label="Discord Mode Domains">
+            <a
+              href="https://discord.com/invite/XdmEgUDGGf"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Discord Mode Domains"
+            >
               <img src={discorddark} alt="discord mode domains" />
             </a>
-            <a href="https://t.me/modedomains" target="_blank" rel="noreferrer" aria-label="Telegram Mode Domains">
+            <a
+              href="https://t.me/modedomains"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Telegram Mode Domains"
+            >
               <img src={telegramdark} alt="telegram mode domains" />
             </a>
-
           </div>
           <div className="copyrights">
             <span>Copyright © 2023 MODE DOMAIN. All rights reserved.</span>

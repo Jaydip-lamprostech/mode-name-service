@@ -251,17 +251,12 @@ function FirstSection() {
         <img src={i3} className="mobile-only mobile-i3" alt="mode domains " />
         <img src={i4} alt="mode domains" className="mobile-only mobile-i4" />
         <div className="fs-heading">
-          <h1>
-            CREATE A WEB3 IDENTITY, MAKE IT
-            <br /> YOUR WALLET ADDRESS
-          </h1>
+          <h1>DIGITAL IDENTITY AS UNIQUE AS YOU</h1>
         </div>
 
         <p className="sub-heading">
-          Simplicity shouldn't compromise security, experience the best of both
-          worlds with personalized
-          <br />
-          <span className="yellow-color-text">“.mode”</span> domains
+          An exclusive platform to help you navigate the Mode network with a
+          personalized <span className="yellow-color-text">“.mode”</span> name
         </p>
         <div className="hero-buttons">
           <button
