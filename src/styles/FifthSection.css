@@ -117,8 +117,9 @@
     margin-left: 0;
   }
   .fifth-main h2 {
-    font-size: 1.8rem;
-    width: 80%;
+    text-align: center;
+    font-size: 1.6rem;
+    width: 90%;
     margin: 0 auto;
   }
   .fifth-main p {
@@ -140,16 +141,20 @@
     justify-content: center;
   }
   .fifth-count {
-    font-size: 2rem;
+    font-size: 3rem;
     line-height: 130%;
   }
   .fifth-label {
-    width: 70%;
+    width: 100%;
+    text-align: center;
   }
 
   .fifth-item {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    right: 0;
+    justify-content: center;
+    text-align: center;
   }
 }

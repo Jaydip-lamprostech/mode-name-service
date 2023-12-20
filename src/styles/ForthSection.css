@@ -102,12 +102,16 @@
     width: 100%;
   }
   .forth-left h2 {
-    width: 80%;
-    font-size: 1.8rem;
+    width: 95%;
+    font-size: 1.6rem;
     text-align: center;
   }
   .forth-left img {
     margin-top: 0px;
-    width: 300px;
+    margin: 20px auto;
+    width: 250px;
+  }
+  .forth-right-item span {
+    width: 90%;
   }
 }
