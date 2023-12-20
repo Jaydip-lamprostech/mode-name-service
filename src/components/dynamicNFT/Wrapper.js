@@ -163,7 +163,7 @@ const Wrapper = ({
           </div>
         </div>
       ) : null} */}
-      {/* <button onClick={combineAndDownload}>Download</button> */}
+      <button onClick={combineAndDownload}>Download</button>
     </>
   );
 };

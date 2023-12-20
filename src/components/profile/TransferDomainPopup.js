@@ -5,7 +5,7 @@ import { useChainModal } from "@rainbow-me/rainbowkit";
 import baseContractABI from "../../artifacts/contracts/Base.json";
 import publicResolverContractABI from "../../artifacts/contracts/PublicResolver.json";
 import reverseRegistrarABI from "../../artifacts/contracts/ReverseRegistrar.json";
-
+import { formatsByName } from "@ensdomains/address-encoder";
 import { ethers } from "ethers";
 
 function TransferDomainPopup(props) {
@@ -60,7 +60,25 @@ function TransferDomainPopup(props) {
 
       const reverseNode = await reverseRegistrar.node(props.address);
       console.log(reverseNode);
-      const tx = await contract.setAddr(reverseNode, 60, recepientAddress);
+
+      const baseNode =
+        "0x9217c94fd014da21f5c43a1fcae4154a2bbfce43eb48bb33f7f6473c68ee16b6"; // Replace with your actual baseNode
+      // Replace with your actual label
+
+      // Convert baseNode to bytes32 format
+      const baseNodeBytes32 = ethers.utils.hexZeroPad(baseNode, 32);
+
+      // Concatenate baseNode and label, then take the keccak256 hash
+      const nodehash = ethers.utils.keccak256(
+        ethers.utils.solidityPack(
+          ["bytes32", "string"],
+          [baseNodeBytes32, props.domainName]
+        )
+      );
+      console.log(nodehash);
+      // const addInBinary = formatsByName["ETH"].decoder(recepientAddress);
+      // console.log(addInBinary);
+      const tx = await contract.setAddr(nodehash, 60, recepientAddress);
       setTxButtonText("Transferring...");
       await tx.wait();
       setTxErrorMessage();
@@ -216,7 +234,13 @@ function TransferDomainPopup(props) {
                     />
                   </div>
                   <div className="transferDomains_field_input">
-                    {props.address}
+                    {/* {props.address} */}
+                    <input
+                      type="text"
+                      placeholder="Enter Recipient's Address"
+                      disabled
+                      value={props.address}
+                    />
                   </div>
                 </div>
                 <div className="transferDomains_field_item">

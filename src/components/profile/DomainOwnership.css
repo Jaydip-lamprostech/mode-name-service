@@ -97,3 +97,29 @@
   margin-left: 4px;
   width: 20px;
 }
+
+@media (max-width: 768px) {
+  .DomainOwnershipRolesTitle > span {
+    font-size: 1.5rem;
+  }
+  .domainownership-list-item {
+    padding: 10px;
+  }
+  .domainownership-list-address {
+    font-size: 14px;
+  }
+  .domainownership-item-left > svg {
+    width: 16px;
+  }
+  .domainownership-item-right {
+    font-size: 12px;
+  }
+  .domainTranferButton > button {
+    padding: 5px 10px;
+    margin: 0 5px;
+    font-size: 14px;
+  }
+  .domainTranferButton > button > svg {
+    width: 16px;
+  }
+}

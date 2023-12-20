@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ensdomains/address-encoder": "^0.2.22",
     "@ensdomains/ens-validation": "^0.1.0",
     "@enzoferey/ethers-error-parser": "^0.2.3",
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",

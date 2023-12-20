@@ -401,4 +401,15 @@
     margin-top: 20px;
     margin-bottom: 50px;
   }
+  .domainActionButtons {
+    justify-content: center;
+  }
+  .domainActionButtons > button {
+    padding: 5px 10px;
+    margin: 0 5px;
+    font-size: 14px;
+  }
+  .domainActionButtons > button > svg {
+    width: 16px;
+  }
 }
