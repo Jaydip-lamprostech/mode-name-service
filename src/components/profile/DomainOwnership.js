@@ -6,7 +6,7 @@ import TransferDomainPopup from "./TransferDomainPopup";
 
 function DomainOwnership(props) {
   const [showAlternateIcon, setShowAlternateIcon] = useState(false);
-  const [transferDomainPopup, setTransferDomainPopup] = useState(false);
+
   let address = props.address;
 
   const handleClick = (text) => {
@@ -166,31 +166,21 @@ function DomainOwnership(props) {
         <div className="domainTranferButton">
           <button
             onClick={() => {
-              setTransferDomainPopup(true);
+              document.body.classList.add("popup-open");
+              props.setTransferDomainPopup(true);
             }}
           >
             <svg
-              width="24px"
-              height="24px"
-              viewBox="0 0 24 24"
-              fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              height="24"
+              viewBox="0 -960 960 960"
+              width="24"
             >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M18.61 2.64548C20.1948 2.19021 21.6568 3.65224 21.2016 5.23705L17.1785 19.2417C16.5079 21.5761 13.3904 22.0197 12.1096 19.9629L10.3338 17.1113C9.84262 16.3226 9.96155 15.2974 10.6207 14.6383L14.4111 10.8479C14.8022 10.4567 14.8033 9.82357 14.4134 9.43373C14.0236 9.04389 13.3905 9.04497 12.9993 9.43614L9.20901 13.2265C8.54987 13.8856 7.52471 14.0046 6.73596 13.5134L3.88412 11.7375C1.82737 10.4567 2.27092 7.33918 4.60532 6.66858L18.61 2.64548Z"
-              />
+              <path d="m233-280 76 76q12 12 11.5 28T308-148q-12 11-28 11.5T252-148L108-292q-6-6-8.5-13T97-320q0-8 2.5-15t8.5-13l144-144q11-11 27.5-11t28.5 11q12 12 12 28.5T308-435l-75 75h567q17 0 28.5 11.5T840-320q0 17-11.5 28.5T800-280H233Zm494-320H160q-17 0-28.5-11.5T120-640q0-17 11.5-28.5T160-680h567l-76-76q-12-12-11.5-28t12.5-28q12-11 28-11.5t28 11.5l144 144q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L708-468q-11 11-27.5 11T652-468q-12-12-12-28.5t12-28.5l75-75Z" />
             </svg>
             Transfer
           </button>
         </div>
-        {transferDomainPopup ? (
-          <TransferDomainPopup
-            setTransferDomainPopup={setTransferDomainPopup}
-            domainName={props.domainName}
-          />
-        ) : null}
       </div>
       <div className="info-section">
         <div className="info-column">

@@ -1,0 +1,33 @@
+.UserEligibilityForFreeDomain_popup_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999999;
+}
+.afterpurchase_popup_card p {
+  font-size: 1.1rem;
+}
+.afterpurchase_popup_card p.free-domain-p {
+  color: #dffe00;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.UserEligibilityForFreeDomain_popup_overlay button {
+  width: 100%;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.5s ease;
+  font-weight: 600;
+  font-size: 1.4rem;
+}
+.UserEligibilityForFreeDomain_popup_overlay button:hover {
+  transform: translateY(-4px);
+}

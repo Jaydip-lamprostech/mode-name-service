@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "../styles/SearchQuery.css";
-import contract_abi from "../artifacts/contracts/NameRegistry.sol/NameRegistry.json";
+import contract_abi from "../artifacts/contracts/NameRegistry.json";
+import registrarController_abi from "../artifacts/contracts/RegistrarController.json";
+import base_abi from "../artifacts/contracts/Base.json";
 import { ethers } from "ethers";
-
+import { toBigInt } from "web3-utils";
+import { validate } from "@ensdomains/ens-validation";
 function SearchQuery(props) {
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -19,7 +22,9 @@ function SearchQuery(props) {
         expiry: false,
         lastSale: false,
       });
-    } else if (!/^[a-zA-Z0-9\p{Emoji}]+$/u.test(searchQuery)) {
+    }
+    // else if (!/^[a-zA-Z0-9\p{Emoji}]+$/u.test(searchQuery)) {
+    else if (!validate(searchQuery)) {
       // Input is valid, proceed with your logic
       console.log("Invalid Input");
       props.setDomainAvailability("invalid input");
@@ -47,7 +52,7 @@ function SearchQuery(props) {
     } else {
       getName(searchQuery);
     }
-    // });
+    // }, 300);
 
     // return () => {
     //   clearTimeout(timer);
@@ -98,6 +103,71 @@ function SearchQuery(props) {
     props.setRegisterdomainPriceInWei("");
   };
 
+  // const getName = async (name) => {
+  //   //contract code starts here...............................
+  //   try {
+  //     const provider = new ethers.providers.JsonRpcProvider(
+  //       "https://sepolia.mode.network/"
+  //     );
+  //     const con = new ethers.Contract(
+  //       `${process.env.REACT_APP_CONTRACT_ADDRESS}`,
+  //       contract_abi.abi,
+  //       provider
+  //     );
+  //     const details = await con.getNameDetails(name);
+  //     console.log(details);
+  //     props.setDomainAvailability("registered");
+  //     const timestampExp = details.expiryTimestamp;
+  //     const humanDateExp = new Date(timestampExp * 1000).toLocaleDateString(
+  //       "en-US",
+  //       {
+  //         month: "long",
+  //         day: "numeric",
+  //         year: "numeric",
+  //       }
+  //     );
+  //     const timestampRgd = details.creationTimestamp;
+  //     const humanDateRgd = new Date(timestampRgd * 1000).toLocaleDateString(
+  //       "en-US",
+  //       {
+  //         month: "long",
+  //         day: "numeric",
+  //         year: "numeric",
+  //       }
+  //     );
+  //     props.setDomainExpiryDate(humanDateExp);
+  //     props.setDomainRegisteredDate(humanDateRgd);
+  //     props.setDomainExpiryTime(details.expiryTimestamp);
+  //     props.setDomainRegisteredTime(details.creationTimestamp);
+  //     props.setDomainOwner(details.ownerAddress);
+  //     console.log();
+  //     props.setDomainRegisteredPrice(
+  //       ethers.utils.formatEther(details.registrationPrice)
+  //     );
+  //     // props.setFilteredUsers(details);
+  //   } catch (error) {
+  //     if (error.message.includes("Name is not registered")) {
+  //       console.log("Name is not registered");
+  //       props.setDomainAvailability("available");
+  //       props.setDomainExpiryDate("N/A");
+  //       await domainPriceCheck(name);
+  //       // Handle the case when the name is not registered
+  //     } else {
+  //       console.log("Error:", error);
+
+  //       // Handle other errors
+  //     }
+  //   } finally {
+  //     props.setLoading({
+  //       status: false,
+  //       cost: false,
+  //       expiry: false,
+  //       lastSale: false,
+  //     });
+  //   }
+  //   //contract code ends here.................................
+  // };
+
   const getName = async (name) => {
     //contract code starts here...............................
     try {
@@ -105,53 +175,65 @@ function SearchQuery(props) {
         "https://sepolia.mode.network/"
       );
       const con = new ethers.Contract(
-        `${process.env.REACT_APP_CONTRACT_ADDRESS}`,
-        contract_abi.abi,
+        `${process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID}`,
+        registrarController_abi.abi,
         provider
       );
-      const details = await con.getNameDetails(name);
-      console.log(details);
-      props.setDomainAvailability("registered");
-      const timestampExp = details.expiryTimestamp;
-      const humanDateExp = new Date(timestampExp * 1000).toLocaleDateString(
-        "en-US",
-        {
-          month: "long",
-          day: "numeric",
-          year: "numeric",
-        }
+
+      const available = await con.available(
+        toBigInt(process.env.REACT_APP_IDENTIFIER),
+        name // Replace with a label for your domain
       );
-      const timestampRgd = details.creationTimestamp;
-      const humanDateRgd = new Date(timestampRgd * 1000).toLocaleDateString(
-        "en-US",
-        {
-          month: "long",
-          day: "numeric",
-          year: "numeric",
-        }
-      );
-      props.setDomainExpiryDate(humanDateExp);
-      props.setDomainRegisteredDate(humanDateRgd);
-      props.setDomainExpiryTime(details.expiryTimestamp);
-      props.setDomainRegisteredTime(details.creationTimestamp);
-      props.setDomainOwner(details.ownerAddress);
-      console.log();
-      props.setDomainRegisteredPrice(
-        ethers.utils.formatEther(details.registrationPrice)
-      );
-      // props.setFilteredUsers(details);
-    } catch (error) {
-      if (error.message.includes("Name is not registered")) {
-        console.log("Name is not registered");
+      console.log(available);
+      if (available) {
         props.setDomainAvailability("available");
         props.setDomainExpiryDate("N/A");
         await domainPriceCheck(name);
-        // Handle the case when the name is not registered
       } else {
-        console.log("Error:", error);
-
-        // Handle other errors
+        props.setDomainAvailability("registered");
+        await domainPriceCheck(name);
+        await expiryCheck(name);
       }
+
+      // const timestampExp = details.expiryTimestamp;
+      // const humanDateExp = new Date(timestampExp * 1000).toLocaleDateString(
+      //   "en-US",
+      //   {
+      //     month: "long",
+      //     day: "numeric",
+      //     year: "numeric",
+      //   }
+      // );
+      // const timestampRgd = details.creationTimestamp;
+      // const humanDateRgd = new Date(timestampRgd * 1000).toLocaleDateString(
+      //   "en-US",
+      //   {
+      //     month: "long",
+      //     day: "numeric",
+      //     year: "numeric",
+      //   }
+      // );
+      // props.setDomainExpiryDate(humanDateExp);
+      // props.setDomainRegisteredDate(humanDateRgd);
+      // props.setDomainExpiryTime(details.expiryTimestamp);
+      // props.setDomainRegisteredTime(details.creationTimestamp);
+      // props.setDomainOwner(details.ownerAddress);
+      // props.setDomainRegisteredPrice(
+      //   ethers.utils.formatEther(details.registrationPrice)
+      // );
+      // props.setFilteredUsers(details);
+    } catch (error) {
+      console.log(error);
+      // if (error.message.includes("Name is not registered")) {
+      //   props.setDomainAvailability("available");
+      //   props.setDomainExpiryDate("N/A");
+      //   await domainPriceCheck(name);
+      //   // Handle the case when the name is not registered
+      // } else {
+      //   console.log("Error:", error);
+
+      //   // Handle other errors
+      // }
     } finally {
       props.setLoading({
         status: false,
@@ -162,19 +244,97 @@ function SearchQuery(props) {
     }
     //contract code ends here.................................
   };
+  // const domainPriceCheck = async (name) => {
+  //   try {
+  //     const provider = new ethers.providers.JsonRpcProvider(
+  //       "https://sepolia.mode.network/"
+  //     );
+  //     const con = new ethers.Contract(
+  //       `${process.env.REACT_APP_CONTRACT_ADDRESS}`,
+  //       contract_abi.abi,
+  //       provider
+  //     );
+  //     const price = await con.getRegistrationPrice(name);
+  //     console.log(ethers.utils.formatEther(price));
+  //     props.setDomainPrice(ethers.utils.formatEther(price));
+  //     props.setRegisterdomainPriceInWei(price);
+  //     // const eth = ;
+  //     // props.setFilteredUsers(details);
+  //   } catch (error) {
+  //     console.log("Error:", error);
+  //     // Handle other errors
+  //   }
+  // };
+
+  const expiryCheck = async (name) => {
+    const provider = new ethers.providers.JsonRpcProvider(
+      "https://sepolia.mode.network/"
+    );
+    const con = new ethers.Contract(
+      `${process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID_BASE}`,
+      base_abi.abi,
+      provider
+    );
+    const tokenId = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(name));
+    const expiryDate = await con.nameExpires(tokenId);
+    const tokenUri = await con.tokenURI(tokenId);
+    console.log(tokenUri);
+    //getting metadata
+    fetch(tokenUri)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Process the API response data
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("There was a problem with the fetch operation:", error);
+      });
+    const test = new Date(expiryDate * 1000);
+    console.log(test);
+    const humanDateExp = new Date(expiryDate * 1000).toLocaleDateString(
+      "en-US",
+      {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      }
+    );
+    console.log(humanDateExp);
+    props.setDomainExpiryDate(humanDateExp);
+  };
   const domainPriceCheck = async (name) => {
     try {
       const provider = new ethers.providers.JsonRpcProvider(
         "https://sepolia.mode.network/"
       );
       const con = new ethers.Contract(
-        `${process.env.REACT_APP_CONTRACT_ADDRESS}`,
-        contract_abi.abi,
+        `${process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID}`,
+        registrarController_abi.abi,
         provider
       );
-      const price = await con.getRegistrationPrice(name);
-      console.log(ethers.utils.formatEther(price));
-      props.setDomainPrice(ethers.utils.formatEther(price));
+      const registrationDuration = 31556952 * props.registrationPeriod;
+      console.log(props.registrationPeriod);
+      // const price = await con.getRegistrationPrice(name);
+      const estimatedPriceArray = await con.rentPrice(
+        toBigInt(process.env.REACT_APP_IDENTIFIER),
+        name, // Replace with a label for your domain
+        registrationDuration
+      );
+      console.log(estimatedPriceArray);
+      // Access individual BigNumber objects in the array
+      const base = parseInt(estimatedPriceArray[0]);
+      const premium = parseInt(estimatedPriceArray[1]);
+      const price = base + premium;
+
+      // console.log(ethers.utils.formatEther(price));
+      let x = price / 10 ** 18;
+      let priceshort = parseFloat(x.toFixed(7));
+      props.setDomainPrice(priceshort);
       props.setRegisterdomainPriceInWei(price);
       // const eth = ;
       // props.setFilteredUsers(details);

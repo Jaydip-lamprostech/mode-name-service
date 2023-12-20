@@ -1,21 +1,23 @@
 .transfer_popup_overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(16px);
+  overflow: auto;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   z-index: 99999999;
 }
 
 .transfer_popup_container {
   transform: translate(50%, 50%);
   border: 1px solid rgb(45, 45, 45);
-  background-color: rgba(10, 10, 10, 0.8);
+  /* background-color: rgba(10, 10, 10, 0.8); */
   border-radius: 15px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   overflow: hidden;
@@ -25,7 +27,7 @@
   transition: all 0.3s ease-in-out;
 }
 .transfer_popup_overlay button {
-  width: 50%;
+  width: 100%;
   cursor: pointer;
   border-radius: 8px;
   transition: all 0.5s ease;
@@ -36,6 +38,8 @@
 .transfer_popup_card {
   padding: 35px;
   text-align: center;
+  border: 1px solid rgb(45, 45, 45);
+  background-color: rgb(21, 22, 25);
 }
 
 .transfer_popup_card h2 {
@@ -78,12 +82,13 @@
   font-size: 1.3rem;
   font-weight: 600;
   font-family: "Chakra Patch", sans-serif;
+  width: 100%;
 }
 .transferDomains_fields {
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: 60px;
+  margin-top: 30px;
 }
 .transferDomains_field_item {
   margin-bottom: 30px;
@@ -145,6 +150,9 @@
 }
 .transferDomains_field_input > input::placeholder {
   color: #ffffff3c;
+}
+.summary-info {
+  font-family: "IBM Plex Sans", sans-serif;
 }
 .transferDomain_field_sub_title {
   font-size: 14px;

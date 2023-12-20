@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import contract_abi from "../artifacts/contracts/NameRegistry.sol/NameRegistry.json";
+import contract_abi from "../artifacts/contracts/NameRegistry.json";
 
 export const getNameByAddress = async (address) => {
   //contract code starts here...............................

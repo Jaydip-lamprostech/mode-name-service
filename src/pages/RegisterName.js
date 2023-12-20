@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { toBigInt } from "web3-utils";
 import "../styles/Home.css";
 import "../styles/RegistrationForm.css";
 import SearchQuery from "../components/SearchQuery";
@@ -9,16 +10,25 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { useConnectModal, useChainModal } from "@rainbow-me/rainbowkit";
 import { getParsedEthersError } from "@enzoferey/ethers-error-parser";
 import "../styles/Loader.css";
-import contract_abi from "../artifacts/contracts/NameRegistry.sol/NameRegistry.json";
+import contract_abi from "../artifacts/contracts/NameRegistry.json";
+import registrarController_abi from "../artifacts/contracts/RegistrarController.json";
 import RegistrationPopup from "../components/RegistrationPopup";
 import { useNavigate } from "react-router-dom";
 import InfoPopup from "../components/InfoPopup";
-import { useAccount } from "wagmi";
+import { useAccount, useFeeData } from "wagmi";
 import { motion } from "framer-motion";
 import Wrapper from "../components/dynamicNFT/Wrapper";
 import NFTGenerator from "../components/dynamicNFT/DesignCanvas";
+import testNetTreeData from "../asset/testNetTreeData.json";
+import { Buffer } from "buffer";
+import MerkleTree from "merkletreejs";
+import keccak256 from "keccak256";
+import Web3 from "web3";
+import axios from "axios";
+import DomainPurchasedPopup from "../components/DomainPurchasedPopup";
 
 function RegisterName(props) {
+  const web3 = new Web3();
   const { address } = useAccount();
   const navigate = useNavigate();
   const { openChainModal } = useChainModal();
@@ -33,7 +43,8 @@ function RegisterName(props) {
   const [domainNameRegisteredDate, setDomainRegisteredDate] = useState("-");
   const [domainNameRegisteredTime, setDomainRegisteredTime] = useState("-");
   const [domainNameRegisteredPrice, setDomainRegisteredPrice] = useState("-");
-
+  const [showAfterDomainPurchasedPopup, setAfterDomainPurchasedPopup] =
+    useState({ show: false, freeDomain: false });
   const [isPremium, setIsPremium] = useState(false);
   const [isVip, setIsVip] = useState(false);
   const [isRegular, setIsRegular] = useState(false);
@@ -43,9 +54,10 @@ function RegisterName(props) {
     premium: false,
     normal: false,
   });
-  // const [registrationPeriod, setRegistrationPeriod] = useState(1);
+  const [registrationPeriod, setRegistrationPeriod] = useState(1);
   const [highGasPopup, setHighGasPopup] = useState(false);
   const [registerdomainPriceInWei, setRegisterdomainPriceInWei] = useState("");
+  const [extrData, setExtrData] = useState();
   const [errorMessage, setErrorMessage] = useState("");
 
   const [transactionState, setTransactionState] = useState({
@@ -65,6 +77,7 @@ function RegisterName(props) {
   };
 
   const closePopup = () => {
+    // props.setShowConfetti(false);
     setTransactionState({
       waiting: false,
       msg: "",
@@ -72,6 +85,7 @@ function RegisterName(props) {
     setErrorMessage("");
     setRegistrationForm(false);
     document.body.classList.remove("popup-open");
+    // window.location.reload();
   };
 
   const redirectToUserProfile = () => {
@@ -135,6 +149,94 @@ function RegisterName(props) {
       console.error("Error uploading metadata:", error);
     }
   };
+  const getExtraData = async (address) => {
+    try {
+      const priceHookTreeData = testNetTreeData;
+      const leafNodes = priceHookTreeData.leaves.map((leaf) =>
+        Buffer.from(leaf, "hex")
+      );
+
+      // Reconstruct the Merkle tree
+      const priceHookMerkleTree = new MerkleTree(leafNodes, keccak256, {
+        sortLeaves: true,
+        sortPairs: true,
+      });
+
+      // Get the Merkle proof for the specified address
+      const priceHookArray = priceHookMerkleTree.getHexProof(
+        keccak256(address)
+      );
+
+      // Encode parameters for extraData
+      const PriceHookExtraData = web3.eth.abi.encodeParameters(
+        ["bytes32[] merkleProof"],
+        [priceHookArray]
+      );
+
+      // Construct the complete extraData
+      const hookExtraData = {
+        QualificationHookExtraData: "0x",
+        PriceHookExtraData: PriceHookExtraData,
+        PointHookExtraData: "0x",
+        RewardHookExtraData: "0x",
+      };
+
+      const extraData = web3.eth.abi.encodeParameters(
+        [
+          "(bytes QualificationHookExtraData, bytes PriceHookExtraData, bytes PointHookExtraData, bytes RewardHookExtraData)",
+        ],
+        [Object.values(hookExtraData)]
+      );
+
+      setExtrData(extraData);
+      console.log(extraData);
+      return extraData;
+    } catch (error) {
+      console.error("Error fetching extraData:", error);
+      throw error;
+    }
+  };
+
+  const checkEligibility = async () => {
+    try {
+      // Create a new contract instance
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const contract = new ethers.Contract(
+        process.env.REACT_APP_CONTRACT_ADDRESS_TESTNET_HOLDERS_DISCOUNT_HOOK,
+        [
+          "function isEligibleToClaimFreeDomain(address, bytes) view returns (bool)",
+        ],
+        provider
+      );
+      console.log(contract);
+      // Call the isEligibleToClaimFreeDomain function
+      const result = await contract.isEligibleToClaimFreeDomain(
+        address,
+        extrData
+      );
+
+      // Update state based on the result
+      setAfterDomainPurchasedPopup({ show: false, freeDomain: result });
+      console.log(result);
+      if (result) {
+        props.setuserEligibleForFreeDomain(true);
+      }
+    } catch (error) {
+      console.error("Error checking eligibility:", error.message);
+    }
+  };
+  useEffect(() => {
+    if (address) {
+      const etdata = async () => {
+        await getExtraData(address);
+      };
+      etdata();
+    }
+  }, [address]);
+
+  useEffect(() => {
+    if (address && extrData) checkEligibility();
+  }, [extrData]);
 
   const registerName = async (metadatau) => {
     setErrorMessage("");
@@ -151,54 +253,93 @@ function RegisterName(props) {
         return;
       }
       const signer = provider.getSigner();
+
       const contract = new ethers.Contract(
-        `${process.env.REACT_APP_CONTRACT_ADDRESS}`,
-        contract_abi.abi,
+        `${process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID}`,
+        // contract_abi.abi,
+        registrarController_abi.abi,
         signer
       );
 
-      // if (checkNameIsRegisteredOrNot.nameValue) {
-      //   setTransactionState({ waiting: false, msg: "" });
-      //   setErrorMessage(
-      //     "You already have claimed one handle, get more on Mainnet."
-      //   );
-      //   return;
-      // }
-      // If metadataUri is generated, proceed to register
-      const metadatau = await uploadMetadata();
       const name = domainName;
       // console.log(name);
       const responseUri = metadatau;
 
       // Remove the "ipfs://" prefix
       const ipfsPrefix = "ipfs://";
-      const cid = responseUri.slice(ipfsPrefix.length);
+      // const cid = responseUri.slice(ipfsPrefix.length);
 
       // Construct the updated URL
-      const updatedUri = "https://ipfs.io/ipfs/" + cid;
+      // const updatedUri = "https://ipfs.io/ipfs/" + cid;
       // console.log(updatedUri);
 
       // console.log(registerdomainPriceInWei);
       // console.log(name);
       // console.log(updatedUri);
 
-      const tx = await contract.registerName(name, updatedUri, {
-        value: registerdomainPriceInWei,
-      });
+      // const tx = await contract.registerName(name, updatedUri, {
+      //   value: registerdomainPriceInWei,
+      // });
+
+      const registrationDuration = 31556952 * registrationPeriod; // 1 year in seconds
+
+      const estimatedPriceArray = await contract.rentPrice(
+        toBigInt(process.env.REACT_APP_IDENTIFIER),
+        name, // Replace with a label for your domain
+        registrationDuration
+      );
+      console.log(estimatedPriceArray);
+      // Access individual BigNumber objects in the array
+      const base = parseInt(estimatedPriceArray[0]);
+      const premium = parseInt(estimatedPriceArray[1]);
+      let finalPrice = base + premium;
+      finalPrice = finalPrice * 1.1;
+      console.log(finalPrice);
+      // console.log("Base Price (Wei):", base.toString());
+      // console.log("Premium Price (Wei):", premium.toString());
+      console.log(
+        toBigInt(process.env.REACT_APP_IDENTIFIER),
+        [name],
+        address,
+        registrationDuration,
+        process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER,
+        finalPrice
+      );
+
+      const tx = await contract.bulkRegister(
+        toBigInt(process.env.REACT_APP_IDENTIFIER),
+        [name],
+        address,
+        registrationDuration,
+        process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER,
+        true,
+        [extrData],
+        {
+          value: parseInt(finalPrice).toString(),
+          // gasLimit: 2000000, // Manually set a sufficient gas limit
+        }
+      );
       setTransactionState({ waiting: true, msg: "Transacting..." });
       await tx.wait();
-
+      // await tx2.wait();
+      setAfterDomainPurchasedPopup({
+        ...showAfterDomainPurchasedPopup,
+        show: true,
+      });
+      setErrorMessage("");
       console.log("Name registered successfully!");
       props.setNameRegistered(true);
-      setErrorMessage("");
       setTransactionState({
         waiting: true,
         msg: "Name registered successfully!",
       });
-      setTimeout(() => {
-        document.body.classList.remove("popup-open");
-        navigate("/profile", { state: { reload: true } });
-      }, 2000);
+
+      props.setShowConfetti(true);
+      closePopup();
+      // setTimeout(() => {
+
+      //   navigate("/profile", { state: { reload: true } });
+      // }, 2000);
     } catch (error) {
       // console.log(error);
       // console.log(Object.keys(error));
@@ -222,78 +363,6 @@ function RegisterName(props) {
       else {
         setErrorMessage("An error occurred while processing your transaction");
       }
-      // switch (error.code) {
-      //   case "ACTION_REJECTED":
-      //     setErrorMessage(
-      //       "The user rejected the action, such as signing a message or sending a transaction."
-      //     );
-      //     break;
-      //   case "INSUFFICIENT_FUNDS":
-      //     setErrorMessage("Insufficient funds to cover the transaction.");
-      //     break;
-      //   case "NONCE_EXPIRED":
-      //     setErrorMessage("Nonce has already been used.");
-      //     break;
-      //   case "REPLACEMENT_UNDERPRICED":
-      //     setErrorMessage(
-      //       "The replacement fee for the transaction is too low."
-      //     );
-      //     break;
-      //   case "UNPREDICTABLE_GAS_LIMIT":
-      //     setErrorMessage("The gas limit could not be estimated.");
-      //     break;
-      //   case "TRANSACTION_REPLACED":
-      //     setErrorMessage(
-      //       "The transaction was replaced by one with a higher gas price."
-      //     );
-      //     break;
-      //   case "BUFFER_OVERRUN":
-      //     setErrorMessage("Buffer overrun error.");
-      //     break;
-      //   case "NUMERIC_FAULT":
-      //     setErrorMessage("Numeric fault error.");
-      //     break;
-      //   case "MISSING_NEW":
-      //     setErrorMessage("Missing new operator to an object.");
-      //     break;
-      //   case "INVALID_ARGUMENT":
-      //     setErrorMessage("Invalid argument.");
-      //     break;
-      //   case "MISSING_ARGUMENT":
-      //     setErrorMessage("Missing argument to a function.");
-      //     break;
-      //   case "UNEXPECTED_ARGUMENT":
-      //     setErrorMessage("Too many arguments.");
-      //     break;
-      //   case "CALL_EXCEPTION":
-      //     setErrorMessage("Call exception error.");
-      //     break;
-      //   case "NETWORK_ERROR":
-      //     setErrorMessage(
-      //       "Network error. Please ensure you are connected to the Ethereum network."
-      //     );
-      //     break;
-      //   case "SERVER_ERROR":
-      //     setErrorMessage("Server error. Please try again later.");
-      //     break;
-      //   case "TIMEOUT":
-      //     setErrorMessage("Timeout error. Please try again later.");
-      //     break;
-      //   case "UNKNOWN_ERROR":
-      //     setErrorMessage("Unknown error occurred. Please try again later.");
-      //     break;
-      //   case "NOT_IMPLEMENTED":
-      //     setErrorMessage("This feature is not implemented yet.");
-      //     break;
-      //   case "UNSUPPORTED_OPERATION":
-      //     setErrorMessage("Unsupported operation error.");
-      //     break;
-      //   default:
-      //     setErrorMessage(
-      //       `An error occurred while processing your transaction: ${error.message}`
-      //     );
-      //     break;
-      // }
       props.setNameRegistered(false);
       // setErrorMessage(error.message);
     }
@@ -315,6 +384,7 @@ function RegisterName(props) {
       setIsVip(false);
     }
   };
+
   return (
     <div>
       <div className="home-main">
@@ -340,7 +410,7 @@ function RegisterName(props) {
             start growing today
           </h1>
           <p>
-            The mainnet of Mode iss now live, offering a platform where user
+            The mainnet of Mode is now live, offering a platform where user
             growth and development are intertwined with the project's success.
             It features a unique reward system that benefits users, builders,
             and protocol participants through lifetime rewards, referral fees,
@@ -364,6 +434,7 @@ function RegisterName(props) {
               setIsVip={setIsVip}
               setIsRegular={setIsRegular}
               setDisableDomainNameType={setDisableDomainNameType}
+              registrationPeriod={registrationPeriod}
             />
           </div>
         </div>
@@ -411,7 +482,7 @@ function RegisterName(props) {
                       </span> */}
                     </p>
                   </div>
-                  <p className="domain-card-sub-item">
+                  {/* <p className="domain-card-sub-item">
                     <label
                       className={disabledomainNameType.vip ? "disabled" : ""}
                     >
@@ -461,7 +532,7 @@ function RegisterName(props) {
                       />
                       Normal
                     </label>
-                  </p>
+                  </p> */}
                   <p className="domain-card-sub-item">
                     Status:
                     <span className="domain-card-sub-item-value">
@@ -491,7 +562,7 @@ function RegisterName(props) {
                       {!loading.cost ? (
                         <span className="domain-name-checking">
                           {domainNamePrice && domainNamePrice !== "N/A"
-                            ? domainNamePrice + " ETH"
+                            ? parseFloat(domainNamePrice.toFixed(7)) + " ETH"
                             : "N/A"}
                         </span>
                       ) : (
@@ -542,13 +613,13 @@ function RegisterName(props) {
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         className={
-                          domainNameAvailability === "Available"
-                            ? "get-domain disabled"
+                          domainNameAvailability === "available"
+                            ? "get-domain"
                             : "get-domain disabled"
                         }
-                        // onClick={() => {
-                        //   openPopup();
-                        // }}
+                        onClick={() => {
+                          openPopup();
+                        }}
                       >
                         Get domain
                       </motion.button>
@@ -565,14 +636,24 @@ function RegisterName(props) {
       <RegistrationPopup
         closePopup={closePopup}
         domainName={domainName}
-        // registrationPeriod={registrationPeriod}
+        registrationPeriod={registrationPeriod}
+        setRegistrationPeriod={setRegistrationPeriod}
         domainNamePrice={domainNamePrice}
         registerName={registerName}
         openConnectModal={openConnectModal}
         errorMessage={errorMessage}
         transactionState={transactionState}
         setHighGasPopup={setHighGasPopup}
+        nameRegistered={props.nameRegistered}
       />
+      {showAfterDomainPurchasedPopup.show ? (
+        <DomainPurchasedPopup
+          setAfterDomainPurchasedPopup={setAfterDomainPurchasedPopup}
+          showAfterDomainPurchasedPopup={showAfterDomainPurchasedPopup}
+          setShowConfetti={props.setShowConfetti}
+          domainName={domainName}
+        />
+      ) : null}
       {highGasPopup ? (
         <InfoPopup
           setHighGasPopup={setHighGasPopup}

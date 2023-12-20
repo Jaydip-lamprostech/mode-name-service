@@ -49,7 +49,7 @@
   background-color: transparent;
   fill: #dffe00;
   border-radius: 100px;
-  padding: 5px;
+  /* padding: 2px; */
 }
 
 .registration_popup_close_icon svg:hover {
@@ -131,8 +131,8 @@
   border: 1px solid rgb(242, 104, 91);
 }
 .field_info > svg {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   background-color: transparent;
   fill: rgb(255, 255, 255, 0.5);
   border-radius: 100px;
@@ -168,7 +168,7 @@
 }
 .registration_period_modification > span > svg {
   fill: #dffe00;
-  padding: 6px;
+  /* padding: 6px; */
 }
 .register {
   cursor: pointer;
@@ -315,7 +315,7 @@
   .registration_field_title .field_title {
     padding: 0px;
     position: relative;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 600;
     line-height: 150%;
     letter-spacing: 0.15px;
@@ -323,7 +323,7 @@
     color: inherit;
     display: inline-block;
     margin-left: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
   }
   .registartion_field_input {
     padding: 10px 15px;
@@ -346,7 +346,7 @@
     font-size: medium;
   }
   .field_info > svg {
-    width: 12px;
-    height: 12px;
+    /* width: 18px;
+    height: 18px; */
   }
 }

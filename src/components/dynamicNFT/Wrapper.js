@@ -131,11 +131,11 @@ const Wrapper = ({
               }`}
               ref={wrapperElementRef}
             >
-              <img
+              {/* <img
                 src={isPremium ? logo_black : logo_yellow}
                 alt=""
                 className="nft_logo"
-              />
+              /> */}
               <p ref={textElementRef} style={{ fontSize: `${fontForName}px` }}>
                 {input ? `${input}.mode` : ".mode"}
               </p>
@@ -163,7 +163,7 @@ const Wrapper = ({
           </div>
         </div>
       ) : null} */}
-      <button onClick={combineAndDownload}>Download</button>
+      {/* <button onClick={combineAndDownload}>Download</button> */}
     </>
   );
 };

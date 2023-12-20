@@ -30,7 +30,7 @@
   font-family: "Chakra Petch", sans-serif;
 }
 .logo > img {
-  /* width: 50px; */
+  width: 200px;
   /* text-decoration: none; */
 }
 
@@ -91,6 +91,9 @@
   display: none;
 }
 @media (max-width: 768px) {
+  .logo > img {
+    width: 160px;
+  }
   .navbar {
     display: flex;
     align-items: center;

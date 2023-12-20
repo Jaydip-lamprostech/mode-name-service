@@ -32,7 +32,22 @@ const modeTestnet = {
     default: { http: ["https://sepolia.mode.network/"] },
   },
 };
-
+const modeMainnet = {
+  id: 34443,
+  name: "Mode",
+  network: "Mode",
+  iconUrl: "https://chainlist.org/unknown-logo.png",
+  iconBackground: "#000",
+  nativeCurrency: {
+    decimals: 18,
+    name: "Mode",
+    symbol: "ETH",
+  },
+  rpcUrls: {
+    public: { http: ["https://mainnet.mode.network/"] },
+    default: { http: ["https://mainnet.mode.network/"] },
+  },
+};
 const { chains, publicClient } = configureChains(
   [modeTestnet],
   [

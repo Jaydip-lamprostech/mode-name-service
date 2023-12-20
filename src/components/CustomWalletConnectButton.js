@@ -3,7 +3,7 @@ import "../styles/CustomWalletConnectButton.css";
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import contract_abi from "../artifacts/contracts/NameRegistry.sol/NameRegistry.json";
+import contract_abi from "../artifacts/contracts/NameRegistry.json";
 import AvatarGenerator from "./AvatarGenerator";
 import { motion } from "framer-motion";
 
@@ -170,9 +170,14 @@ function CustomWalletConnectButton(props) {
                         height={"20px"}
                       />
                       <span className="account-name">
-                        {ModeDomainsResolver
+                        {/* {ModeDomainsResolver
                           ? ModeDomainsResolver
-                          : account.displayName}
+                          : account.displayName} */}{" "}
+                        {address
+                          ? address.slice(0, 4) +
+                            "..." +
+                            address.slice(address.length - 4, address.length)
+                          : ""}
                       </span>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

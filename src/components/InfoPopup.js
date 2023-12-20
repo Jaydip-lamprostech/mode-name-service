@@ -3,9 +3,9 @@ import "../styles/InfoPopup.css";
 
 function InfoPopup(props) {
   return (
-    <div class="popup-overlay">
-      <div class="popup-container">
-        <div class="popup-card">
+    <div className="popup-overlay">
+      <div className="popup-container">
+        <div className="popup-card">
           <h2>High Gas Fees</h2>
           <p>We are fixing the high gas spend issue! 🙈</p>
           <p>Avoid minting till midnight today. 🎊</p>

@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import "../styles/AppNavbar.css";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import logo from "../asset/mode_logo.png";
+import logo from "../asset/ModeDomains_Logo_modified.png";
 import CustomWalletConnectButton from "./CustomWalletConnectButton";
 import NotificationBanner from "./NotificationBanner";
+import { Link } from "react-router-dom";
 
 function AppNavbar(props) {
   const [showMenu, setShowMenu] = useState(false);
@@ -18,12 +19,12 @@ function AppNavbar(props) {
       {" "}
       <div className="navbar-parent">
         <div className="navbar">
-          <a href="/" style={{ textDecoration: "none" }}>
+          <Link to="/" style={{ textDecoration: "none" }}>
             <div className="logo">
               <img src={logo} alt="modedomains logo" />
-              DOMAINS
+              {/* DOMAINS */}
             </div>
-          </a>
+          </Link>
           <div className="mobile-menu-icon close" onClick={toggleMenu}>
             {showMenu ? <FaTimes /> : <FaBars />}
           </div>
@@ -31,9 +32,9 @@ function AppNavbar(props) {
             <a className="nav-link" href="https://docs.modedomains.xyz/">
               Docs
             </a>
-            <a className="nav-link" href="/profile">
+            <Link className="nav-link" to="/profile">
               Profile
-            </a>
+            </Link>
           </div>
           <div className="cta-button">
             {/* <ConnectButton
@@ -57,7 +58,7 @@ function AppNavbar(props) {
           </div>
         </div>
       </div>
-      <NotificationBanner text="Your notification content goes here!" />
+      {/* <NotificationBanner text="Your notification content goes here!" /> */}
     </>
   );
 }

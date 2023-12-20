@@ -1,6 +1,7 @@
 import gsap from "gsap";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import "../styles/InitialLoadingAnimation.css";
+import Cookies from "js-cookie";
 
 function InitialLoadingAnimation() {
   const LoaderRef = useRef();
@@ -48,22 +49,25 @@ function InitialLoadingAnimation() {
       }, delay);
     }
   }, [counter]);
+
   return (
-    <div ref={LoaderRef} className="loaderMain">
-      <h1 className="counter">{counter}</h1>
-      <div className="overlay">
-        <div className="bar"></div>
-        <div className="bar"></div>
-        <div className="bar"></div>
-        <div className="bar"></div>
-        <div className="bar"></div>
-        <div className="bar"></div>
-        <div className="bar"></div>
-        <div className="bar"></div>
-        <div className="bar"></div>
-        <div className="bar"></div>
+    <>
+      <div ref={LoaderRef} className="loaderMain">
+        <h1 className="counter">{counter}</h1>
+        <div className="overlay">
+          <div className="bar"></div>
+          <div className="bar"></div>
+          <div className="bar"></div>
+          <div className="bar"></div>
+          <div className="bar"></div>
+          <div className="bar"></div>
+          <div className="bar"></div>
+          <div className="bar"></div>
+          <div className="bar"></div>
+          <div className="bar"></div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
