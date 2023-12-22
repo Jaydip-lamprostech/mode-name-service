@@ -26,7 +26,7 @@ import keccak256 from "keccak256";
 import Web3 from "web3";
 import axios from "axios";
 import DomainPurchasedPopup from "../components/DomainPurchasedPopup";
-import animationData from "../asset/Animation - 1703236148033.json"; // replace with the path to your animation JSON file
+import animationData from "../asset/Animation - 1703234774069.json"; // replace with the path to your animation JSON file
 
 function RegisterName(props) {
   const web3 = new Web3();
