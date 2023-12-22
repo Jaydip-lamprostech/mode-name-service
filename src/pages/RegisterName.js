@@ -465,7 +465,7 @@ function RegisterName(props) {
                 // }}
               >
                 <div className="result-item-left">
-                  {/* <Wrapper
+                  <Wrapper
                     input={domainName}
                     isPremium={isPremium}
                     setIsPremium={setIsPremium}
@@ -473,7 +473,7 @@ function RegisterName(props) {
                     setIsVip={setIsVip}
                     isRegular={isRegular}
                     setIsRegular={setIsRegular}
-                  /> */}
+                  />
                 </div>
 
                 <div className="result-item-right">
