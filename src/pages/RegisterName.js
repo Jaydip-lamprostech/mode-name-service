@@ -26,6 +26,7 @@ import keccak256 from "keccak256";
 import Web3 from "web3";
 import axios from "axios";
 import DomainPurchasedPopup from "../components/DomainPurchasedPopup";
+import animationData from "../asset/Animation - 1703236148033.json"; // replace with the path to your animation JSON file
 
 function RegisterName(props) {
   const web3 = new Web3();
@@ -245,7 +246,7 @@ function RegisterName(props) {
       const { ethereum } = window; // Ensure that the user is connected to the expected chain
       const provider = new ethers.providers.Web3Provider(ethereum);
       const { chainId } = await provider.getNetwork();
-      if (chainId !== 919) {
+      if (chainId !== 919 && chainId !== 34443) {
         // throw new Error("Please connect to the correct chain.");
         openChainModal();
         setErrorMessage("");
@@ -254,37 +255,40 @@ function RegisterName(props) {
       }
       const signer = provider.getSigner();
 
+      const contractAddress =
+        chainId === 919
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID
+          : chainId === 34443
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID
+          : null;
+
+      const resolverAddress =
+        chainId === 919
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER
+          : chainId === 34443
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER
+          : null;
+
+      const identifier =
+        chainId === 919
+          ? toBigInt(process.env.REACT_APP_IDENTIFIER)
+          : chainId === 34443
+          ? toBigInt(process.env.REACT_APP_IDENTIFIER)
+          : null;
+
       const contract = new ethers.Contract(
-        `${process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID}`,
+        contractAddress,
         // contract_abi.abi,
         registrarController_abi.abi,
         signer
       );
 
       const name = domainName;
-      // console.log(name);
-      const responseUri = metadatau;
-
-      // Remove the "ipfs://" prefix
-      const ipfsPrefix = "ipfs://";
-      // const cid = responseUri.slice(ipfsPrefix.length);
-
-      // Construct the updated URL
-      // const updatedUri = "https://ipfs.io/ipfs/" + cid;
-      // console.log(updatedUri);
-
-      // console.log(registerdomainPriceInWei);
-      // console.log(name);
-      // console.log(updatedUri);
-
-      // const tx = await contract.registerName(name, updatedUri, {
-      //   value: registerdomainPriceInWei,
-      // });
 
       const registrationDuration = 31556952 * registrationPeriod; // 1 year in seconds
 
       const estimatedPriceArray = await contract.rentPrice(
-        toBigInt(process.env.REACT_APP_IDENTIFIER),
+        identifier,
         name, // Replace with a label for your domain
         registrationDuration
       );
@@ -298,20 +302,20 @@ function RegisterName(props) {
       // console.log("Base Price (Wei):", base.toString());
       // console.log("Premium Price (Wei):", premium.toString());
       console.log(
-        toBigInt(process.env.REACT_APP_IDENTIFIER),
+        identifier,
         [name],
         address,
         registrationDuration,
-        process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER,
+        resolverAddress,
         finalPrice
       );
 
       const tx = await contract.bulkRegister(
-        toBigInt(process.env.REACT_APP_IDENTIFIER),
+        identifier,
         [name],
         address,
         registrationDuration,
-        process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER,
+        resolverAddress,
         true,
         [extrData],
         {
@@ -385,6 +389,14 @@ function RegisterName(props) {
     }
   };
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
   return (
     <div>
       <div className="home-main">
@@ -453,7 +465,7 @@ function RegisterName(props) {
                 // }}
               >
                 <div className="result-item-left">
-                  <Wrapper
+                  {/* <Wrapper
                     input={domainName}
                     isPremium={isPremium}
                     setIsPremium={setIsPremium}
@@ -461,7 +473,7 @@ function RegisterName(props) {
                     setIsVip={setIsVip}
                     isRegular={isRegular}
                     setIsRegular={setIsRegular}
-                  />
+                  /> */}
                 </div>
 
                 <div className="result-item-right">
@@ -645,6 +657,7 @@ function RegisterName(props) {
         transactionState={transactionState}
         setHighGasPopup={setHighGasPopup}
         nameRegistered={props.nameRegistered}
+        defaultOptions={defaultOptions}
       />
       {showAfterDomainPurchasedPopup.show ? (
         <DomainPurchasedPopup

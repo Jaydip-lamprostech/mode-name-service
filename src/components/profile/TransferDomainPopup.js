@@ -78,7 +78,7 @@ function TransferDomainPopup(props) {
       console.log(nodehash);
       // const addInBinary = formatsByName["ETH"].decoder(recepientAddress);
       // console.log(addInBinary);
-      const tx = await contract.setAddr(nodehash, 60, recepientAddress);
+      const tx = await contract.setAddr(reverseNode, 60, recepientAddress);
       setTxButtonText("Transferring...");
       await tx.wait();
       setTxErrorMessage();

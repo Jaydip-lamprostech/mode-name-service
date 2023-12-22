@@ -7,6 +7,7 @@ import { toBigInt } from "web3-utils";
 import { ethers } from "ethers";
 import registrarController_abi from "../artifacts/contracts/RegistrarController.json";
 import axios from "axios";
+import Lottie from "react-lottie";
 
 function RegistrationPopup(props) {
   const { address } = useAccount();
@@ -394,6 +395,9 @@ function RegistrationPopup(props) {
                 </div>
               </div>
               <div className="registration_field_item transaction-err">
+                {/* <div style={{ width: "100px", height: "100px" }}>
+                  <Lottie options={props.defaultOptions} />
+                </div> */}
                 {props.errorMessage ? (
                   <div className="registartion_field_input">
                     <p>Error</p>

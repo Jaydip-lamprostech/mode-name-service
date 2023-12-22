@@ -37,15 +37,31 @@ function ExtendExpiryDate(props) {
       const provider = new ethers.providers.JsonRpcProvider(
         "https://sepolia.mode.network/"
       );
+
+      const { chainId } = await provider.getNetwork();
+      const contractAddress =
+        chainId === 919
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID
+          : chainId === 34443
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID
+          : null;
+
+      const identifier =
+        chainId === 919
+          ? toBigInt(process.env.REACT_APP_IDENTIFIER)
+          : chainId === 34443
+          ? toBigInt(process.env.REACT_APP_IDENTIFIER)
+          : null;
+
       const con = new ethers.Contract(
-        `${process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID}`,
+        contractAddress,
         registrarController_abi.abi,
         provider
       );
       const registrationDuration = 31556952 * extendPeriodInYear;
       // const price = await con.getRegistrationPrice(name);
       const estimatedPriceArray = await con.rentPrice(
-        toBigInt(process.env.REACT_APP_IDENTIFIER),
+        identifier,
         name, // Replace with a label for your domain
         registrationDuration
       );
