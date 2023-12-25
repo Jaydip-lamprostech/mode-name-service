@@ -34,21 +34,20 @@
   margin: 50px 0;
   display: flex;
   align-items: center;
-  gap: 50px;
-
-  justify-content: center;
+  gap: 10px;
+  justify-content: flex-start;
+  margin-left: 30%;
 }
 .fifth-item {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-
+  min-width: 30%;
   position: relative;
-  right: 50px;
 }
 .fifth-label {
   font-family: "IBM Plex Sans", sans-serif;
-  font-size: 20px;
+  font-size: 1.8rem;
   font-weight: 300;
   line-height: 26px;
   letter-spacing: 0.08em;
@@ -57,10 +56,11 @@
 }
 .fifth-count {
   font-family: "IBM Plex Sans", sans-serif;
-  font-size: 50px;
+  font-size: 5rem;
   font-weight: 600;
   line-height: 65px;
   letter-spacing: 0.08em;
+  margin-bottom: 15px;
   text-align: left;
   color: #deff02;
 }
@@ -80,7 +80,7 @@
 .fifthsection-i7 {
   width: 30%;
   position: absolute;
-  bottom: -20%;
+  top: -30%;
   right: -10%;
   max-width: 700px;
   z-index: 10;
@@ -103,6 +103,90 @@
   right: -10%;
   z-index: 1000;
 }
+
+/* slider styling */
+.slider-container {
+  width: 80%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Style for the slider */
+.slider {
+  display: flex;
+  transition: transform 0.5s ease-out; /* Adjust transition duration and timing function */
+}
+
+/* Style for the card */
+.card {
+  flex: 0 0 calc(38.333% - 30px);
+  object-fit: contain;
+  /* aspect-ratio: 2/4; */
+  margin: 0 15px;
+  box-sizing: border-box;
+  padding: 10px;
+  transition: all ease;
+  min-height: 400px;
+  border-radius: 20px;
+}
+
+/* Style for the yellow background */
+.card:nth-child(3n + 1) {
+  background-color: yellow;
+  opacity: 1;
+}
+
+/* Style for the white background */
+.card:nth-child(3n + 2) {
+  background-color: white;
+  opacity: 1;
+}
+
+/* Style for the reduced opacity */
+.card:nth-child(3n + 3) {
+  background-color: white;
+  opacity: 0.2;
+}
+
+/* Style for the slider handle */
+.slider-handle {
+  width: 40px; /* Increased width to accommodate the image */
+  height: 40px; /* Set the desired height for the handle */
+  background-color: transparent;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Style for the arrow */
+.arrow {
+  position: absolute;
+  top: 50%;
+  right: 10%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  padding: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 999999px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  border: 1px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.card img {
+  width: 100%;
+  object-fit: contain;
+  max-height: 349px;
+  border-radius: 15px;
+}
+
 @media (max-width: 768px) {
   .fifth-container {
     min-height: max-content;
