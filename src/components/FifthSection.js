@@ -1,9 +1,9 @@
 import React, { useLayoutEffect, useRef, useState } from "react";
 import i8 from "../assets/8.png";
 import i7 from "../assets/7.png";
-import test1 from "../assets/discordimg1.png";
-import test2 from "../assets/discordimg2.png";
-import test3 from "../assets/discordimg3.jpg";
+import test1 from "../assets/testimonial1.jpg";
+import test2 from "../assets/testimonial2.jpg";
+import test3 from "../assets/testimonial3.jpg";
 
 import "../styles/FifthSection.css";
 import gsap from "gsap";
@@ -105,16 +105,33 @@ function FifthSection() {
 
   const updateCardStyles = () => {
     const cards = Array.from(cardsRef.current.children);
+
+    const isMobileScreen = window.innerWidth <= 768;
+
     cards.forEach((card, index) => {
-      if (index % 3 === 0) {
-        card.style.backgroundColor = "yellow";
-        card.style.opacity = 1;
-      } else if (index % 3 === 1) {
-        card.style.backgroundColor = "white";
-        card.style.opacity = 1;
+      if (isMobileScreen) {
+        // For mobile screens, show two cards with different styles
+
+        if (index === 0) {
+          card.style.backgroundColor = "yellow";
+          card.style.opacity = 1;
+        } else if (index === 1) {
+          card.style.backgroundColor = "white";
+          card.style.opacity = 0.2;
+        }
       } else {
-        card.style.backgroundColor = "white";
-        card.style.opacity = 0.2;
+        // For larger screens, apply the existing styles
+
+        if (index % 3 === 0) {
+          card.style.backgroundColor = "yellow";
+          card.style.opacity = 1;
+        } else if (index % 3 === 1) {
+          card.style.backgroundColor = "white";
+          card.style.opacity = 1;
+        } else {
+          card.style.backgroundColor = "white";
+          card.style.opacity = 0.2;
+        }
       }
     });
   };

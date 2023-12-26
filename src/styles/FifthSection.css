@@ -1,6 +1,7 @@
 .fifth-container {
   position: relative;
   min-height: 600px;
+  padding-bottom: 50px;
 }
 .fifth-main {
   width: 50%;
@@ -193,7 +194,7 @@
     margin-top: -10%;
   }
   .fifth-main {
-    padding-bottom: 150px;
+    /* padding-bottom: 150px; */
     padding-top: 150px;
     width: auto;
     max-width: none;
@@ -223,12 +224,15 @@
     margin-left: 00;
     gap: 10px;
     justify-content: center;
+    flex-direction: column;
   }
   .fifth-count {
     font-size: 3rem;
     line-height: 130%;
+    margin-bottom: 0;
   }
   .fifth-label {
+    font-size: 1.5rem;
     width: 100%;
     text-align: center;
   }
@@ -240,5 +244,31 @@
     right: 0;
     justify-content: center;
     text-align: center;
+    margin-bottom: 20px;
+  }
+  .slider-container {
+    width: 95%;
+    margin-left: 5%;
+  }
+  .slider {
+    flex-wrap: nowrap;
+    /* Display cards in a single row */
+  }
+
+  .card {
+    flex: 0 0 calc(75% - 30px); /* Show only two cards in a row */
+    margin: 0 10px;
+    min-height: 200px;
+    margin: 0 5px;
+  }
+
+  /* Adjust other styles as needed for mobile screens */
+  .card:nth-child(3n + 1) {
+    background-color: yellow;
+    opacity: 1;
+  }
+  .card:nth-child(3n + 2) {
+    background-color: white;
+    opacity: 0.2 !important;
   }
 }
