@@ -13,7 +13,7 @@ import Roadmap from "./pages/Roadmap";
 function App() {
   const AppRef = useRef();
   const [loading, setLoading] = useState(true);
-
+  const [displayLoader, setDisplayLoader] = useState(false);
   // useEffect(() => {
   //   // Simulate some asynchronous action, like fetching data
   //   setTimeout(() => {
@@ -67,7 +67,24 @@ function App() {
   //   // clean up function
   //   return () => ctx.revert();
   // }, []);
+  useEffect(() => {
+    // Check if the last display time is stored in localStorage
+    const lastDisplayTime = localStorage.getItem("lastDisplayTime");
 
+    if (!lastDisplayTime || Date.now() - parseInt(lastDisplayTime) > 1500000) {
+      // Display the loader if last display time is not available or more than 15 minutes ago
+      setDisplayLoader(true);
+
+      // Update the last display time in localStorage
+      localStorage.setItem("lastDisplayTime", Date.now().toString());
+    }
+
+    // Additional logic or actions when the component mounts
+
+    return () => {
+      // Additional cleanup logic when the component unmounts
+    };
+  }, []);
   return (
     <div className="App" ref={AppRef}>
       <Router>
@@ -78,7 +95,7 @@ function App() {
         </Routes>
         <Footer />
       </Router>
-      <InitialLoadingAnimation />
+      {displayLoader ? <InitialLoadingAnimation /> : null}
     </div>
   );
 }
