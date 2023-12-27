@@ -31,12 +31,6 @@ function FAQs() {
       answer:
         'Mode Domains is designed for cross-platform accessibility, allowing you to use your ".mode" handle across various devices and within the partner ecosystem platforms for a seamless user experience.',
     },
-    {
-      id: 5,
-      question: 'Can I use my ".mode" handle across different platforms?',
-      answer:
-        'Mode Domains is designed for cross-platform accessibility, allowing you to use your ".mode" handle across various devices and within the partner ecosystem platforms for a seamless user experience.',
-    },
   ];
 
   const faqSectionRef = useRef();
