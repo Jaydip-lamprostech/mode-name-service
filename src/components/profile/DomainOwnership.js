@@ -17,6 +17,7 @@ function DomainOwnership(props) {
       setShowAlternateIcon(false);
     }, 2000); // Adjust the duration as needed (in milliseconds)
   };
+
   return (
     <>
       <div className="profileChildComponent">

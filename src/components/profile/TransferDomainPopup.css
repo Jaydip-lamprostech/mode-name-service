@@ -177,7 +177,15 @@
   /* background-color: #000; */
   fill: #dffe00;
 }
-
+.txStatusParent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 15px 0;
+}
+.txStatusParent svg {
+  width: 30px;
+}
 @media (max-width: 768px) {
   .transferDomains_field_input {
     width: 100%;

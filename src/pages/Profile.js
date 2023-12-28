@@ -42,6 +42,11 @@ function Profile() {
   const [tokenId, setTokenId] = useState(null);
   const [activeItems, setActiveItems] = useState(""); // Track active items for each instance
 
+  //ownership check
+  const [ownerAddress, setOwnerAddress] = useState();
+  const [managerAddress, setManagerAddress] = useState();
+  const [ethRecordAddress, setEthRecordAddress] = useState();
+
   const handleNavbarClick = (instanceId, itemName) => {
     setActiveItems((prevActiveItems) => ({
       ...prevActiveItems,
@@ -204,6 +209,16 @@ function Profile() {
     };
   }, [address, fetchName]);
 
+  const checkOwnerShip = async () => {
+    try {
+      setOwnerAddress("jd676");
+      setManagerAddress("jd676");
+      setEthRecordAddress("jd676");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   if (address)
     return (
       <div className="profile-container">
@@ -289,6 +304,9 @@ function Profile() {
             setTransferDomainPopup={setTransferDomainPopup}
             domainName={domainDetails.domain}
             address={address}
+            ethRecordAddress={ethRecordAddress}
+            managerAddress={managerAddress}
+            ownerAddress={ownerAddress}
           />
         ) : null}
       </div>
