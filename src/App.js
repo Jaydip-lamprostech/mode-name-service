@@ -79,7 +79,8 @@ function App() {
                 }
               />
               <Route path="profile" element={<Profile />} />
-              <Route path="/domain/:domainName" element={<DomainView />} />
+              {/* <Route path="/domain/:domainName" element={<DomainView />} /> */}
+              <Route path="/domain" element={<DomainView />} />
               <Route path="test" element={<Test />} />
               <Route path="/*" element={<RegisterName />} />
             </Routes>

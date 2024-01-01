@@ -10,6 +10,7 @@ import { formatsByName } from "@ensdomains/address-encoder";
 import { ethers } from "ethers";
 import { useAccount } from "wagmi";
 import Web3 from "web3";
+import { getSubnode } from "./ProfileDetails";
 
 function TransferDomainPopup(props) {
   const { address } = useAccount();
@@ -25,30 +26,7 @@ function TransferDomainPopup(props) {
     manager: "pending",
     ethrecord: "pending",
   });
-  const web3 = new Web3();
 
-  const getSubnode = async () => {
-    const node =
-      "0x9217c94fd014da21f5c43a1fcae4154a2bbfce43eb48bb33f7f6473c68ee16b6"; // replace with the actual value of _node
-    // const baseNodeBytes32 = ethers.utils.hexZeroPad(node, 32);
-    const intValue = web3.utils.hexToNumber(node);
-    const label = ethers.utils.keccak256(
-      ethers.utils.toUtf8Bytes(props.domainName)
-    ); // replace with the actual value of _label
-    const labelInt = web3.utils.hexToNumber(label);
-    const subnode = web3.utils.soliditySha3(
-      { t: "uint256", v: intValue },
-      { t: "uint256", v: labelInt }
-    );
-    // const subnode = ethers.utils.solidityPack(
-    //   ["bytes32", "string"],
-    //   [baseNodeBytes32, label]
-    // );
-
-    console.log("subnode ---", subnode);
-
-    return subnode;
-  };
   const transferDomain = async () => {
     setTxErrorMessage();
     setLoading(true);
@@ -96,7 +74,7 @@ function TransferDomainPopup(props) {
       const tokenId = ethers.utils.keccak256(
         ethers.utils.toUtf8Bytes(props.domainName)
       );
-      let subNode = await getSubnode();
+      let subNode = await getSubnode(props.domainName);
       // contract call for changing the ethrecord
       setTransfertxStatus({ ...transfertxStatus, ethrecord: "started" });
       if (address !== props.ethRecordAddress) {

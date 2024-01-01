@@ -1,16 +1,131 @@
 import React, { useState } from "react";
 import ExtendExpiryDate from "./ExtendExpiryDate";
 import { toBigInt } from "web3-utils";
+import { useAccount } from "wagmi";
+import DateComponent from "../DateComponent";
+import DomainInformation from "../DomainInformation";
+import TransferDomainPopup from "./TransferDomainPopup";
+import baseContractABI from "../../artifacts/contracts/Base.json";
+import resolverContractABI from "../../artifacts/contracts/PublicResolver.json";
+import registryResolverContractABI from "../../artifacts/contracts/SidRegistry.json";
+import { useEffect } from "react";
+import { ethers } from "ethers";
+import Web3 from "web3";
 
+const web3 = new Web3();
+export const getSubnode = async (domainName) => {
+  const node =
+    "0x9217c94fd014da21f5c43a1fcae4154a2bbfce43eb48bb33f7f6473c68ee16b6"; // replace with the actual value of _node
+  // const baseNodeBytes32 = ethers.utils.hexZeroPad(node, 32);
+  const intValue = web3.utils.hexToNumber(node);
+  const label = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(domainName)); // replace with the actual value of _label
+  const labelInt = web3.utils.hexToNumber(label);
+  const subnode = web3.utils.soliditySha3(
+    { t: "uint256", v: intValue },
+    { t: "uint256", v: labelInt }
+  );
+  // const subnode = ethers.utils.solidityPack(
+  //   ["bytes32", "string"],
+  //   [baseNodeBytes32, label]
+  // );
+
+  console.log("subnode ---", subnode);
+
+  return subnode;
+};
 function ProfileDetails(props) {
-  let address = props.address ? props.address : "";
+  const { address } = useAccount();
+  const [showTransferDomainPopup, setTransferDomainPopup] = useState(false);
+  const [showExtendPopup, setExtendPopup] = useState(false);
+  const [ownerAddress, setOwnerAddress] = useState();
+  const [managerAddress, setManagerAddress] = useState();
+  const [ethRecordAddress, setEthRecordAddress] = useState();
 
+  const getOwnershipDetails = async () => {
+    try {
+      const domainName = props.domainDetails.name.replace(".mode", "");
+      const { ethereum } = window; // Ensure that the user is connected to the expected chain
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const { chainId } = await provider.getNetwork();
+
+      const signer = provider.getSigner();
+
+      const resolverContractAddress =
+        chainId === 919
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER
+          : chainId === 34443
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER
+          : null;
+
+      const baseContractAddress =
+        chainId === 919
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID_BASE
+          : chainId === 34443
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID_BASE
+          : null;
+
+      const registryContractAddress =
+        chainId === 919
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_REGISTRY
+          : chainId === 34443
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_REGISTRY
+          : null;
+      // const contract = new ethers.Contract(
+      //   process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID_BASE,
+      //   baseContractABI.abi,
+      //   signer
+      // );
+
+      //to find a eth record address of the domain name
+      const resolverContract = new ethers.Contract(
+        resolverContractAddress,
+        resolverContractABI.abi,
+        signer
+      );
+      const node = getSubnode(domainName);
+      const record = await resolverContract.addr(node);
+      console.log("record  - ", record);
+      setEthRecordAddress(record ? record : "");
+
+      // to find resolver and manager address of the domain name
+      const registryResolverContract = new ethers.Contract(
+        registryContractAddress,
+        registryResolverContractABI.abi,
+        signer
+      );
+      const resolver = await registryResolverContract.resolver(node);
+      console.log("resolver - ", resolver);
+      const manager = await registryResolverContract.owner(node);
+      console.log("manager - ", manager);
+
+      //to find a owner of the domain name
+      const baseContract = new ethers.Contract(
+        baseContractAddress,
+        baseContractABI.abi,
+        signer
+      );
+      const tokenId = ethers.utils.keccak256(
+        ethers.utils.toUtf8Bytes(domainName)
+      );
+      const owner = await baseContract.ownerOf(tokenId);
+      console.log("owner - ", owner);
+      setOwnerAddress(owner ? owner : "");
+    } catch (error) {
+      console.log(error);
+    }
+
+    setManagerAddress("jd676");
+  };
+
+  useEffect(() => {
+    getOwnershipDetails();
+  }, []);
   return (
     <>
       <div className="profile-section">
         <img
           className="profile-picture"
-          src={props.modenft}
+          src={props.domainDetails.image}
           alt="mode nft domain name"
         />
         <div className="address-div">
@@ -30,7 +145,7 @@ function ProfileDetails(props) {
         <button
           onClick={() => {
             document.body.classList.add("popup-open");
-            props.setExtendPopup(true);
+            setExtendPopup(true);
           }}
         >
           <svg
@@ -46,7 +161,7 @@ function ProfileDetails(props) {
         <button
           onClick={() => {
             document.body.classList.add("popup-open");
-            props.setTransferDomainPopup(true);
+            setTransferDomainPopup(true);
           }}
         >
           <svg
@@ -79,50 +194,23 @@ function ProfileDetails(props) {
           List Now
         </button>
       </div>
-      <div className="info-section">
-        <div className="info-column">
-          <div className="info_title">Registered Date</div>
-          <div className="info_value_main">
-            {props.domainDetails.registeredDate
-              ? props.domainDetails.registeredDate
-              : "Fetching..."}
-          </div>
-          <div className="info_value_sub">
-            {props.domainDetails.registeredTime
-              ? props.domainDetails.registeredTime
-              : ""}
-          </div>
-        </div>
-        <div className="info-column">
-          <div className="info_title">Expiry Date</div>
-          <div className="info_value_main">
-            {props.domainDetails.expiryDate
-              ? props.domainDetails.expiryDate
-              : "Fetching..."}
-          </div>
-          <div className="info_value_sub">
-            {props.domainDetails.expiryTime
-              ? props.domainDetails.expiryTime
-              : ""}
-          </div>
-        </div>
-        <div className="info-column">
-          <div className="info_title">Last Sale</div>
-          <div className="info_value_main">
-            {props.domainDetails.registeredPrice
-              ? props.domainDetails.registeredPrice
-              : "Fetching..."}
-          </div>
-        </div>
-      </div>
-      {props.showExtendPopup ? (
+      <DomainInformation domainDetails={props.domainDetails} />
+      {showExtendPopup ? (
         <ExtendExpiryDate
-          setExtendPopup={props.setExtendPopup}
-          domainCurrentexpiryDate={props.domainDetails.expiryDate}
-          domainName={props.domainDetails.domain}
-          expiryDateInSec={props.expiryDateInSec}
+          setExtendPopup={setExtendPopup}
+          domainName={props.domainDetails.name.replace(".mode", "")}
+          expiryDateInEpoch={props.expiryDateInEpoch}
         />
       ) : null}
+      {showTransferDomainPopup && (
+        <TransferDomainPopup
+          setTransferDomainPopup={setTransferDomainPopup}
+          address={address}
+          ethRecordAddress={ethRecordAddress}
+          managerAddress={managerAddress}
+          ownerAddress={ownerAddress}
+        />
+      )}
     </>
   );
 }

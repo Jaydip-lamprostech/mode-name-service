@@ -3,10 +3,11 @@ import "./DomainOwnership.css";
 import AvatarGenerator from "../AvatarGenerator";
 import { Tooltip } from "react-tooltip";
 import TransferDomainPopup from "./TransferDomainPopup";
+import DomainInformation from "../DomainInformation";
 
 function DomainOwnership(props) {
   const [showAlternateIcon, setShowAlternateIcon] = useState(false);
-
+  const [showTransferDomainPopup, setTransferDomainPopup] = useState(false);
   let address = props.address;
 
   const handleClick = (text) => {
@@ -183,42 +184,7 @@ function DomainOwnership(props) {
           </button>
         </div>
       </div>
-      <div className="info-section">
-        <div className="info-column">
-          <div className="info_title">Registered Date</div>
-          <div className="info_value_main">
-            {props.domainDetails.registeredDate
-              ? props.domainDetails.registeredDate
-              : "Fetching..."}
-          </div>
-          <div className="info_value_sub">
-            {props.domainDetails.registeredTime
-              ? props.domainDetails.registeredTime
-              : ""}
-          </div>
-        </div>
-        <div className="info-column">
-          <div className="info_title">Expiry Date</div>
-          <div className="info_value_main">
-            {props.domainDetails.expiryDate
-              ? props.domainDetails.expiryDate
-              : "Fetching..."}
-          </div>
-          <div className="info_value_sub">
-            {props.domainDetails.expiryTime
-              ? props.domainDetails.expiryTime
-              : ""}
-          </div>
-        </div>
-        <div className="info-column">
-          <div className="info_title">Last Sale</div>
-          <div className="info_value_main">
-            {props.domainDetails.registeredPrice
-              ? props.domainDetails.registeredPrice
-              : "Fetching..."}
-          </div>
-        </div>
-      </div>
+      <DomainInformation domainDetails={props.domainDetails} />
     </>
   );
 }

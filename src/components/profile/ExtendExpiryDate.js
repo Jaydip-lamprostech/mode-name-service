@@ -14,6 +14,7 @@ function ExtendExpiryDate(props) {
   const { openConnectModal } = useConnectModal();
   const [extendPeriodInYear, setExtendPeriodInYear] = useState(1);
   const [extendCostInEth, setExtendCostInEth] = useState(0);
+  const [domainExtentCostInUSD, setDomainExtentCostInUSD] = useState();
   const [ethPrice, setEthPrice] = useState(0);
   const [newExpiryDate, setnewExpiryDate] = useState(null);
   const [currentExpiryDate, setCurrentExpiryDate] = useState(null);
@@ -77,7 +78,7 @@ function ExtendExpiryDate(props) {
       let x = price / 10 ** 18;
       let priceshort = parseFloat(x.toFixed(5));
       //   console.log(priceshort);
-      setExtendCostInEth(priceshort + " ETH");
+      setExtendCostInEth(priceshort);
       setfetchingValue(false);
       // props.setRegisterdomainPriceInWei(price);
       // const eth = ;
@@ -94,7 +95,7 @@ function ExtendExpiryDate(props) {
       await domainPriceCheck(props.domainName);
     };
     if (props.domainName) {
-      const currentexpDate = new Date(props.expiryDateInSec * 1000);
+      const currentexpDate = new Date(props.expiryDateInEpoch * 1000);
 
       // console.log(expDate);
       const formattedCurrentExpDate = currentexpDate.toLocaleDateString(
@@ -118,7 +119,7 @@ function ExtendExpiryDate(props) {
         `${formattedCurrentExpDate} ${formattedCurrentExpTime}`
       );
       let newExpdate =
-        props.expiryDateInSec + 31556952 * parseInt(extendPeriodInYear);
+        props.expiryDateInEpoch + 31556952 * parseInt(extendPeriodInYear);
       //   console.log(newExpdate);
       const expDate = new Date(newExpdate * 1000);
       let newExpDateUTCString = expDate.toUTCString();
@@ -176,12 +177,14 @@ function ExtendExpiryDate(props) {
     return () => clearInterval(intervalId);
   }, []);
 
-  const calculateValueInUSD = (ethAmount) => {
-    if (ethAmount !== "fetching...")
-      return (parseFloat(ethAmount) * ethPrice).toFixed(4);
-    else return 0;
-  };
-  const domainExtentCostInUSD = calculateValueInUSD(extendCostInEth);
+  useEffect(() => {
+    const calculateValueInUSD = (ethAmount) => {
+      if (ethAmount !== "fetching...")
+        return (parseFloat(ethAmount) * ethPrice).toFixed(4);
+      else return 0;
+    };
+    setDomainExtentCostInUSD(calculateValueInUSD(extendCostInEth));
+  }, [extendCostInEth]);
 
   const extendDomain = async () => {
     setTxErrorMessage();
@@ -443,7 +446,7 @@ function ExtendExpiryDate(props) {
                   <div className="registration_period_modification">
                     <span
                       className={
-                        props.registrationPeriod === 1
+                        extendPeriodInYear === 1
                           ? "period_decrease opacity_low"
                           : "period_decrease"
                       }
@@ -588,7 +591,7 @@ function ExtendExpiryDate(props) {
                 </div>
                 <div className="transferDomains_field_input">
                   <span className="transferDomains_field_input_value">
-                    {fetchingValue ? fetchingValue : extendCostInEth}
+                    {fetchingValue ? fetchingValue : extendCostInEth + " ETH"}
                   </span>
                 </div>
                 <p
@@ -661,6 +664,7 @@ function ExtendExpiryDate(props) {
                 }
                 extendDomain();
               }}
+              disabled={fetchingValue && !extendCostInEth}
             >
               {txButtonText}
               {loading ? (
