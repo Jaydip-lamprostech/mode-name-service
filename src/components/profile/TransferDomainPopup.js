@@ -6,11 +6,15 @@ import { useChainModal } from "@rainbow-me/rainbowkit";
 import baseContractABI from "../../artifacts/contracts/Base.json";
 import resolverContractABI from "../../artifacts/contracts/Resolver.json";
 import reverseRegistrarABI from "../../artifacts/contracts/ReverseRegistrar.json";
+
+import publicResolverContractABI from "../../artifacts/contracts/PublicResolver.json";
+import registryResolverContractABI from "../../artifacts/contracts/SidRegistry.json";
 import { formatsByName } from "@ensdomains/address-encoder";
 import { ethers } from "ethers";
 import { useAccount } from "wagmi";
 import Web3 from "web3";
 import { getSubnode } from "./ProfileDetails";
+import { useEffect } from "react";
 
 function TransferDomainPopup(props) {
   const { address } = useAccount();
@@ -20,6 +24,9 @@ function TransferDomainPopup(props) {
   const [txErrorMessage, setTxErrorMessage] = useState(false);
   const [txSuccessfull, setTxSuccessfull] = useState(false);
   const [recepientAddress, setRecepientAddress] = useState("");
+  const [ownerAddress, setOwnerAddress] = useState();
+  const [managerAddress, setManagerAddress] = useState();
+  const [ethRecordAddress, setEthRecordAddress] = useState();
 
   const [transfertxStatus, setTransfertxStatus] = useState({
     owner: "pending",
@@ -31,6 +38,7 @@ function TransferDomainPopup(props) {
     setTxErrorMessage();
     setLoading(true);
     setTxButtonText("Waiting for the transaction");
+    const domainName = props.domainName.replace(".mode", "");
     try {
       const { ethereum } = window; // Ensure that the user is connected to the expected chain
       const provider = new ethers.providers.Web3Provider(ethereum);
@@ -72,24 +80,36 @@ function TransferDomainPopup(props) {
         signer
       );
       const tokenId = ethers.utils.keccak256(
-        ethers.utils.toUtf8Bytes(props.domainName)
+        ethers.utils.toUtf8Bytes(domainName)
       );
-      let subNode = await getSubnode(props.domainName);
+      let subNode = await getSubnode(domainName);
       // contract call for changing the ethrecord
-      setTransfertxStatus({ ...transfertxStatus, ethrecord: "started" });
-      if (address !== props.ethRecordAddress) {
+      setTransfertxStatus({
+        owner: "pending",
+        ethrecord: "started",
+        manager: "pending",
+      });
+      if (address !== ethRecordAddress) {
         console.log("inside ethrecord");
         const tx = await resolverContract.setAddr(subNode, recepientAddress);
 
         setTxButtonText("Transferring...");
         const data = await tx.wait();
         if (data) {
-          setTransfertxStatus({ ...transfertxStatus, ethrecord: "completed" });
+          setTransfertxStatus({
+            owner: "pending",
+            ethrecord: "completed",
+            manager: "pending",
+          });
         }
       }
-      setTransfertxStatus({ ...transfertxStatus, manager: "started" });
+      setTransfertxStatus({
+        owner: "pending",
+        ethrecord: "completed",
+        manager: "started",
+      });
       // contract call for changing the manager
-      if (address !== props.managerAddress) {
+      if (address !== managerAddress) {
         console.log("inside manager");
         const tx = await baseContract.reclaim(
           toBigInt(tokenId),
@@ -99,12 +119,20 @@ function TransferDomainPopup(props) {
         setTxButtonText("Transferring...");
         const data = await tx.wait();
         if (data) {
-          setTransfertxStatus({ ...transfertxStatus, manager: "completed" });
+          setTransfertxStatus({
+            owner: "pending",
+            ethrecord: "completed",
+            manager: "completed",
+          });
         }
       }
       // contract call for changing the owner
-      setTransfertxStatus({ ...transfertxStatus, owner: "started" });
-      if (address !== props.ownerAddress) {
+      setTransfertxStatus({
+        owner: "started",
+        ethrecord: "completed",
+        manager: "completed",
+      });
+      if (address !== ownerAddress) {
         console.log("inside owner");
         const tx = await baseContract.safeTransferFrom(
           props.address,
@@ -115,7 +143,11 @@ function TransferDomainPopup(props) {
         setTxButtonText("Transferring...");
         const data = await tx.wait();
         if (data) {
-          setTransfertxStatus({ ...transfertxStatus, owner: "completed" });
+          setTransfertxStatus({
+            owner: "completed",
+            ethrecord: "completed",
+            manager: "completed",
+          });
         }
       }
       // const tx = await contract.safeTransferFrom(
@@ -135,7 +167,7 @@ function TransferDomainPopup(props) {
       const nodehash = ethers.utils.keccak256(
         ethers.utils.solidityPack(
           ["bytes32", "string"],
-          [baseNodeBytes32, props.domainName]
+          [baseNodeBytes32, domainName]
         )
       );
       console.log(nodehash);
@@ -169,24 +201,85 @@ function TransferDomainPopup(props) {
     }
   };
 
-  const changeEthRecord = async () => {
+  const getOwnershipDetails = async () => {
     try {
-    } catch (err) {
-      console.log(err);
+      const domainName = props.domainName.replace(".mode", "");
+      const { ethereum } = window; // Ensure that the user is connected to the expected chain
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const { chainId } = await provider.getNetwork();
+
+      const signer = provider.getSigner();
+
+      const resolverContractAddress =
+        chainId === 919
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER
+          : chainId === 34443
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER
+          : null;
+
+      const baseContractAddress =
+        chainId === 919
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID_BASE
+          : chainId === 34443
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID_BASE
+          : null;
+
+      const registryContractAddress =
+        chainId === 919
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_REGISTRY
+          : chainId === 34443
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_REGISTRY
+          : null;
+      // const contract = new ethers.Contract(
+      //   process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID_BASE,
+      //   baseContractABI.abi,
+      //   signer
+      // );
+
+      //to find a eth record address of the domain name
+      const resolverContract = new ethers.Contract(
+        resolverContractAddress,
+        publicResolverContractABI.abi,
+        signer
+      );
+      const node = getSubnode(domainName);
+      const record = await resolverContract.addr(node);
+      console.log("record  - ", record);
+      setEthRecordAddress(record ? record : "");
+
+      // to find resolver and manager address of the domain name
+      const registryResolverContract = new ethers.Contract(
+        registryContractAddress,
+        registryResolverContractABI.abi,
+        signer
+      );
+      const resolver = await registryResolverContract.resolver(node);
+      console.log("resolver - ", resolver);
+      const manager = await registryResolverContract.owner(node);
+      console.log("manager - ", manager);
+
+      //to find a owner of the domain name
+      const baseContract = new ethers.Contract(
+        baseContractAddress,
+        baseContractABI.abi,
+        signer
+      );
+      const tokenId = ethers.utils.keccak256(
+        ethers.utils.toUtf8Bytes(domainName)
+      );
+      const owner = await baseContract.ownerOf(tokenId);
+      console.log("owner - ", owner);
+      setOwnerAddress(owner ? owner : "");
+    } catch (error) {
+      console.log(error);
     }
+
+    setManagerAddress("jd676");
   };
-  const changeManagerAddress = async () => {
-    try {
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const changeOwnerAddress = async () => {
-    try {
-    } catch (err) {
-      console.log(err);
-    }
-  };
+
+  useEffect(() => {
+    getOwnershipDetails();
+  }, [recepientAddress]);
 
   const renderUpdateSection = (label, condition, status) => {
     return condition ? (
@@ -346,9 +439,7 @@ function TransferDomainPopup(props) {
                   </div>
                   <div className="transferDomains_field_input">
                     <span className="transferDomains_field_input_value">
-                      {props.domainName
-                        ? props.domainName + ".mode"
-                        : "Fetching..."}
+                      {props.domainName ? props.domainName : ""}
                     </span>
                   </div>
                 </div>
@@ -518,17 +609,17 @@ function TransferDomainPopup(props) {
                       <>
                         {renderUpdateSection(
                           "Update Eth Record",
-                          recepientAddress !== props.ethRecordAddress,
+                          recepientAddress !== ethRecordAddress,
                           transfertxStatus.ethrecord
                         )}
                         {renderUpdateSection(
                           "Update Manager",
-                          recepientAddress !== props.managerAddress,
+                          recepientAddress !== managerAddress,
                           transfertxStatus.manager
                         )}
                         {renderUpdateSection(
                           "Update Owner",
-                          recepientAddress !== props.ownerAddress,
+                          recepientAddress !== ownerAddress,
                           transfertxStatus.owner
                         )}
                       </>

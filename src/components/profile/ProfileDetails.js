@@ -120,6 +120,7 @@ function ProfileDetails(props) {
   useEffect(() => {
     getOwnershipDetails();
   }, []);
+
   return (
     <>
       <div className="profile-section">
@@ -205,10 +206,8 @@ function ProfileDetails(props) {
       {showTransferDomainPopup && (
         <TransferDomainPopup
           setTransferDomainPopup={setTransferDomainPopup}
+          domainName={props.domainDetails.name}
           address={address}
-          ethRecordAddress={ethRecordAddress}
-          managerAddress={managerAddress}
-          ownerAddress={ownerAddress}
         />
       )}
     </>

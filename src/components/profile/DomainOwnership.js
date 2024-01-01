@@ -3,11 +3,16 @@ import "./DomainOwnership.css";
 import AvatarGenerator from "../AvatarGenerator";
 import { Tooltip } from "react-tooltip";
 import TransferDomainPopup from "./TransferDomainPopup";
+
 import DomainInformation from "../DomainInformation";
+import { ethers } from "ethers";
+import { getSubnode } from "./ProfileDetails";
+import { useEffect } from "react";
 
 function DomainOwnership(props) {
   const [showAlternateIcon, setShowAlternateIcon] = useState(false);
   const [showTransferDomainPopup, setTransferDomainPopup] = useState(false);
+
   let address = props.address;
 
   const handleClick = (text) => {
@@ -169,7 +174,7 @@ function DomainOwnership(props) {
           <button
             onClick={() => {
               document.body.classList.add("popup-open");
-              props.setTransferDomainPopup(true);
+              setTransferDomainPopup(true);
             }}
           >
             <svg
@@ -185,6 +190,12 @@ function DomainOwnership(props) {
         </div>
       </div>
       <DomainInformation domainDetails={props.domainDetails} />
+      {showTransferDomainPopup && (
+        <TransferDomainPopup
+          setTransferDomainPopup={setTransferDomainPopup}
+          address={address}
+        />
+      )}
     </>
   );
 }
