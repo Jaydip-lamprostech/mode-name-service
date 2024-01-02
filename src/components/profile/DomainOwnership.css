@@ -71,6 +71,7 @@
 .domainownership-item-left > svg {
   fill: rgba(255, 255, 255, 0.2);
   margin-left: 10px;
+  width: 1rem;
 }
 .domainownership-list-address {
   margin-left: 10px;
@@ -82,20 +83,19 @@
 
 .domainownership-item-right {
   color: #ffffff80;
-  font-size: large;
+  font-size: 14px;
   font-weight: 500;
   font-family: "IBM Plex Sans", sans-serif;
-  /* border: 1px solid #ffffff80; */
-  padding: 4px 8px;
-  border-radius: 4px;
+  text-transform: capitalize;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
 }
-.domainownership-item-right > svg {
-  fill: #ffffff80;
-  margin-left: 4px;
-  width: 20px;
+.domainownership-item-right span {
+  border: 1px solid #ffffff80;
+  padding: 4px 8px;
+  border-radius: 4px;
 }
 
 @media (max-width: 768px) {
@@ -104,15 +104,21 @@
   }
   .domainownership-list-item {
     padding: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
   }
   .domainownership-list-address {
-    font-size: 14px;
+    font-size: 1rem;
   }
   .domainownership-item-left > svg {
     width: 16px;
   }
   .domainownership-item-right {
     font-size: 12px;
+  }
+  .domainownership-item-right span {
+    padding: 2px 4px;
   }
   .domainTranferButton > button {
     padding: 5px 10px;

@@ -126,7 +126,6 @@ function ExtendExpiryDate(props) {
       //   console.log(newExpdate);
       const expDate = new Date(newExpdate * 1000);
       let newExpDateUTCString = expDate.toUTCString();
-      console.log(newExpDateUTCString);
       // console.log(expDate);
       const formattedExpDate = expDate.toLocaleDateString("en-US", {
         // weekday: "long",
@@ -309,8 +308,8 @@ function ExtendExpiryDate(props) {
                   </span>
                   <span
                     className="transferDomain_field_info"
-                    data-tooltip-id="domain_name"
-                    data-tooltip-content="The domain name which will be transfered to the recipient."
+                    data-tooltip-id="extend_tooltip"
+                    data-tooltip-content="The domain name whose expiry date will be extended."
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -339,7 +338,7 @@ function ExtendExpiryDate(props) {
                     </svg>
                   </span>
                   <Tooltip
-                    id="domain_name"
+                    id="extend_tooltip"
                     removeStyle
                     style={{
                       maxWidth: "200px",
@@ -362,8 +361,8 @@ function ExtendExpiryDate(props) {
                   </span>
                   <span
                     className="transferDomain_field_info"
-                    data-tooltip-id="recipient_address"
-                    data-tooltip-content="The one who will be the owner of this domain name."
+                    data-tooltip-id="extend_tooltip"
+                    data-tooltip-content="The current expiry date of the domain."
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -391,15 +390,6 @@ function ExtendExpiryDate(props) {
                       </g>
                     </svg>
                   </span>
-                  <Tooltip
-                    id="recipient_address"
-                    removeStyle
-                    style={{
-                      maxWidth: "200px",
-                      wordBreak: "break-word",
-                      fontFamily: "Inter, sans-serif",
-                    }}
-                  />
                 </div>
                 <div className="transferDomains_field_input">
                   {currentExpiryDate}
@@ -412,8 +402,8 @@ function ExtendExpiryDate(props) {
                   </span>
                   <span
                     className="field_info"
-                    data-tooltip-id="registration-period"
-                    data-tooltip-content="The number of years you will have right over this domain"
+                    data-tooltip-id="extend_tooltip"
+                    data-tooltip-content="Choose the number of years you want to extend your registration. This determines the duration of your continued ownership over the domain."
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -441,15 +431,6 @@ function ExtendExpiryDate(props) {
                       </g>
                     </svg>
                   </span>
-                  <Tooltip
-                    id="registration-period"
-                    removeStyle
-                    style={{
-                      maxWidth: "200px",
-                      wordBreak: "break-word",
-                      fontFamily: "IBM Plex Sans, sans-serif",
-                    }}
-                  />
                 </div>
                 <div className="transferDomains_field_input registration_period">
                   <span className="registration_period_time">
@@ -509,13 +490,13 @@ function ExtendExpiryDate(props) {
               <div className="transferDomains_field_item">
                 <div className="transferDomains_field_title">
                   <span className="field_title">
-                    Current Expiry Date
+                    New Expiry Date
                     <span className="transferDomain_field_sub_title"></span>
                   </span>
                   <span
                     className="transferDomain_field_info"
-                    data-tooltip-id="recipient_address"
-                    data-tooltip-content="The one who will be the owner of this domain name."
+                    data-tooltip-id="extend_tooltip"
+                    data-tooltip-content="The updated expiry date for the domain registration. This reflects the new expiration date after extending the registration period."
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -543,15 +524,6 @@ function ExtendExpiryDate(props) {
                       </g>
                     </svg>
                   </span>
-                  <Tooltip
-                    id="recipient_address"
-                    removeStyle
-                    style={{
-                      maxWidth: "200px",
-                      wordBreak: "break-word",
-                      fontFamily: "Inter, sans-serif",
-                    }}
-                  />
                 </div>
                 <div className="transferDomains_field_input">
                   {newExpiryDate}
@@ -562,8 +534,8 @@ function ExtendExpiryDate(props) {
                   <span className="field_title">Extend Cost</span>
                   <span
                     className="transferDomain_field_info"
-                    data-tooltip-id="summary_of_changes"
-                    data-tooltip-content=""
+                    data-tooltip-id="extend_tooltip"
+                    data-tooltip-content="The cost associated with extending the registration period for your domain."
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -591,15 +563,6 @@ function ExtendExpiryDate(props) {
                       </g>
                     </svg>
                   </span>
-                  <Tooltip
-                    id="summary_of_changes"
-                    removeStyle
-                    style={{
-                      maxWidth: "200px",
-                      wordBreak: "break-word",
-                      fontFamily: "Inter, sans-serif",
-                    }}
-                  />
                 </div>
                 <div className="transferDomains_field_input">
                   <span className="transferDomains_field_input_value">

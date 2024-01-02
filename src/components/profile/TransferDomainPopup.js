@@ -405,8 +405,8 @@ function TransferDomainPopup(props) {
                     </span>
                     <span
                       className="transferDomain_field_info"
-                      data-tooltip-id="domain_name"
-                      data-tooltip-content="The domain name which will be transfered to the recipient."
+                      data-tooltip-id="transfer_domain_tooltip"
+                      data-tooltip-content="The specific domain name that will be transferred to the recipient."
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -435,7 +435,7 @@ function TransferDomainPopup(props) {
                       </svg>
                     </span>
                     <Tooltip
-                      id="domain_name"
+                      id="transfer_domain_tooltip"
                       removeStyle
                       style={{
                         maxWidth: "200px",
@@ -458,7 +458,7 @@ function TransferDomainPopup(props) {
                     </span>
                     <span
                       className="transferDomain_field_info"
-                      data-tooltip-id="recipient_address"
+                      data-tooltip-id="transfer_domain_tooltip"
                       data-tooltip-content="Current owner of the domain name."
                     >
                       <svg
@@ -487,15 +487,6 @@ function TransferDomainPopup(props) {
                         </g>
                       </svg>
                     </span>
-                    <Tooltip
-                      id="recipient_address"
-                      removeStyle
-                      style={{
-                        maxWidth: "200px",
-                        wordBreak: "break-word",
-                        fontFamily: "Inter, sans-serif",
-                      }}
-                    />
                   </div>
                   <div className="transferDomains_field_input">
                     {/* {props.address} */}
@@ -515,8 +506,8 @@ function TransferDomainPopup(props) {
                     </span>
                     <span
                       className="transferDomain_field_info"
-                      data-tooltip-id="recipient_address"
-                      data-tooltip-content="The one who will be the owner of this domain name."
+                      data-tooltip-id="transfer_domain_tooltip"
+                      data-tooltip-content="The one who will become the owner of this domain name after the transfer process is completed."
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -544,15 +535,6 @@ function TransferDomainPopup(props) {
                         </g>
                       </svg>
                     </span>
-                    <Tooltip
-                      id="recipient_address"
-                      removeStyle
-                      style={{
-                        maxWidth: "200px",
-                        wordBreak: "break-word",
-                        fontFamily: "Inter, sans-serif",
-                      }}
-                    />
                   </div>
                   <div className="transferDomains_field_input">
                     <input
@@ -573,7 +555,7 @@ function TransferDomainPopup(props) {
                     <span
                       className="transferDomain_field_info"
                       data-tooltip-id="recipient_address"
-                      data-tooltip-content="The one who will be the owner of this domain name."
+                      data-tooltip-content="This section provides an overview of the transaction status related to the domain transfer."
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
