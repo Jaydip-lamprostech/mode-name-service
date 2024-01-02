@@ -36,6 +36,7 @@ const Profile = () => {
         setDomains(data);
       } else {
         setDomainFound(false);
+        setDomains([]);
       }
     } catch (error) {
       console.error("Error fetching data:", error);

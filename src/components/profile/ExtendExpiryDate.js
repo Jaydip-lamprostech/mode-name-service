@@ -6,7 +6,10 @@ import registrarController_abi from "../../artifacts/contracts/RegistrarControll
 import { toBigInt } from "web3-utils";
 import axios from "axios";
 import { useChainModal, useConnectModal } from "@rainbow-me/rainbowkit";
+import animationDataSuccess from "../../asset/Animation - 1703234774069.json";
+import animationDataError from "../../asset/Animation - 1703236148033.json";
 import { useAccount } from "wagmi";
+import Lottie from "react-lottie";
 
 function ExtendExpiryDate(props) {
   const { address } = useAccount();
@@ -265,6 +268,15 @@ function ExtendExpiryDate(props) {
         );
       }
     }
+  };
+
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: txSuccessfull ? animationDataSuccess : animationDataError,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
   };
   return (
     <div className="extend_popup_overlay">
@@ -612,22 +624,33 @@ function ExtendExpiryDate(props) {
           >
             {txErrorMessage ? (
               <div className="registartion_field_input">
-                <p className="error-p">Error</p>
-                <div
-                  className="error-msg"
-                  data-tooltip-id="error-msg"
-                  data-tooltip-content={txErrorMessage.slice(0, 240) + "..."}
-                >
-                  {txErrorMessage}
-                  <Tooltip
-                    id="error-msg"
-                    removeStyle
-                    style={{
-                      maxWidth: "300px",
-                      wordBreak: "break-word",
-                      fontFamily: "Inter, sans-serif",
-                    }}
-                  />
+                <div className="after_tx_msg_parent">
+                  <div className="after_tx_msg_parent_left">
+                    <div style={{ width: "80%" }}>
+                      <Lottie options={defaultOptions} />
+                    </div>
+                  </div>
+                  <div className="after_tx_msg_parent_right">
+                    <p className="error-p">Error</p>
+                    <div
+                      className="error-msg"
+                      data-tooltip-id="error-msg"
+                      data-tooltip-content={
+                        txErrorMessage.slice(0, 240) + "..."
+                      }
+                    >
+                      {txErrorMessage}
+                      <Tooltip
+                        id="error-msg"
+                        removeStyle
+                        style={{
+                          maxWidth: "300px",
+                          wordBreak: "break-word",
+                          fontFamily: "Inter, sans-serif",
+                        }}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             ) : null}
@@ -638,9 +661,18 @@ function ExtendExpiryDate(props) {
               style={{ position: "relative" }}
             >
               <div className="registartion_field_input">
-                <p className="error-p">Transaction Successful</p>
-                <div className="error-msg">
-                  Your transaction has been completed successfully!
+                <div className="after_tx_msg_parent">
+                  <div className="after_tx_msg_parent_left">
+                    <div style={{ width: "100%" }}>
+                      <Lottie options={defaultOptions} />
+                    </div>
+                  </div>
+                  <div className="after_tx_msg_parent_right">
+                    <p className="error-p">Transaction Successful</p>
+                    <div className="error-msg">
+                      Your transaction has been completed successfully!
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

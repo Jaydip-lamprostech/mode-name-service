@@ -113,8 +113,6 @@ function ProfileDetails(props) {
     } catch (error) {
       console.log(error);
     }
-
-    setManagerAddress("jd676");
   };
 
   useEffect(() => {

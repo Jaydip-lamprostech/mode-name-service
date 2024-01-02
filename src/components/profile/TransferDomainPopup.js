@@ -9,15 +9,14 @@ import reverseRegistrarABI from "../../artifacts/contracts/ReverseRegistrar.json
 
 import publicResolverContractABI from "../../artifacts/contracts/PublicResolver.json";
 import registryResolverContractABI from "../../artifacts/contracts/SidRegistry.json";
-import { formatsByName } from "@ensdomains/address-encoder";
 import { ethers } from "ethers";
-import { useAccount } from "wagmi";
-import Web3 from "web3";
 import { getSubnode } from "./ProfileDetails";
 import { useEffect } from "react";
+import animationDataSuccess from "../../asset/Animation - 1703234774069.json";
+import animationDataError from "../../asset/Animation - 1703236148033.json";
+import Lottie from "react-lottie";
 
 function TransferDomainPopup(props) {
-  const { address } = useAccount();
   const { openChainModal } = useChainModal();
   const [loading, setLoading] = useState(false);
   const [txButtonText, setTxButtonText] = useState("Transfer");
@@ -85,11 +84,11 @@ function TransferDomainPopup(props) {
       let subNode = await getSubnode(domainName);
       // contract call for changing the ethrecord
       setTransfertxStatus({
-        owner: "pending",
         ethrecord: "started",
+        owner: "pending",
         manager: "pending",
       });
-      if (address !== ethRecordAddress) {
+      if (recepientAddress !== ethRecordAddress) {
         console.log("inside ethrecord");
         const tx = await resolverContract.setAddr(subNode, recepientAddress);
 
@@ -109,7 +108,7 @@ function TransferDomainPopup(props) {
         manager: "started",
       });
       // contract call for changing the manager
-      if (address !== managerAddress) {
+      if (recepientAddress !== managerAddress) {
         console.log("inside manager");
         const tx = await baseContract.reclaim(
           toBigInt(tokenId),
@@ -132,7 +131,7 @@ function TransferDomainPopup(props) {
         ethrecord: "completed",
         manager: "completed",
       });
-      if (address !== ownerAddress) {
+      if (recepientAddress !== ownerAddress) {
         console.log("inside owner");
         const tx = await baseContract.safeTransferFrom(
           props.address,
@@ -273,8 +272,6 @@ function TransferDomainPopup(props) {
     } catch (error) {
       console.log(error);
     }
-
-    setManagerAddress("jd676");
   };
 
   useEffect(() => {
@@ -366,6 +363,16 @@ function TransferDomainPopup(props) {
       </div>
     ) : null;
   };
+
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: txSuccessfull ? animationDataSuccess : animationDataError,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
   return (
     <div>
       <div className="transfer_popup_overlay">
@@ -626,9 +633,6 @@ function TransferDomainPopup(props) {
                     ) : (
                       "-"
                     )}
-                    <span className="summary-info"></span>
-                    <br />
-                    <span className="summary-info"></span>
                   </div>
                 </div>
               </div>
@@ -639,22 +643,33 @@ function TransferDomainPopup(props) {
             >
               {txErrorMessage ? (
                 <div className="registartion_field_input">
-                  <p className="error-p">Error</p>
-                  <div
-                    className="error-msg"
-                    data-tooltip-id="error-msg"
-                    data-tooltip-content={txErrorMessage.slice(0, 240) + "..."}
-                  >
-                    {txErrorMessage}
-                    <Tooltip
-                      id="error-msg"
-                      removeStyle
-                      style={{
-                        maxWidth: "300px",
-                        wordBreak: "break-word",
-                        fontFamily: "Inter, sans-serif",
-                      }}
-                    />
+                  <div className="after_tx_msg_parent">
+                    <div className="after_tx_msg_parent_left">
+                      <div style={{ width: "80%" }}>
+                        <Lottie options={defaultOptions} />
+                      </div>
+                    </div>
+                    <div className="after_tx_msg_parent_right">
+                      <p className="error-p">Error</p>
+                      <div
+                        className="error-msg"
+                        data-tooltip-id="error-msg"
+                        data-tooltip-content={
+                          txErrorMessage.slice(0, 240) + "..."
+                        }
+                      >
+                        {txErrorMessage}
+                        <Tooltip
+                          id="error-msg"
+                          removeStyle
+                          style={{
+                            maxWidth: "300px",
+                            wordBreak: "break-word",
+                            fontFamily: "Inter, sans-serif",
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               ) : null}
@@ -665,9 +680,18 @@ function TransferDomainPopup(props) {
                 style={{ position: "relative" }}
               >
                 <div className="registartion_field_input">
-                  <p className="error-p">Transaction Successful</p>
-                  <div className="error-msg">
-                    Your transaction has been completed successfully!
+                  <div className="after_tx_msg_parent">
+                    <div className="after_tx_msg_parent_left">
+                      <div style={{ width: "100%" }}>
+                        <Lottie options={defaultOptions} />
+                      </div>
+                    </div>
+                    <div className="after_tx_msg_parent_right">
+                      <p className="error-p">Transaction Successful</p>
+                      <div className="error-msg">
+                        Your transaction has been completed successfully!
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

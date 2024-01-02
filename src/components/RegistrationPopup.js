@@ -395,9 +395,6 @@ function RegistrationPopup(props) {
                 </div>
               </div>
               <div className="registration_field_item transaction-err">
-                {/* <div style={{ width: "100px", height: "100px" }}>
-                  <Lottie options={props.defaultOptions} />
-                </div> */}
                 {props.errorMessage ? (
                   <div className="registartion_field_input">
                     <p>Error</p>

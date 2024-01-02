@@ -186,6 +186,24 @@
 .txStatusParent svg {
   width: 30px;
 }
+
+.after_tx_msg_parent {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.after_tx_msg_parent p.error-p {
+  text-align: left;
+}
+.after_tx_msg_parent_left {
+  width: 20%;
+}
+.after_tx_msg_parent_right {
+  width: 80%;
+  text-align: left;
+}
+
 @media (max-width: 768px) {
   .transferDomains_field_input {
     width: 100%;
@@ -195,5 +213,20 @@
   }
   .transferDomains_field_input > input {
     font-size: 16px;
+  }
+  .after_tx_msg_parent {
+    flex-direction: column;
+  }
+
+  .after_tx_msg_parent p.error-p {
+    text-align: center;
+  }
+  .after_tx_msg_parent_left {
+    width: 25%;
+    margin: 0 auto;
+  }
+  .after_tx_msg_parent_right {
+    width: 100%;
+    text-align: center;
   }
 }

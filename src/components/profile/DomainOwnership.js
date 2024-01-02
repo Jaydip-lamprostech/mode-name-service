@@ -3,13 +3,16 @@ import "./DomainOwnership.css";
 import AvatarGenerator from "../AvatarGenerator";
 import { Tooltip } from "react-tooltip";
 import TransferDomainPopup from "./TransferDomainPopup";
-
+import baseContractABI from "../../artifacts/contracts/Base.json";
+import resolverContractABI from "../../artifacts/contracts/PublicResolver.json";
+import registryResolverContractABI from "../../artifacts/contracts/SidRegistry.json";
 import DomainInformation from "../DomainInformation";
 import { ethers } from "ethers";
 import { getSubnode } from "./ProfileDetails";
 import { useEffect } from "react";
 
 function DomainOwnership(props) {
+  const [ownershipDetails, setOwnershipDetails] = useState({});
   const [showAlternateIcon, setShowAlternateIcon] = useState(false);
   const [showTransferDomainPopup, setTransferDomainPopup] = useState(false);
 
@@ -23,6 +26,86 @@ function DomainOwnership(props) {
       setShowAlternateIcon(false);
     }, 2000); // Adjust the duration as needed (in milliseconds)
   };
+
+  const getOwnershipDetails = async () => {
+    try {
+      const domainName = props.domainDetails.name.replace(".mode", "");
+      const { ethereum } = window; // Ensure that the user is connected to the expected chain
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const { chainId } = await provider.getNetwork();
+
+      const signer = provider.getSigner();
+
+      const resolverContractAddress =
+        chainId === 919
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER
+          : chainId === 34443
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER
+          : null;
+
+      const baseContractAddress =
+        chainId === 919
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID_BASE
+          : chainId === 34443
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID_BASE
+          : null;
+
+      const registryContractAddress =
+        chainId === 919
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_REGISTRY
+          : chainId === 34443
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_REGISTRY
+          : null;
+      // const contract = new ethers.Contract(
+      //   process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID_BASE,
+      //   baseContractABI.abi,
+      //   signer
+      // );
+
+      //to find a eth record address of the domain name
+      const resolverContract = new ethers.Contract(
+        resolverContractAddress,
+        resolverContractABI.abi,
+        signer
+      );
+      const node = getSubnode(domainName);
+      const record = await resolverContract.addr(node);
+
+      // to find resolver and manager address of the domain name
+      const registryResolverContract = new ethers.Contract(
+        registryContractAddress,
+        registryResolverContractABI.abi,
+        signer
+      );
+      const resolver = await registryResolverContract.resolver(node);
+      const manager = await registryResolverContract.owner(node);
+
+      //to find a owner of the domain name
+      const baseContract = new ethers.Contract(
+        baseContractAddress,
+        baseContractABI.abi,
+        signer
+      );
+      const tokenId = ethers.utils.keccak256(
+        ethers.utils.toUtf8Bytes(domainName)
+      );
+      const owner = await baseContract.ownerOf(tokenId);
+      console.log("owner - ", owner);
+
+      setOwnershipDetails({
+        owner,
+        record,
+        manager,
+        resolver,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getOwnershipDetails();
+  }, []);
 
   return (
     <>
@@ -194,6 +277,7 @@ function DomainOwnership(props) {
         <TransferDomainPopup
           setTransferDomainPopup={setTransferDomainPopup}
           address={address}
+          domainName={props.domainDetails.name}
         />
       )}
     </>

@@ -26,7 +26,7 @@ import keccak256 from "keccak256";
 import Web3 from "web3";
 import axios from "axios";
 import DomainPurchasedPopup from "../components/DomainPurchasedPopup";
-import animationData from "../asset/Animation - 1703234774069.json"; // replace with the path to your animation JSON file
+// replace with the path to your animation JSON file
 
 function RegisterName(props) {
   const web3 = new Web3();
@@ -371,32 +371,24 @@ function RegisterName(props) {
       // setErrorMessage(error.message);
     }
   };
-  const handleDomainNameTypeChange = (event) => {
-    let type = event.target.value;
-    if (type === "vip") {
-      setIsVip(true);
-      setIsPremium(false);
-      setIsRegular(false);
-    } else if (type === "premium") {
-      setIsVip(false);
-      setIsPremium(true);
-      setIsRegular(false);
-    } else {
-      console.log("changed to normal");
-      setIsPremium(false);
-      setIsRegular(true);
-      setIsVip(false);
-    }
-  };
+  // const handleDomainNameTypeChange = (event) => {
+  //   let type = event.target.value;
+  //   if (type === "vip") {
+  //     setIsVip(true);
+  //     setIsPremium(false);
+  //     setIsRegular(false);
+  //   } else if (type === "premium") {
+  //     setIsVip(false);
+  //     setIsPremium(true);
+  //     setIsRegular(false);
+  //   } else {
+  //     console.log("changed to normal");
+  //     setIsPremium(false);
+  //     setIsRegular(true);
+  //     setIsVip(false);
+  //   }
+  // };
 
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
   return (
     <div>
       <div className="home-main">
@@ -657,7 +649,6 @@ function RegisterName(props) {
         transactionState={transactionState}
         setHighGasPopup={setHighGasPopup}
         nameRegistered={props.nameRegistered}
-        defaultOptions={defaultOptions}
       />
       {showAfterDomainPurchasedPopup.show ? (
         <DomainPurchasedPopup
