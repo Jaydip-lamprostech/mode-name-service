@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 
-function ProfileDomainNavbar({ onClick }) {
-  const [activeItem, setActiveItem] = useState("Details");
+function ProfileDomainNavbar({ onClick, activeItems }) {
+  const [activeItem, setActiveItem] = useState(
+    activeItems ? activeItems : "Details"
+  );
 
   const handleClick = (itemName) => {
     setActiveItem(itemName);

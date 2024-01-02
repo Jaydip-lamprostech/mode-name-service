@@ -34,6 +34,7 @@ export const getSubnode = async (domainName) => {
   return subnode;
 };
 function ProfileDetails(props) {
+  const [tokenId, settokenId] = useState();
   const { address } = useAccount();
   const [showTransferDomainPopup, setTransferDomainPopup] = useState(false);
   const [showExtendPopup, setExtendPopup] = useState(false);
@@ -107,6 +108,7 @@ function ProfileDetails(props) {
       const tokenId = ethers.utils.keccak256(
         ethers.utils.toUtf8Bytes(domainName)
       );
+      settokenId(tokenId);
       const owner = await baseContract.ownerOf(tokenId);
       console.log("owner - ", owner);
       setOwnerAddress(owner ? owner : "");
@@ -177,7 +179,7 @@ function ProfileDetails(props) {
           onClick={() =>
             window.open(
               `https://sid-marketplace-git-feat-dev-30-space-id.vercel.app/name/7439/${toBigInt(
-                props.tokenId
+                tokenId
               )}`
             )
           }

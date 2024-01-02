@@ -85,6 +85,7 @@ const Profile = () => {
           <AccordionPanel key={index} title={domain.name}>
             <ProfileDomainNavbar
               instanceId={`instance${index}`}
+              activeItems={activeItems[`instance${index}`]}
               onClick={(itemName) =>
                 handleNavbarClick(`instance${index}`, itemName)
               }
