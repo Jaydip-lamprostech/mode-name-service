@@ -13,10 +13,13 @@ import DomainOwnership from "../components/profile/DomainOwnership";
 import ProfileDomainNavbar from "../components/profile/ProfileDomainNavbar";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import TransferDomainPopup from "../components/profile/TransferDomainPopup";
+import resolverContractABI from "../artifacts/contracts/PublicResolver.json";
+import reverseRegistrarABI from "../artifacts/contracts/ReverseRegistrar.json";
+import { ethers } from "ethers";
 
 const Profile = () => {
   const { address } = useAccount();
-
+  const [primaryDomain, setPrimaryDomain] = useState(null);
   const [domains, setDomains] = useState([]);
   const [loading, setLoading] = useState(true);
   const [domainFound, setDomainFound] = useState(true);
@@ -46,8 +49,56 @@ const Profile = () => {
     }
   }, [address]);
 
+  const getPrimaryName = async () => {
+    try {
+      const { ethereum } = window; // Ensure that the user is connected to the expected chain
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const { chainId } = await provider.getNetwork();
+
+      const signer = provider.getSigner();
+
+      const resolverContractAddress =
+        chainId === 919
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER
+          : chainId === 34443
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER
+          : null;
+
+      const reverseRegistrarContractAddress =
+        chainId === 919
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_REVERSE_REGISTRAR
+          : chainId === 34443
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_REVERSE_REGISTRAR
+          : null;
+
+      const resolverContract = new ethers.Contract(
+        resolverContractAddress,
+        resolverContractABI.abi,
+        signer
+      );
+
+      const reverseRegistrarContract = new ethers.Contract(
+        reverseRegistrarContractAddress,
+        reverseRegistrarABI.abi,
+        signer
+      );
+
+      const reverseNode = await reverseRegistrarContract.node(address);
+
+      // console.log(reverseNode);
+      const primaryName = await resolverContract.name(reverseNode);
+      console.log(primaryName);
+
+      return primaryName;
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     if (address) {
+      getPrimaryName().then((primaryName) => {
+        setPrimaryDomain(primaryName);
+      });
       fetchData();
     }
   }, [address, fetchData]);

@@ -17,7 +17,7 @@
   justify-content: flex-end;
   align-items: center;
 }
-.domainTranferButton > button {
+.domainTranferButton button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,13 +32,35 @@
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.5s ease;
+  margin-left: 10px;
 }
-.domainTranferButton > button > svg {
+.editRolesbtn button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  font-weight: 600;
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 1rem;
+  padding: 0.5rem 1.5rem;
+  background-color: #e0fe0010;
+  border: 1px solid white;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+.domainTranferButton > button > svg,
+.editRolesbtn button > svg {
   margin-right: 4px;
   width: 18px;
   fill: black;
 }
-.domainTranferButton > button:hover {
+.editRolesbtn button > svg {
+  fill: white;
+}
+.domainTranferButton > button:hover,
+.editRolesbtn button:hover {
   transform: translateY(-4px);
 }
 
@@ -90,14 +112,28 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 15px;
 }
 .domainownership-item-right span {
   border: 1px solid #ffffff80;
   padding: 4px 8px;
   border-radius: 4px;
 }
+.domainownership-item-right span:hover {
+  border-color: white;
+  color: white;
+}
 
+.editRolesNavbar {
+  width: 100%;
+  margin-top: 30px;
+  max-width: unset;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+}
+.editRolesNavbar li {
+  font-size: 1rem;
+}
 @media (max-width: 768px) {
   .DomainOwnershipRolesTitle > span {
     font-size: 1.5rem;

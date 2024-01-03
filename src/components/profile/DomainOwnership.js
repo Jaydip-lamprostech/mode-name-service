@@ -11,6 +11,7 @@ import { ethers } from "ethers";
 import { getSubnode } from "./ProfileDetails";
 import { useEffect } from "react";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import EditRolesForDomain from "./EditRolesForDomain";
 
 function DomainOwnership(props) {
   const [ownershipDetails, setOwnershipDetails] = useState({});
@@ -18,6 +19,7 @@ function DomainOwnership(props) {
   const [selectedItem, setSelectedItem] = useState(null);
   const [showAlternateIcon, setShowAlternateIcon] = useState(false);
   const [showTransferDomainPopup, setTransferDomainPopup] = useState(false);
+  const [showEditRolesPopup, setEditRolesPopup] = useState(false);
 
   const handleClick = (text, index) => {
     navigator.clipboard.writeText(text);
@@ -137,6 +139,7 @@ function DomainOwnership(props) {
         return "Default tooltip content.";
     }
   };
+
   return (
     <>
       <div className="profileChildComponent">
@@ -221,6 +224,26 @@ function DomainOwnership(props) {
           )}
         </ul>
         <div className="domainTranferButton">
+          <div className="editRolesbtn">
+            <button
+              onClick={() => {
+                document.body.classList.add("popup-open");
+                setEditRolesPopup(true);
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 0 24 24"
+                width="24px"
+                fill="#000000"
+              >
+                <path d="M0 0h24v24H0V0z" fill="none" />
+                <path d="M3 17.46v3.04c0 .28.22.5.5.5h3.04c.13 0 .26-.05.35-.15L17.81 9.94l-3.75-3.75L3.15 17.1c-.1.1-.15.22-.15.36zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+              </svg>
+              Edit Roles
+            </button>
+          </div>
           <button
             onClick={() => {
               document.body.classList.add("popup-open");
@@ -243,6 +266,13 @@ function DomainOwnership(props) {
       {showTransferDomainPopup && (
         <TransferDomainPopup
           setTransferDomainPopup={setTransferDomainPopup}
+          address={props.address}
+          domainName={props.domainDetails.name}
+        />
+      )}
+      {showEditRolesPopup && (
+        <EditRolesForDomain
+          setEditRolesPopup={setEditRolesPopup}
           address={props.address}
           domainName={props.domainDetails.name}
         />
