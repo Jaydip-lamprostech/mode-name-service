@@ -2,17 +2,27 @@ import React, { useState } from "react";
 import downArrowIcon from "../../asset/images/down-arrow.svg";
 import upArrowIcon from "../../asset/images/up-arrow.svg";
 
-const AccordionPanel = ({ title, children }) => {
+const AccordionPanel = ({ title, children, isPrimary }) => {
   const [isOpen, setIsOpen] = useState(false);
+  console.log(isPrimary);
 
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
   };
 
   return (
-    <div className={`accordion-panel ${isOpen ? "open" : ""}`}>
+    <div
+      className={`accordion-panel ${isOpen ? "open" : ""} ${
+        isPrimary ? "primaryBorder" : ""
+      }`}
+    >
       <div className="accordion-header" onClick={toggleAccordion}>
-        <span>{title}</span>
+        <div className="accordion-title-primary">
+          <span className="accordion-title">{title}</span>
+          {isPrimary ? (
+            <span className="isPrimaryDomain">Primary Domain</span>
+          ) : null}
+        </div>
         {isOpen ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"

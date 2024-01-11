@@ -384,7 +384,7 @@ function EditRolesForDomain(props) {
                 <div className="transferDomains_field_item">
                   <div className="transferDomains_field_title">
                     <span className="field_title">
-                      Recipient Address
+                      New Address
                       <span className="transferDomain_field_sub_title"></span>
                     </span>
                     <span

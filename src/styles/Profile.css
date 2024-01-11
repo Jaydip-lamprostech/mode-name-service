@@ -250,7 +250,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin: 20px 0;
+  margin: 20px 16px;
 }
 .domainActionButtons > button {
   padding: 0.5rem 1.5rem;
@@ -343,6 +343,7 @@
   }
   .domainActionButtons {
     justify-content: center;
+    margin: 20px 0;
   }
   .domainActionButtons > button {
     padding: 5px 10px;

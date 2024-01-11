@@ -24,6 +24,9 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [domainFound, setDomainFound] = useState(true);
 
+  //if the primary name can be fetched separately
+  const [isPrimaryDomain, setIsPrimaryDomain] = useState("");
+
   const [activeItems, setActiveItems] = useState("");
 
   const fetchData = useCallback(async () => {
@@ -37,6 +40,7 @@ const Profile = () => {
       if (data && data.length > 0) {
         setDomainFound(true);
         setDomains(data);
+        setIsPrimaryDomain("raj.mode");
       } else {
         setDomainFound(false);
         setDomains([]);
@@ -133,7 +137,11 @@ const Profile = () => {
         </SkeletonTheme>
       ) : domainFound && domains.length > 0 ? (
         domains.map((domain, index) => (
-          <AccordionPanel key={index} title={domain.name}>
+          <AccordionPanel
+            key={index}
+            title={domain.name}
+            isPrimary={domain.name === isPrimaryDomain}
+          >
             <ProfileDomainNavbar
               instanceId={`instance${index}`}
               activeItems={activeItems[`instance${index}`]}
@@ -152,6 +160,7 @@ const Profile = () => {
                     (attr) => attr.trait_type === "Expiration Date"
                   )?.value
                 }
+                isNotPrimaryDomain={domain.name !== isPrimaryDomain}
               />
             ) : activeItems[`instance${index}`] === "Ownership" ? (
               <DomainOwnership address={address} domainDetails={domain} />
