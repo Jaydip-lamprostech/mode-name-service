@@ -6,7 +6,9 @@ import base_abi from "../artifacts/contracts/Base.json";
 import { ethers } from "ethers";
 import { toBigInt } from "web3-utils";
 import { validate } from "@ensdomains/ens-validation";
+import { useNetwork } from "wagmi";
 function SearchQuery(props) {
+  const { chain } = useNetwork();
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
@@ -171,17 +173,35 @@ function SearchQuery(props) {
   const getName = async (name) => {
     //contract code starts here...............................
     try {
-      const provider = new ethers.providers.JsonRpcProvider(
-        "https://sepolia.mode.network/"
-      );
+      const rpcUrl =
+        chain.id === 919
+          ? "https://sepolia.mode.network/"
+          : chain.id === 34443
+          ? "https://mainnet.mode.network"
+          : null;
+
+      const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+
+      const contractAddress =
+        chain.id === 919
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID
+          : chain.id === 34443
+          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_SPACEID
+          : null;
+
       const con = new ethers.Contract(
-        `${process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID}`,
+        contractAddress,
         registrarController_abi.abi,
         provider
       );
-
+      const identifier =
+        chain.id === 919
+          ? toBigInt(process.env.REACT_APP_IDENTIFIER)
+          : chain.id === 34443
+          ? toBigInt(process.env.REACT_APP_MAINNET_IDENTIFIER)
+          : null;
       const available = await con.available(
-        toBigInt(process.env.REACT_APP_IDENTIFIER),
+        identifier,
         name // Replace with a label for your domain
       );
       console.log(available);
@@ -267,11 +287,18 @@ function SearchQuery(props) {
   // };
 
   const expiryCheck = async (name) => {
-    const provider = new ethers.providers.JsonRpcProvider(
-      "https://sepolia.mode.network/"
-    );
+    const { ethereum } = window; // Ensure that the user is connected to the expected chain
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const { chainId } = await provider.getNetwork();
+    const baseContractAddress =
+      chainId === 919
+        ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID_BASE
+        : chainId === 34443
+        ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_SPACEID_BASE
+        : null;
+
     const con = new ethers.Contract(
-      `${process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID_BASE}`,
+      baseContractAddress,
       base_abi.abi,
       provider
     );
@@ -309,19 +336,39 @@ function SearchQuery(props) {
   };
   const domainPriceCheck = async (name) => {
     try {
-      const provider = new ethers.providers.JsonRpcProvider(
-        "https://sepolia.mode.network/"
-      );
+      const rpcUrl =
+        chain.id === 919
+          ? "https://sepolia.mode.network/"
+          : chain.id === 34443
+          ? "https://mainnet.mode.network"
+          : null;
+
+      const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+
+      const contractAddress =
+        chain.id === 919
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID
+          : chain.id === 34443
+          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_SPACEID
+          : null;
+
       const con = new ethers.Contract(
-        `${process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID}`,
+        contractAddress,
         registrarController_abi.abi,
         provider
       );
       const registrationDuration = 31556952 * props.registrationPeriod;
       console.log(props.registrationPeriod);
       // const price = await con.getRegistrationPrice(name);
+      const identifier =
+        chain.id === 919
+          ? toBigInt(process.env.REACT_APP_IDENTIFIER)
+          : chain.id === 34443
+          ? toBigInt(process.env.REACT_APP_MAINNET_IDENTIFIER)
+          : null;
+
       const estimatedPriceArray = await con.rentPrice(
-        toBigInt(process.env.REACT_APP_IDENTIFIER),
+        identifier,
         name, // Replace with a label for your domain
         registrationDuration
       );

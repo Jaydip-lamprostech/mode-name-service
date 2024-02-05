@@ -49,7 +49,7 @@ const modeMainnet = {
   },
 };
 const { chains, publicClient } = configureChains(
-  [modeTestnet],
+  [modeMainnet, modeTestnet],
   [
     alchemyProvider({ apiKey: process.env.REACT_APP_ALCHEMY_ID }),
     publicProvider(),

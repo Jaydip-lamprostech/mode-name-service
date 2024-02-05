@@ -30,11 +30,15 @@ function DomainPurchasedPopup(props) {
   //     tweetContent
   //   )}`;
 
-  const tweetContent = `Just minted my one-of-a-kind '.mode' handle! Be a part of the Onchain Cooperative – mint yours today! Go to ${"https://app.modedomains.xyz/"}`;
-  const twitterUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(
+  // const tweetContent = `Just minted my one-of-a-kind '.mode' handle! Be a part of the Onchain Cooperative – mint yours today! Go to ${"https://app.modedomains.xyz/"}`;
+  // const twitterUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(
+  //   tweetContent
+  // )}&url=${encodeURIComponent(
+  //   "https://pbs.twimg.com/media/GByHTa1WIAAXfrX?format=png&name=small"
+  // )}`;
+  const tweetContent = `Just minted my one-of-a-kind '.mode' handle! @Mode_Domains\nBe a part of the Onchain Cooperative – mint yours today!\nGo to https://app.modedomains.xyz/`;
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
     tweetContent
-  )}&url=${encodeURIComponent(
-    "https://pbs.twimg.com/media/GByHTa1WIAAXfrX?format=png&name=small"
   )}`;
 
   const handleTweetClick = () => {

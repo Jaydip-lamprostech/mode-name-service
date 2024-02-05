@@ -20,7 +20,7 @@ function DomainInformation(props) {
         chainId === 919
           ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID_BASE
           : chainId === 34443
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID_BASE
+          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_SPACEID_BASE
           : null;
       //to find a owner of the domain name
       const baseContract = new ethers.Contract(

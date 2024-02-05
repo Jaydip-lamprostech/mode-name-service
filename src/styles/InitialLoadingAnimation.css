@@ -36,3 +36,7 @@
   padding: 0.2em 0.4em;
   font-size: 20vw;
 }
+
+.infoPoup {
+  display: none;
+}

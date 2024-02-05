@@ -26,6 +26,7 @@ import keccak256 from "keccak256";
 import Web3 from "web3";
 import axios from "axios";
 import DomainPurchasedPopup from "../components/DomainPurchasedPopup";
+import Info2Popup from "../components/Info2Popup";
 // replace with the path to your animation JSON file
 
 function RegisterName(props) {
@@ -49,6 +50,7 @@ function RegisterName(props) {
   const [isPremium, setIsPremium] = useState(false);
   const [isVip, setIsVip] = useState(false);
   const [isRegular, setIsRegular] = useState(false);
+  const [showSecondInfoPopup, setSecondInfoPopup] = useState(false);
 
   const [disabledomainNameType, setDisableDomainNameType] = useState({
     vip: false,
@@ -88,6 +90,11 @@ function RegisterName(props) {
     document.body.classList.remove("popup-open");
     // window.location.reload();
   };
+  useEffect(() => {
+    setTimeout(() => {
+      setSecondInfoPopup(true);
+    }, 3000);
+  }, []);
 
   const redirectToUserProfile = () => {
     navigate(`domain/${domainName}`, {
@@ -151,76 +158,87 @@ function RegisterName(props) {
     }
   };
   const getExtraData = async (address) => {
+    setExtrData();
     try {
-      const priceHookTreeData = testNetTreeData;
-      const leafNodes = priceHookTreeData.leaves.map((leaf) =>
-        Buffer.from(leaf, "hex")
-      );
+      const { ethereum } = window; // Ensure that the user is connected to the expected chain
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const { chainId } = await provider.getNetwork();
+      if (chainId === 919) {
+        const priceHookTreeData = testNetTreeData;
+        const leafNodes = priceHookTreeData.leaves.map((leaf) =>
+          Buffer.from(leaf, "hex")
+        );
 
-      // Reconstruct the Merkle tree
-      const priceHookMerkleTree = new MerkleTree(leafNodes, keccak256, {
-        sortLeaves: true,
-        sortPairs: true,
-      });
+        // Reconstruct the Merkle tree
+        const priceHookMerkleTree = new MerkleTree(leafNodes, keccak256, {
+          sortLeaves: true,
+          sortPairs: true,
+        });
 
-      // Get the Merkle proof for the specified address
-      const priceHookArray = priceHookMerkleTree.getHexProof(
-        keccak256(address)
-      );
+        // Get the Merkle proof for the specified address
+        const priceHookArray = priceHookMerkleTree.getHexProof(
+          keccak256(address)
+        );
 
-      // Encode parameters for extraData
-      const PriceHookExtraData = web3.eth.abi.encodeParameters(
-        ["bytes32[] merkleProof"],
-        [priceHookArray]
-      );
+        // Encode parameters for extraData
+        const PriceHookExtraData = web3.eth.abi.encodeParameters(
+          ["bytes32[] merkleProof"],
+          [priceHookArray]
+        );
 
-      // Construct the complete extraData
-      const hookExtraData = {
-        QualificationHookExtraData: "0x",
-        PriceHookExtraData: PriceHookExtraData,
-        PointHookExtraData: "0x",
-        RewardHookExtraData: "0x",
-      };
+        // Construct the complete extraData
+        const hookExtraData = {
+          QualificationHookExtraData: "0x",
+          PriceHookExtraData: PriceHookExtraData,
+          PointHookExtraData: "0x",
+          RewardHookExtraData: "0x",
+        };
 
-      const extraData = web3.eth.abi.encodeParameters(
-        [
-          "(bytes QualificationHookExtraData, bytes PriceHookExtraData, bytes PointHookExtraData, bytes RewardHookExtraData)",
-        ],
-        [Object.values(hookExtraData)]
-      );
+        const extraData = web3.eth.abi.encodeParameters(
+          [
+            "(bytes QualificationHookExtraData, bytes PriceHookExtraData, bytes PointHookExtraData, bytes RewardHookExtraData)",
+          ],
+          [Object.values(hookExtraData)]
+        );
 
-      setExtrData(extraData);
-      console.log(extraData);
-      return extraData;
+        setExtrData(extraData);
+        console.log(extraData);
+        return extraData;
+      } else return "";
     } catch (error) {
       console.error("Error fetching extraData:", error);
-      throw error;
+      // throw error;
     }
   };
 
   const checkEligibility = async () => {
     try {
       // Create a new contract instance
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const contract = new ethers.Contract(
-        process.env.REACT_APP_CONTRACT_ADDRESS_TESTNET_HOLDERS_DISCOUNT_HOOK,
-        [
-          "function isEligibleToClaimFreeDomain(address, bytes) view returns (bool)",
-        ],
-        provider
-      );
-      console.log(contract);
-      // Call the isEligibleToClaimFreeDomain function
-      const result = await contract.isEligibleToClaimFreeDomain(
-        address,
-        extrData
-      );
 
-      // Update state based on the result
-      setAfterDomainPurchasedPopup({ show: false, freeDomain: result });
-      console.log(result);
-      if (result) {
-        props.setuserEligibleForFreeDomain(true);
+      const { ethereum } = window; // Ensure that the user is connected to the expected chain
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const { chainId } = await provider.getNetwork();
+      if (chainId === 919) {
+        const contract = new ethers.Contract(
+          process.env.REACT_APP_CONTRACT_ADDRESS_TESTNET_HOLDERS_DISCOUNT_HOOK,
+          [
+            "function isEligibleToClaimFreeDomain(address, bytes) view returns (bool)",
+          ],
+          provider
+        );
+        console.log(contract);
+        // Call the isEligibleToClaimFreeDomain function
+        const result = await contract.isEligibleToClaimFreeDomain(
+          address,
+          extrData
+        );
+
+        // Update state based on the result
+        setAfterDomainPurchasedPopup({ show: false, freeDomain: result });
+        console.log(result);
+        if (result) {
+          props.setuserEligibleForFreeDomain(true);
+        }
       }
     } catch (error) {
       console.error("Error checking eligibility:", error.message);
@@ -239,6 +257,34 @@ function RegisterName(props) {
     if (address && extrData) checkEligibility();
   }, [extrData]);
 
+  // send data to api after registration
+  const sendDataToApi = async (domain, txHash, domainRegPrice) => {
+    try {
+      const currentDate = new Date().toISOString();
+
+      const data = {
+        name: domain,
+        address: address,
+        dateTime: currentDate,
+        transactionHash: txHash,
+        price: domainRegPrice,
+      };
+
+      const response = await axios.post(
+        "https://modedomains-nft-apis.vercel.app/api/store-transection",
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log(JSON.stringify(response.data));
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const registerName = async (metadatau) => {
     setErrorMessage("");
     setTransactionState({ waiting: true, msg: "Waiting for Transaction" });
@@ -259,21 +305,21 @@ function RegisterName(props) {
         chainId === 919
           ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID
           : chainId === 34443
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID
+          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_SPACEID
           : null;
 
       const resolverAddress =
         chainId === 919
           ? process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER
           : chainId === 34443
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER
+          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_RESOLVER
           : null;
 
       const identifier =
         chainId === 919
           ? toBigInt(process.env.REACT_APP_IDENTIFIER)
           : chainId === 34443
-          ? toBigInt(process.env.REACT_APP_IDENTIFIER)
+          ? toBigInt(process.env.REACT_APP_MAINNET_IDENTIFIER)
           : null;
 
       const contract = new ethers.Contract(
@@ -297,7 +343,8 @@ function RegisterName(props) {
       const base = parseInt(estimatedPriceArray[0]);
       const premium = parseInt(estimatedPriceArray[1]);
       let finalPrice = base + premium;
-      finalPrice = finalPrice * 1.1;
+      console.log(finalPrice);
+      // finalPrice = finalPrice * 1.1;
       console.log(finalPrice);
       // console.log("Base Price (Wei):", base.toString());
       // console.log("Premium Price (Wei):", premium.toString());
@@ -307,9 +354,10 @@ function RegisterName(props) {
         address,
         registrationDuration,
         resolverAddress,
-        finalPrice
+        parseInt(finalPrice).toString(),
+        chainId === 919 ? [extrData] : ["0x"]
       );
-
+      console.log(contract);
       const tx = await contract.bulkRegister(
         identifier,
         [name],
@@ -317,15 +365,23 @@ function RegisterName(props) {
         registrationDuration,
         resolverAddress,
         true,
-        [extrData],
+        chainId === 919 ? [extrData] : ["0x"],
         {
           value: parseInt(finalPrice).toString(),
           // gasLimit: 2000000, // Manually set a sufficient gas limit
         }
       );
       setTransactionState({ waiting: true, msg: "Transacting..." });
-      await tx.wait();
-      // await tx2.wait();
+      const txhash = await tx.wait();
+      console.log(txhash);
+      if (chainId === 34443) {
+        await sendDataToApi(
+          name.toString(),
+          txhash.transactionHash,
+          parseInt(finalPrice).toString()
+        );
+      }
+
       setAfterDomainPurchasedPopup({
         ...showAfterDomainPurchasedPopup,
         show: true,
@@ -664,6 +720,9 @@ function RegisterName(props) {
           registerName={registerName}
         />
       ) : null}
+      {/* {showSecondInfoPopup ? (
+        <Info2Popup setSecondInfoPopup={setSecondInfoPopup} />
+      ) : null} */}
     </div>
   );
 }

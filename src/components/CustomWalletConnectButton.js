@@ -1,14 +1,16 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import "../styles/CustomWalletConnectButton.css";
-import { useAccount } from "wagmi";
+import { useAccount, useNetwork } from "wagmi";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import contract_abi from "../artifacts/contracts/NameRegistry.json";
+import resolverContractABI from "../artifacts/contracts/PublicResolver.json";
+import reverseRegistrarABI from "../artifacts/contracts/ReverseRegistrar.json";
 import AvatarGenerator from "./AvatarGenerator";
 import { motion } from "framer-motion";
 
 function CustomWalletConnectButton(props) {
   const { address } = useAccount();
+  const { chain } = useNetwork();
   const [ModeDomainsResolver, setmodeDomainsResolver] = useState("");
 
   useEffect(() => {
@@ -17,32 +19,52 @@ function CustomWalletConnectButton(props) {
       try {
         const { ethereum } = window;
         const provider = new ethers.providers.Web3Provider(ethereum);
-        const contract = new ethers.Contract(
-          `${process.env.REACT_APP_CONTRACT_ADDRESS}`,
-          contract_abi.abi,
-          provider
+        const { chainId } = await provider.getNetwork();
+
+        const signer = provider.getSigner();
+        const resolverContractAddress =
+          chainId === 919
+            ? process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER
+            : chainId === 34443
+            ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_RESOLVER
+            : null;
+
+        const reverseRegistrarContractAddress =
+          chainId === 919
+            ? process.env.REACT_APP_CONTRACT_ADDRESS_REVERSE_REGISTRAR
+            : chainId === 34443
+            ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_REVERSE_REGISTRAR
+            : null;
+
+        const resolverContract = new ethers.Contract(
+          resolverContractAddress,
+          resolverContractABI.abi,
+          signer
         );
-        const balance = await contract.balanceOf(address);
-        // console.log(parseInt(balance));
-        if (parseInt(balance)) {
-          const tokenId = await contract.tokenOfOwnerByIndex(address, 0);
-          // console.log(tokenId);
-          const domainName = await contract.tokenIdToName(tokenId);
-          // console.log(data);
-          if (domainName) setmodeDomainsResolver(domainName + ".mode");
-          else setmodeDomainsResolver(null);
-        } else {
-          setmodeDomainsResolver(null);
-        }
+
+        const reverseRegistrarContract = new ethers.Contract(
+          reverseRegistrarContractAddress,
+          reverseRegistrarABI.abi,
+          signer
+        );
+        // console.log(resolverContract, "resolverContract");
+        const reverseNode = await reverseRegistrarContract.node(address);
+
+        // console.log(reverseNode);
+        const primaryName = await resolverContract.name(reverseNode);
+        return primaryName;
       } catch (err) {
         setmodeDomainsResolver(null);
         // console.log(err.message);
       }
     };
     if (address) {
-      fetchDomain();
+      fetchDomain().then((primaryName) => {
+        setmodeDomainsResolver(primaryName);
+      });
     }
-  }, [address, props.nameRegistered]);
+  }, [address, chain]);
+
   return (
     <ConnectButton.Custom>
       {({
@@ -149,6 +171,16 @@ function CustomWalletConnectButton(props) {
                       </div>
                     )}
                     {chain.name}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="24px"
+                      viewBox="0 0 24 24"
+                      width="24px"
+                      fill="#FFFFFF"
+                    >
+                      <path d="M24 24H0V0h24v24z" fill="none" opacity=".87" />
+                      <path d="M15.88 9.29L12 13.17 8.12 9.29c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l4.59 4.59c.39.39 1.02.39 1.41 0l4.59-4.59c.39-.39.39-1.02 0-1.41-.39-.38-1.03-.39-1.42 0z" />
+                    </svg>
                   </motion.button>
 
                   <motion.button
@@ -170,14 +202,14 @@ function CustomWalletConnectButton(props) {
                         height={"20px"}
                       />
                       <span className="account-name">
-                        {/* {ModeDomainsResolver
+                        {ModeDomainsResolver
                           ? ModeDomainsResolver
-                          : account.displayName} */}{" "}
-                        {address
+                          : account.displayName}
+                        {/* {!ModeDomainsResolver && address
                           ? address.slice(0, 4) +
                             "..." +
                             address.slice(address.length - 4, address.length)
-                          : ""}
+                          : ""} */}
                       </span>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

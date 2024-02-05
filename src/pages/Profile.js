@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import "../styles/Profile.css";
 import modenft from "../asset/images/modenft.png";
 import "../styles/AccordionPanel.css";
-import { useAccount } from "wagmi";
+import { useAccount, useNetwork } from "wagmi";
 import WalletNotConnected from "../components/profile/WalletNotConnected";
 import AccordionPanel from "../components/profile/AccordionPanel";
 import ProfileDetails from "../components/profile/ProfileDetails";
@@ -19,28 +19,36 @@ import { ethers } from "ethers";
 
 const Profile = () => {
   const { address } = useAccount();
+  const { chain } = useNetwork();
   const [primaryDomain, setPrimaryDomain] = useState(null);
   const [domains, setDomains] = useState([]);
   const [loading, setLoading] = useState(true);
   const [domainFound, setDomainFound] = useState(true);
 
   //if the primary name can be fetched separately
-  const [isPrimaryDomain, setIsPrimaryDomain] = useState("");
+  // const [isPrimaryDomain, setIsPrimaryDomain] = useState("");
 
   const [activeItems, setActiveItems] = useState("");
 
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await fetch(
-        `https://modedomains-nft-apis.vercel.app/api/getAllDomains/${address}`
-      );
+      const testnet_endPoint = `https://modedomains-nft-apis.vercel.app/api/getAllDomains/${address}`;
+      const mainnet_endpoint = `https://modedomains-nft-apis.vercel.app/api/mainnet/getAllDomains/${address}`;
+      let response;
+
+      if (chain.id === 919) {
+        response = await fetch(testnet_endPoint);
+      } else if (chain.id === 34443) {
+        response = await fetch(mainnet_endpoint);
+      }
+
       const data = await response.json();
 
       if (data && data.length > 0) {
         setDomainFound(true);
         setDomains(data);
-        setIsPrimaryDomain("raj.mode");
+        console.log(data);
       } else {
         setDomainFound(false);
         setDomains([]);
@@ -51,7 +59,7 @@ const Profile = () => {
     } finally {
       setLoading(false);
     }
-  }, [address]);
+  }, [address, chain]);
 
   const getPrimaryName = async () => {
     try {
@@ -65,14 +73,14 @@ const Profile = () => {
         chainId === 919
           ? process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER
           : chainId === 34443
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER
+          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_RESOLVER
           : null;
 
       const reverseRegistrarContractAddress =
         chainId === 919
           ? process.env.REACT_APP_CONTRACT_ADDRESS_REVERSE_REGISTRAR
           : chainId === 34443
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_REVERSE_REGISTRAR
+          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_REVERSE_REGISTRAR
           : null;
 
       const resolverContract = new ethers.Contract(
@@ -86,7 +94,7 @@ const Profile = () => {
         reverseRegistrarABI.abi,
         signer
       );
-
+      // console.log(resolverContract, "resolverContract");
       const reverseNode = await reverseRegistrarContract.node(address);
 
       // console.log(reverseNode);
@@ -98,12 +106,16 @@ const Profile = () => {
       console.log(error);
     }
   };
+
   useEffect(() => {
     if (address) {
-      getPrimaryName().then((primaryName) => {
-        setPrimaryDomain(primaryName);
-      });
-      fetchData();
+      getPrimaryName()
+        .then((primaryName) => {
+          setPrimaryDomain(primaryName);
+        })
+        .finally(() => {
+          fetchData();
+        });
     }
   }, [address, fetchData]);
 
@@ -140,7 +152,7 @@ const Profile = () => {
           <AccordionPanel
             key={index}
             title={domain.name}
-            isPrimary={domain.name === isPrimaryDomain}
+            isPrimary={domain.name === primaryDomain}
           >
             <ProfileDomainNavbar
               instanceId={`instance${index}`}
@@ -160,7 +172,7 @@ const Profile = () => {
                     (attr) => attr.trait_type === "Expiration Date"
                   )?.value
                 }
-                isNotPrimaryDomain={domain.name !== isPrimaryDomain}
+                isNotPrimaryDomain={domain.name !== primaryDomain}
               />
             ) : activeItems[`instance${index}`] === "Ownership" ? (
               <DomainOwnership address={address} domainDetails={domain} />

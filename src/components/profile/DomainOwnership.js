@@ -45,27 +45,22 @@ function DomainOwnership(props) {
         chainId === 919
           ? process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER
           : chainId === 34443
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER
+          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_RESOLVER
           : null;
 
       const baseContractAddress =
         chainId === 919
           ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID_BASE
           : chainId === 34443
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID_BASE
+          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_SPACEID_BASE
           : null;
 
       const registryContractAddress =
         chainId === 919
           ? process.env.REACT_APP_CONTRACT_ADDRESS_REGISTRY
           : chainId === 34443
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_REGISTRY
+          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_REGISTRY
           : null;
-      // const contract = new ethers.Contract(
-      //   process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID_BASE,
-      //   baseContractABI.abi,
-      //   signer
-      // );
 
       //to find a eth record address of the domain name
       const resolverContract = new ethers.Contract(

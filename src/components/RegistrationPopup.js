@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useAccount } from "wagmi";
+import { useAccount, useNetwork } from "wagmi";
 import "../styles/Loader.css";
 import { Tooltip } from "react-tooltip";
 import { motion } from "framer-motion";
@@ -10,6 +10,8 @@ import axios from "axios";
 import Lottie from "react-lottie";
 
 function RegistrationPopup(props) {
+  const { chain } = useNetwork();
+  // console.log(chain.id);
   const { address } = useAccount();
   const [ethPrice, setEthPrice] = useState(null);
   const [fetchingValue, setfetchingValue] = useState(false);
@@ -28,19 +30,40 @@ function RegistrationPopup(props) {
   const domainPriceCheck = async (name) => {
     try {
       setfetchingValue("fetching...");
-      const provider = new ethers.providers.JsonRpcProvider(
-        "https://sepolia.mode.network/"
-      );
+
+      const rpcUrl =
+        chain.id === 919
+          ? "https://sepolia.mode.network/"
+          : chain.id === 34443
+          ? "https://mainnet.mode.network"
+          : null;
+
+      const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+
+      const contractAddress =
+        chain.id === 919
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID
+          : chain.id === 34443
+          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_SPACEID
+          : null;
+
       const con = new ethers.Contract(
-        `${process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID}`,
+        contractAddress,
         registrarController_abi.abi,
         provider
       );
       const registrationDuration = 31556952 * props.registrationPeriod;
       console.log(props.registrationPeriod);
       // const price = await con.getRegistrationPrice(name);
+      const identifier =
+        chain.id === 919
+          ? toBigInt(process.env.REACT_APP_IDENTIFIER)
+          : chain.id === 34443
+          ? toBigInt(process.env.REACT_APP_MAINNET_IDENTIFIER)
+          : null;
+
       const estimatedPriceArray = await con.rentPrice(
-        toBigInt(process.env.REACT_APP_IDENTIFIER),
+        identifier,
         name, // Replace with a label for your domain
         registrationDuration
       );

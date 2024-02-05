@@ -55,27 +55,22 @@ function ProfileDetails(props) {
         chainId === 919
           ? process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER
           : chainId === 34443
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER
+          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_RESOLVER
           : null;
 
       const baseContractAddress =
         chainId === 919
           ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID_BASE
           : chainId === 34443
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID_BASE
+          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_SPACEID_BASE
           : null;
 
       const registryContractAddress =
         chainId === 919
           ? process.env.REACT_APP_CONTRACT_ADDRESS_REGISTRY
           : chainId === 34443
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_REGISTRY
+          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_REGISTRY
           : null;
-      // const contract = new ethers.Contract(
-      //   process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID_BASE,
-      //   baseContractABI.abi,
-      //   signer
-      // );
 
       //to find a eth record address of the domain name
       const resolverContract = new ethers.Contract(
@@ -120,6 +115,21 @@ function ProfileDetails(props) {
   useEffect(() => {
     getOwnershipDetails();
   }, []);
+
+  const handleListNowButtonClick = async (tokenId) => {
+    const { ethereum } = window; // Ensure that the user is connected to the expected chain
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const { chainId } = await provider.getNetwork();
+    if (chainId === 919) {
+      window.open(
+        `https://sid-marketplace-git-feat-dev-30-space-id.vercel.app/name/7439/${toBigInt(
+          tokenId
+        )}`
+      );
+    } else if (chainId === 34443) {
+      window.open(`https://space.id/name/6/${toBigInt(tokenId)}`);
+    }
+  };
 
   return (
     <>
@@ -175,15 +185,7 @@ function ProfileDetails(props) {
           </svg>
           Transfer
         </button>
-        <button
-          onClick={() =>
-            window.open(
-              `https://sid-marketplace-git-feat-dev-30-space-id.vercel.app/name/7439/${toBigInt(
-                tokenId
-              )}`
-            )
-          }
-        >
+        <button onClick={() => handleListNowButtonClick(tokenId)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="24"
@@ -196,6 +198,11 @@ function ProfileDetails(props) {
         </button>
       </div>
       <DomainInformation domainDetails={props.domainDetails} />
+      {props.isNotPrimaryDomain ? (
+        <div className="domainActionButtons">
+          <button>Set as Primary Name</button>
+        </div>
+      ) : null}
       {showExtendPopup ? (
         <ExtendExpiryDate
           setExtendPopup={setExtendPopup}

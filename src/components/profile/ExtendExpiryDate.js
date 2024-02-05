@@ -8,11 +8,12 @@ import axios from "axios";
 import { useChainModal, useConnectModal } from "@rainbow-me/rainbowkit";
 import animationDataSuccess from "../../asset/Animation - 1703234774069.json";
 import animationDataError from "../../asset/Animation - 1703236148033.json";
-import { useAccount } from "wagmi";
+import { useAccount, useNetwork } from "wagmi";
 import Lottie from "react-lottie";
 
 function ExtendExpiryDate(props) {
   const { address } = useAccount();
+  const { chain } = useNetwork();
   const { openChainModal } = useChainModal();
   const { openConnectModal } = useConnectModal();
   const [extendPeriodInYear, setExtendPeriodInYear] = useState(1);
@@ -38,23 +39,27 @@ function ExtendExpiryDate(props) {
   const domainPriceCheck = async (name) => {
     try {
       setfetchingValue("fetching...");
-      const provider = new ethers.providers.JsonRpcProvider(
-        "https://sepolia.mode.network/"
-      );
+      const rpcUrl =
+        chain.id === 919
+          ? "https://sepolia.mode.network/"
+          : chain.id === 34443
+          ? "https://mainnet.mode.network"
+          : null;
 
-      const { chainId } = await provider.getNetwork();
+      const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+
       const contractAddress =
-        chainId === 919
+        chain.id === 919
           ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID
-          : chainId === 34443
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID
+          : chain.id === 34443
+          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_SPACEID
           : null;
 
       const identifier =
-        chainId === 919
+        chain.id === 919
           ? toBigInt(process.env.REACT_APP_IDENTIFIER)
-          : chainId === 34443
-          ? toBigInt(process.env.REACT_APP_IDENTIFIER)
+          : chain.id === 34443
+          ? toBigInt(process.env.REACT_APP_MAINNET_IDENTIFIER)
           : null;
 
       const con = new ethers.Contract(
@@ -204,8 +209,15 @@ function ExtendExpiryDate(props) {
       }
       const signer = provider.getSigner();
 
+      const contractAddress =
+        chain.id === 919
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID
+          : chain.id === 34443
+          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_SPACEID
+          : null;
+
       const contract = new ethers.Contract(
-        `${process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID}`,
+        contractAddress,
         // contract_abi.abi,
         registrarController_abi.abi,
         signer
@@ -214,8 +226,15 @@ function ExtendExpiryDate(props) {
       const name = props.domainName;
       const registrationDuration = 31556952 * extendPeriodInYear; // 1 year in seconds
 
+      const identifier =
+        chain.id === 919
+          ? toBigInt(process.env.REACT_APP_IDENTIFIER)
+          : chain.id === 34443
+          ? toBigInt(process.env.REACT_APP_MAINNET_IDENTIFIER)
+          : null;
+
       const estimatedPriceArray = await contract.rentPrice(
-        toBigInt(process.env.REACT_APP_IDENTIFIER),
+        identifier,
         name, // Replace with a label for your domain
         registrationDuration
       );
@@ -224,14 +243,9 @@ function ExtendExpiryDate(props) {
       const premium = parseInt(estimatedPriceArray[1]);
       let finalPrice = base + premium;
       finalPrice = finalPrice * 1.1;
-      console.log(
-        toBigInt(process.env.REACT_APP_IDENTIFIER),
-        [name],
-        registrationDuration,
-        finalPrice
-      );
+      console.log(identifier, [name], registrationDuration, finalPrice);
       const tx = await contract.bulkRenew(
-        toBigInt(process.env.REACT_APP_IDENTIFIER),
+        identifier,
         [name],
         registrationDuration,
         ["0x"],

@@ -2,9 +2,12 @@ import gsap from "gsap";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import "../styles/InitialLoadingAnimation.css";
 import Cookies from "js-cookie";
+import Info2Popup from "./Info2Popup";
 
 function InitialLoadingAnimation() {
   const LoaderRef = useRef();
+  const infoRef = useRef();
+  const [showSecondInfoPopup, setSecondInfoPopup] = useState(true);
   const [counter, setCounter] = useState(0);
 
   function hideLoader() {
@@ -12,6 +15,7 @@ function InitialLoadingAnimation() {
     // if you don't want it to take up any space after it's hidden.
     LoaderRef.current.style.display = "none";
   }
+
   useLayoutEffect(() => {
     // gsap.registerPlugin(ScrollTrigger);
     // clean up function
@@ -27,6 +31,9 @@ function InitialLoadingAnimation() {
           opacity: 0,
           ease: "none",
           onComplete: hideLoader,
+        })
+        .to(infoRef.current, {
+          display: "block",
         });
     }, LoaderRef);
     return () => ctx.revert();
@@ -66,6 +73,11 @@ function InitialLoadingAnimation() {
           <div className="bar"></div>
           <div className="bar"></div>
         </div>
+      </div>
+      <div className="infoPoup" ref={infoRef}>
+        {showSecondInfoPopup ? (
+          <Info2Popup setSecondInfoPopup={setSecondInfoPopup} />
+        ) : null}
       </div>
     </>
   );
