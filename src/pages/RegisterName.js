@@ -271,7 +271,7 @@ function RegisterName(props) {
       };
 
       const response = await axios.post(
-        "https://modedomains-nft-apis.vercel.app/api/store-transection",
+        `${process.env.REACT_APP_API_ENDPOINT}/api/store-transection`,
         data,
         {
           headers: {
@@ -344,7 +344,9 @@ function RegisterName(props) {
       const premium = parseInt(estimatedPriceArray[1]);
       let finalPrice = base + premium;
       console.log(finalPrice);
-      // finalPrice = finalPrice * 1.1;
+      if (chainId === 919) {
+        finalPrice = finalPrice * 1.1;
+      }
       console.log(finalPrice);
       // console.log("Base Price (Wei):", base.toString());
       // console.log("Premium Price (Wei):", premium.toString());
@@ -373,7 +375,7 @@ function RegisterName(props) {
       );
       setTransactionState({ waiting: true, msg: "Transacting..." });
       const txhash = await tx.wait();
-      console.log(txhash);
+      // console.log(txhash);
       if (chainId === 34443) {
         await sendDataToApi(
           name.toString(),
