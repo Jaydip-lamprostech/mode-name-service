@@ -30,8 +30,7 @@ import Info2Popup from "../components/Info2Popup";
 // replace with the path to your animation JSON file
 
 function RegisterName(props) {
-  const web3 = new Web3();
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const navigate = useNavigate();
   const { openChainModal } = useChainModal();
   const { openConnectModal } = useConnectModal();
@@ -163,6 +162,7 @@ function RegisterName(props) {
       const { ethereum } = window; // Ensure that the user is connected to the expected chain
       const provider = new ethers.providers.Web3Provider(ethereum);
       const { chainId } = await provider.getNetwork();
+      const web3 = new Web3(window.ethereum);
       if (chainId === 919) {
         const priceHookTreeData = testNetTreeData;
         const leafNodes = priceHookTreeData.leaves.map((leaf) =>
@@ -446,7 +446,13 @@ function RegisterName(props) {
   //     setIsVip(false);
   //   }
   // };
-
+  const handleGetDomainClick = () => {
+    if (!isConnected) {
+      openConnectModal();
+    } else {
+      openPopup();
+    }
+  };
   return (
     <div>
       <div className="home-main">
@@ -534,7 +540,7 @@ function RegisterName(props) {
                         height={"50px"}
                       /> */}
                     <p className="domain-card-name">
-                      {domainName.length > 0 ? domainName + ".mode" : ".mode"}{" "}
+                      {domainName.length > 0 ? domainName + ".mode" : ".mode"}
                       {/* <span className="domainType">
                         {domainName.length > 2 && isVip
                           ? "( VIP )"
@@ -679,9 +685,7 @@ function RegisterName(props) {
                             ? "get-domain"
                             : "get-domain disabled"
                         }
-                        onClick={() => {
-                          openPopup();
-                        }}
+                        onClick={handleGetDomainClick}
                       >
                         Get domain
                       </motion.button>

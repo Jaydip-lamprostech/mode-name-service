@@ -13,8 +13,8 @@ import { ethers } from "ethers";
 import Web3 from "web3";
 import SetPrimaryDomain from "../SetPrimaryDomain";
 
-const web3 = new Web3();
 export const getSubnode = async (domainName) => {
+  const web3 = new Web3(window.ethereum);
   const node =
     "0x9217c94fd014da21f5c43a1fcae4154a2bbfce43eb48bb33f7f6473c68ee16b6"; // replace with the actual value of _node
   // const baseNodeBytes32 = ethers.utils.hexZeroPad(node, 32);

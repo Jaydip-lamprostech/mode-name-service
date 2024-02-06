@@ -7,6 +7,7 @@ import { ethers } from "ethers";
 import { toBigInt } from "web3-utils";
 import { validate } from "@ensdomains/ens-validation";
 import { useNetwork } from "wagmi";
+
 function SearchQuery(props) {
   const { chain } = useNetwork();
   const [searchQuery, setSearchQuery] = useState("");
@@ -173,33 +174,44 @@ function SearchQuery(props) {
   const getName = async (name) => {
     //contract code starts here...............................
     try {
-      const rpcUrl =
-        chain.id === 919
-          ? "https://sepolia.mode.network/"
-          : chain.id === 34443
-          ? "https://mainnet.mode.network"
-          : null;
+      let rpcUrl;
+      let contractAddress;
+      let identifier;
+      if (chain) {
+        rpcUrl =
+          chain.id === 919
+            ? "https://sepolia.mode.network/"
+            : chain.id === 34443
+            ? "https://mainnet.mode.network"
+            : null;
+        contractAddress =
+          chain.id === 919
+            ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID
+            : chain.id === 34443
+            ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_SPACEID
+            : null;
+
+        identifier =
+          chain.id === 919
+            ? toBigInt(process.env.REACT_APP_IDENTIFIER)
+            : chain.id === 34443
+            ? toBigInt(process.env.REACT_APP_MAINNET_IDENTIFIER)
+            : null;
+      } else {
+        rpcUrl = "https://mainnet.mode.network";
+        contractAddress =
+          process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_SPACEID;
+        identifier = toBigInt(process.env.REACT_APP_MAINNET_IDENTIFIER);
+      }
 
       const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
-
-      const contractAddress =
-        chain.id === 919
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID
-          : chain.id === 34443
-          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_SPACEID
-          : null;
 
       const con = new ethers.Contract(
         contractAddress,
         registrarController_abi.abi,
         provider
       );
-      const identifier =
-        chain.id === 919
-          ? toBigInt(process.env.REACT_APP_IDENTIFIER)
-          : chain.id === 34443
-          ? toBigInt(process.env.REACT_APP_MAINNET_IDENTIFIER)
-          : null;
+
       const available = await con.available(
         identifier,
         name // Replace with a label for your domain
@@ -336,21 +348,37 @@ function SearchQuery(props) {
   };
   const domainPriceCheck = async (name) => {
     try {
-      const rpcUrl =
-        chain.id === 919
-          ? "https://sepolia.mode.network/"
-          : chain.id === 34443
-          ? "https://mainnet.mode.network"
-          : null;
+      let rpcUrl;
+      let contractAddress;
+      let identifier;
+      if (chain) {
+        rpcUrl =
+          chain.id === 919
+            ? "https://sepolia.mode.network/"
+            : chain.id === 34443
+            ? "https://mainnet.mode.network"
+            : null;
+        contractAddress =
+          chain.id === 919
+            ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID
+            : chain.id === 34443
+            ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_SPACEID
+            : null;
+
+        identifier =
+          chain.id === 919
+            ? toBigInt(process.env.REACT_APP_IDENTIFIER)
+            : chain.id === 34443
+            ? toBigInt(process.env.REACT_APP_MAINNET_IDENTIFIER)
+            : null;
+      } else {
+        rpcUrl = "https://mainnet.mode.network";
+        contractAddress =
+          process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_SPACEID;
+        identifier = toBigInt(process.env.REACT_APP_MAINNET_IDENTIFIER);
+      }
 
       const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
-
-      const contractAddress =
-        chain.id === 919
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID
-          : chain.id === 34443
-          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_SPACEID
-          : null;
 
       const con = new ethers.Contract(
         contractAddress,
@@ -360,12 +388,6 @@ function SearchQuery(props) {
       const registrationDuration = 31556952 * props.registrationPeriod;
       // console.log(props.registrationPeriod);
       // const price = await con.getRegistrationPrice(name);
-      const identifier =
-        chain.id === 919
-          ? toBigInt(process.env.REACT_APP_IDENTIFIER)
-          : chain.id === 34443
-          ? toBigInt(process.env.REACT_APP_MAINNET_IDENTIFIER)
-          : null;
 
       const estimatedPriceArray = await con.rentPrice(
         identifier,
