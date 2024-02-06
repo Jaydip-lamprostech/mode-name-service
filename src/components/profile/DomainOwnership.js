@@ -90,14 +90,14 @@ function DomainOwnership(props) {
         ethers.utils.toUtf8Bytes(domainName)
       );
       const owner = await baseContract.ownerOf(tokenId);
-      console.log("owner - ", owner);
+      // console.log("owner - ", owner);
 
       const addressToRoles = transformRolesToAddressRoles({
         owner: owner,
         record: record,
         manager: manager,
       });
-      console.log(addressToRoles);
+      // console.log(addressToRoles);
       setOwnershipDetails(addressToRoles);
       setloading(false);
     } catch (error) {

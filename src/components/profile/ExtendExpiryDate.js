@@ -243,7 +243,7 @@ function ExtendExpiryDate(props) {
       const premium = parseInt(estimatedPriceArray[1]);
       let finalPrice = base + premium;
       finalPrice = finalPrice * 1.1;
-      console.log(identifier, [name], registrationDuration, finalPrice);
+      // console.log(identifier, [name], registrationDuration, finalPrice);
       const tx = await contract.bulkRenew(
         identifier,
         [name],

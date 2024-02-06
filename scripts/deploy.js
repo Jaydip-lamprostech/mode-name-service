@@ -18,11 +18,11 @@ async function main() {
 
   await lock.waitForDeployment();
 
-  console.log(
-    `Lock with ${ethers.formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.target}`
-  );
+  // console.log(
+  //   `Lock with ${ethers.formatEther(
+  //     lockedAmount
+  //   )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.target}`
+  // );
 }
 
 // We recommend this pattern to be able to use async/await everywhere

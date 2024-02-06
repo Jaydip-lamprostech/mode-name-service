@@ -85,7 +85,7 @@ function TransferDomainPopup(props) {
         manager: "pending",
       });
       if (recepientAddress !== ethRecordAddress) {
-        console.log("inside ethrecord");
+        // console.log("inside ethrecord");
         const tx = await resolverContract.setAddr(subNode, recepientAddress);
 
         setTxButtonText("Transferring...");
@@ -105,7 +105,7 @@ function TransferDomainPopup(props) {
       });
       // contract call for changing the manager
       if (recepientAddress !== managerAddress) {
-        console.log("inside manager");
+        // console.log("inside manager");
         const tx = await baseContract.reclaim(
           toBigInt(tokenId),
           recepientAddress
@@ -128,7 +128,7 @@ function TransferDomainPopup(props) {
         manager: "completed",
       });
       if (recepientAddress !== ownerAddress) {
-        console.log("inside owner");
+        // console.log("inside owner");
         const tx = await baseContract.safeTransferFrom(
           props.address,
           recepientAddress,
@@ -165,7 +165,7 @@ function TransferDomainPopup(props) {
           [baseNodeBytes32, domainName]
         )
       );
-      console.log(nodehash);
+      // console.log(nodehash);
       // const addInBinary = formatsByName["ETH"].decoder(recepientAddress);
       // console.log(addInBinary);
 
@@ -234,7 +234,7 @@ function TransferDomainPopup(props) {
       );
       const node = getSubnode(domainName);
       const record = await resolverContract.addr(node);
-      console.log("record  - ", record);
+      // console.log("record  - ", record);
       setEthRecordAddress(record ? record : "");
 
       // to find resolver and manager address of the domain name
@@ -244,9 +244,9 @@ function TransferDomainPopup(props) {
         signer
       );
       const resolver = await registryResolverContract.resolver(node);
-      console.log("resolver - ", resolver);
+      // console.log("resolver - ", resolver);
       const manager = await registryResolverContract.owner(node);
-      console.log("manager - ", manager);
+      // console.log("manager - ", manager);
 
       //to find a owner of the domain name
       const baseContract = new ethers.Contract(
@@ -258,7 +258,7 @@ function TransferDomainPopup(props) {
         ethers.utils.toUtf8Bytes(domainName)
       );
       const owner = await baseContract.ownerOf(tokenId);
-      console.log("owner - ", owner);
+      // console.log("owner - ", owner);
       setOwnerAddress(owner ? owner : "");
     } catch (error) {
       console.log(error);

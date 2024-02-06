@@ -2,39 +2,18 @@ import { useChainModal } from "@rainbow-me/rainbowkit";
 import React from "react";
 import { useState } from "react";
 import { Tooltip } from "react-tooltip";
-import animationDataSuccess from "../../asset/Animation - 1703234774069.json";
-import animationDataError from "../../asset/Animation - 1703236148033.json";
-import baseContractABI from "../../artifacts/contracts/Base.json";
-import resolverContractABI from "../../artifacts/contracts/PublicResolver.json";
-import registryResolverContractABI from "../../artifacts/contracts/SidRegistry.json";
+import animationDataSuccess from "../asset/Animation - 1703234774069.json";
+import animationDataError from "../asset/Animation - 1703236148033.json";
 import Lottie from "react-lottie";
 import { ethers } from "ethers";
-import { getSubnode } from "./ProfileDetails";
-import { toBigInt } from "web3-utils";
-import { useAccount } from "wagmi";
-import { useEffect } from "react";
+import reverseRegistrarABI from "../artifacts/contracts/ReverseRegistrar.json";
 
-function EditRolesForDomain(props) {
-  const { address } = useAccount();
-  const [activeItem, setActiveItem] = useState("record");
+function SetPrimaryDomain(props) {
   const { openChainModal } = useChainModal();
   const [loading, setLoading] = useState(false);
-  const [txButtonText, setTxButtonText] = useState("Change " + activeItem);
-  const [
-    currentOwnershipAddressInputText,
-    setCurrentOwnershipAddressInputText,
-  ] = useState();
-  const [currentOwnershipAddress, setCurrentOwnershipAddress] = useState();
+  const [txButtonText, setTxButtonText] = useState("Change");
   const [txErrorMessage, setTxErrorMessage] = useState(false);
   const [txSuccessfull, setTxSuccessfull] = useState(false);
-  const [recepientAddress, setRecepientAddress] = useState("");
-  const [domainNode, setDomainNode] = useState();
-  const [domainTokenID, setDomainTokenID] = useState("");
-  const [baseContract, setBaseContract] = useState();
-
-  const [resolverContract, setResolverContract] = useState();
-  const [registryResolverContract, setRegistryResolverContract] = useState();
-
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -43,11 +22,11 @@ function EditRolesForDomain(props) {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
-  const handleChangeRole = async () => {
+
+  const setPrimaryDomain = async () => {
     setTxErrorMessage();
     setLoading(true);
     setTxButtonText("Waiting for the transaction");
-    const domainName = props.domainName.replace(".mode", "");
     try {
       const { ethereum } = window; // Ensure that the user is connected to the expected chain
       const provider = new ethers.providers.Web3Provider(ethereum);
@@ -60,66 +39,23 @@ function EditRolesForDomain(props) {
       }
       const signer = provider.getSigner();
 
-      const resolverContractAddress =
+      const reverseRegistrarContractAddress =
         chainId === 919
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_REVERSE_REGISTRAR
           : chainId === 34443
-          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_RESOLVER
+          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_REVERSE_REGISTRAR
           : null;
 
-      const baseContractAddress =
-        chainId === 919
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID_BASE
-          : chainId === 34443
-          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_SPACEID_BASE
-          : null;
-
-      const resolverContract = new ethers.Contract(
-        resolverContractAddress,
-        resolverContractABI.abi,
+      const reverseRegistrarContract = new ethers.Contract(
+        reverseRegistrarContractAddress,
+        reverseRegistrarABI.abi,
         signer
       );
-      const baseContract = new ethers.Contract(
-        baseContractAddress,
-        baseContractABI.abi,
-        signer
-      );
-      const tokenId = ethers.utils.keccak256(
-        ethers.utils.toUtf8Bytes(domainName)
-      );
-      let subNode = await getSubnode(domainName);
-      // contract call for changing the ethrecord
-      if (activeItem === "record" && recepientAddress !== address) {
-        // console.log("inside ethrecord");
-        const tx = await resolverContract.setAddr(subNode, recepientAddress);
 
-        setTxButtonText("Changing...");
-        const data = await tx.wait();
-      }
+      const tx = await reverseRegistrarContract.setName(props.newPrimaryDomain);
 
-      // contract call for changing the manager
-      if (activeItem === "manager" && recepientAddress !== address) {
-        // console.log("inside manager");
-        const tx = await baseContract.reclaim(
-          toBigInt(tokenId),
-          recepientAddress
-        );
-
-        setTxButtonText("Changing...");
-        const data = await tx.wait();
-      }
-
-      if (activeItem === "owner" && recepientAddress !== address) {
-        // console.log("inside owner");
-        const tx = await baseContract.safeTransferFrom(
-          props.address,
-          recepientAddress,
-          tokenId
-        );
-
-        setTxButtonText("Changing...");
-        const data = await tx.wait();
-      }
+      setTxButtonText("updating...");
+      await tx.wait();
 
       setTxErrorMessage();
       setLoading(false);
@@ -127,17 +63,15 @@ function EditRolesForDomain(props) {
       setTxButtonText("OK");
     } catch (error) {
       setTxSuccessfull(false);
-      setTxButtonText("Change " + activeItem);
+      setTxButtonText("Change");
       setLoading(false);
-      // console.log(error.message);
+      console.log(error.message);
       if (error.message.includes("Address is already registered with a name"))
         setTxErrorMessage(
           "You already have claimed one handle, get more on Mainnet."
         );
       else if (error.data?.message.includes("insufficient funds for gas"))
-        setTxErrorMessage(
-          "Insufficient funds for gas. Get some from Mode Faucet."
-        );
+        setTxErrorMessage("Insufficient funds for gas.");
       else if (error.message.includes("Insufficient funds sent"))
         setTxErrorMessage("Insufficient funds to cover the transaction.");
       else {
@@ -146,118 +80,6 @@ function EditRolesForDomain(props) {
         );
       }
     }
-  };
-
-  //   const customFunction = async (contract, contractFunction, parameters) => {
-  //     try {
-  //       const data = await contract[contractFunction](...parameters);
-  //       return data;
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  useEffect(() => {
-    setCurrentOwnershipAddressInputText("");
-    if (activeItem === "record") {
-      setCurrentOwnershipAddressInputText(currentOwnershipAddress?.record);
-    } else if (activeItem === "manager") {
-      setCurrentOwnershipAddressInputText(currentOwnershipAddress?.manager);
-    } else if (activeItem === "owner") {
-      setCurrentOwnershipAddressInputText(currentOwnershipAddress?.owner);
-    }
-
-    setTxButtonText("Change " + activeItem);
-    setRecepientAddress("");
-  }, [activeItem]);
-
-  const getOwnershipDetails = async () => {
-    try {
-      const domainName = props.domainName.replace(".mode", "");
-      const { ethereum } = window; // Ensure that the user is connected to the expected chain
-      const provider = new ethers.providers.Web3Provider(ethereum);
-      const { chainId } = await provider.getNetwork();
-
-      const signer = provider.getSigner();
-
-      const resolverContractAddress =
-        chainId === 919
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER
-          : chainId === 34443
-          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_RESOLVER
-          : null;
-
-      const baseContractAddress =
-        chainId === 919
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID_BASE
-          : chainId === 34443
-          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_SPACEID_BASE
-          : null;
-
-      const registryContractAddress =
-        chainId === 919
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_REGISTRY
-          : chainId === 34443
-          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_REGISTRY
-          : null;
-
-      //to find a eth record address of the domain name
-      const resolverContract = new ethers.Contract(
-        resolverContractAddress,
-        resolverContractABI.abi,
-        signer
-      );
-      // console.log("checking times - ", resolverContract);
-      setResolverContract(resolverContract);
-      const node = await getSubnode(domainName);
-      setDomainNode(node);
-      const record = await resolverContract.addr(node);
-
-      // to find resolver and manager address of the domain name
-      const registryResolverContract = new ethers.Contract(
-        registryContractAddress,
-        registryResolverContractABI.abi,
-        signer
-      );
-
-      setRegistryResolverContract(registryResolverContract);
-      const manager = await registryResolverContract.owner(node);
-
-      //to find a owner of the domain name
-      const baseContract = new ethers.Contract(
-        baseContractAddress,
-        baseContractABI.abi,
-        signer
-      );
-
-      setBaseContract(baseContract);
-      const tokenId = ethers.utils.keccak256(
-        ethers.utils.toUtf8Bytes(domainName)
-      );
-      setDomainTokenID(tokenId);
-      const owner = await baseContract.ownerOf(tokenId);
-
-      setCurrentOwnershipAddress({
-        owner: owner,
-        record: record,
-        manager: manager,
-      });
-
-      setCurrentOwnershipAddressInputText(
-        !currentOwnershipAddressInputText
-          ? record
-          : currentOwnershipAddressInputText
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getOwnershipDetails();
-  }, []);
-
-  const handleClick = (itemName) => {
-    setActiveItem(itemName);
   };
   return (
     <div>
@@ -273,58 +95,26 @@ function EditRolesForDomain(props) {
                 fill="#000000"
                 onClick={() => {
                   document.body.classList.remove("popup-open");
-                  props.setEditRolesPopup(false);
+                  props.setChangePrimaryDomainPopup(false);
                 }}
               >
                 <path d="M0 0h24v24H0V0z" fill="none" />
                 <path d="M18.3 5.71c-.39-.39-1.02-.39-1.41 0L12 10.59 7.11 5.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41L10.59 12 5.7 16.89c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L12 13.41l4.89 4.89c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z" />
               </svg>
             </div>
-            <h2>Edit Roles</h2>
-            <ul className="profileNavbar editRolesNavbar">
-              <li
-                className={
-                  activeItem === "record"
-                    ? "active profileNavbarItem"
-                    : "profileNavbarItem"
-                }
-                onClick={() => handleClick("record")}
-              >
-                Record
-              </li>
-              <li
-                className={
-                  activeItem === "manager"
-                    ? "active profileNavbarItem"
-                    : "profileNavbarItem"
-                }
-                onClick={() => handleClick("manager")}
-              >
-                Manager
-              </li>
-              <li
-                className={
-                  activeItem === "owner"
-                    ? "active profileNavbarItem"
-                    : "profileNavbarItem"
-                }
-                onClick={() => handleClick("owner")}
-              >
-                Owner
-              </li>
-            </ul>
+            <h2>Change Primary Domain</h2>
             <div className="transferDomainInputParent">
               <div className="transferDomains_fields">
                 <div className="transferDomains_field_item">
                   <div className="transferDomains_field_title">
                     <span className="field_title">
-                      Current Address
+                      Current Primary Domain
                       <span className="transferDomain_field_sub_title"></span>
                     </span>
                     <span
                       className="transferDomain_field_info"
-                      data-tooltip-id="transfer_domain_tooltip"
-                      data-tooltip-content="Current owner of the domain name."
+                      data-tooltip-id="change_primary_domain_tooltip"
+                      data-tooltip-content="This primary domain is associated with your wallet address on the MODE network. It's a recognizable identifier used by DApps and services on the MODE platform for seamless interactions."
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -352,15 +142,6 @@ function EditRolesForDomain(props) {
                         </g>
                       </svg>
                     </span>
-                    <Tooltip
-                      id="transfer_domain_tooltip"
-                      removeStyle
-                      style={{
-                        maxWidth: "200px",
-                        wordBreak: "break-word",
-                        fontFamily: "Inter, sans-serif",
-                      }}
-                    />
                   </div>
                   <div className="transferDomains_field_input">
                     {/* {props.address} */}
@@ -368,25 +149,20 @@ function EditRolesForDomain(props) {
                       type="text"
                       placeholder="Enter Recipient's Address"
                       disabled
-                      value={
-                        currentOwnershipAddressInputText
-                          ? currentOwnershipAddressInputText
-                          : "fetching..."
-                      }
+                      value={props.primaryDomain}
                     />
                   </div>
                 </div>
-
                 <div className="transferDomains_field_item">
                   <div className="transferDomains_field_title">
                     <span className="field_title">
-                      New Address
+                      New Primary Domain
                       <span className="transferDomain_field_sub_title"></span>
                     </span>
                     <span
                       className="transferDomain_field_info"
-                      data-tooltip-id="transfer_domain_tooltip"
-                      data-tooltip-content="The one who will become the owner of this domain name after the transfer process is completed."
+                      data-tooltip-id="change_primary_domain_tooltip"
+                      data-tooltip-content="This will replace the current one, providing a personalized identifier for your wallet in MODE DApps and services."
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -419,12 +195,19 @@ function EditRolesForDomain(props) {
                     <input
                       type="text"
                       placeholder="Enter Recipient's Address"
-                      value={recepientAddress ? recepientAddress : ""}
-                      onChange={(e) => {
-                        setRecepientAddress(e.target.value);
-                      }}
+                      disabled
+                      value={props.newPrimaryDomain}
                     />
                   </div>
+                  <Tooltip
+                    id="change_primary_domain_tooltip"
+                    removeStyle
+                    style={{
+                      maxWidth: "200px",
+                      wordBreak: "break-word",
+                      fontFamily: "Inter, sans-serif",
+                    }}
+                  />
                 </div>
               </div>
             </div>
@@ -489,18 +272,14 @@ function EditRolesForDomain(props) {
             ) : null}
             <div className="popup-btns">
               <button
-                className={
-                  recepientAddress !== currentOwnershipAddressInputText &&
-                  recepientAddress
-                    ? "transfer-btn"
-                    : "disabled transfer-btn"
-                }
+                className="transfer-btn"
                 onClick={() => {
                   if (txSuccessfull) {
                     document.body.classList.remove("popup-open");
-                    props.setEditRolesPopup(false);
+                    props.setChangePrimaryDomainPopup(false);
+                    window.location.reload();
                   } else {
-                    handleChangeRole();
+                    setPrimaryDomain();
                   }
                 }}
               >
@@ -535,4 +314,4 @@ function EditRolesForDomain(props) {
   );
 }
 
-export default EditRolesForDomain;
+export default SetPrimaryDomain;

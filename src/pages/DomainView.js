@@ -32,7 +32,7 @@ function DomainView() {
   useEffect(() => {
     if (location.state) {
       const data = location.state;
-      console.log(data);
+      // console.log(data);
       const regDate = new Date(data.domainNameRegisteredTime * 1000);
       const formattedRegTime = regDate.toLocaleTimeString("en-US", {
         hour: "numeric",

@@ -4,7 +4,6 @@ import upArrowIcon from "../../asset/images/up-arrow.svg";
 
 const AccordionPanel = ({ title, children, isPrimary }) => {
   const [isOpen, setIsOpen] = useState(false);
-  console.log(isPrimary);
 
   const toggleAccordion = () => {
     setIsOpen(!isOpen);

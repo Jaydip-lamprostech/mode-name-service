@@ -11,6 +11,7 @@ import registryResolverContractABI from "../../artifacts/contracts/SidRegistry.j
 import { useEffect } from "react";
 import { ethers } from "ethers";
 import Web3 from "web3";
+import SetPrimaryDomain from "../SetPrimaryDomain";
 
 const web3 = new Web3();
 export const getSubnode = async (domainName) => {
@@ -29,7 +30,7 @@ export const getSubnode = async (domainName) => {
   //   [baseNodeBytes32, label]
   // );
 
-  console.log("subnode ---", subnode);
+  // console.log("subnode ---", subnode);
 
   return subnode;
 };
@@ -38,6 +39,8 @@ function ProfileDetails(props) {
   const { address } = useAccount();
   const [showTransferDomainPopup, setTransferDomainPopup] = useState(false);
   const [showExtendPopup, setExtendPopup] = useState(false);
+  const [showChangePrimaryDomainPopup, setChangePrimaryDomainPopup] =
+    useState(false);
   const [ownerAddress, setOwnerAddress] = useState();
   const [managerAddress, setManagerAddress] = useState();
   const [ethRecordAddress, setEthRecordAddress] = useState();
@@ -80,7 +83,7 @@ function ProfileDetails(props) {
       );
       const node = getSubnode(domainName);
       const record = await resolverContract.addr(node);
-      console.log("record  - ", record);
+      // console.log("record  - ", record);
       setEthRecordAddress(record ? record : "");
 
       // to find resolver and manager address of the domain name
@@ -90,9 +93,9 @@ function ProfileDetails(props) {
         signer
       );
       const resolver = await registryResolverContract.resolver(node);
-      console.log("resolver - ", resolver);
+      // console.log("resolver - ", resolver);
       const manager = await registryResolverContract.owner(node);
-      console.log("manager - ", manager);
+      // console.log("manager - ", manager);
 
       //to find a owner of the domain name
       const baseContract = new ethers.Contract(
@@ -105,7 +108,7 @@ function ProfileDetails(props) {
       );
       settokenId(tokenId);
       const owner = await baseContract.ownerOf(tokenId);
-      console.log("owner - ", owner);
+      // console.log("owner - ", owner);
       setOwnerAddress(owner ? owner : "");
     } catch (error) {
       console.log(error);
@@ -200,8 +203,22 @@ function ProfileDetails(props) {
       <DomainInformation domainDetails={props.domainDetails} />
       {props.isNotPrimaryDomain ? (
         <div className="domainActionButtons">
-          <button>Set as Primary Name</button>
+          <button
+            onClick={() => {
+              document.body.classList.add("popup-open");
+              setChangePrimaryDomainPopup(true);
+            }}
+          >
+            Set as Primary Name
+          </button>
         </div>
+      ) : null}
+      {showChangePrimaryDomainPopup ? (
+        <SetPrimaryDomain
+          setChangePrimaryDomainPopup={setChangePrimaryDomainPopup}
+          primaryDomain={props.primaryDomain}
+          newPrimaryDomain={props.domainDetails.name}
+        />
       ) : null}
       {showExtendPopup ? (
         <ExtendExpiryDate

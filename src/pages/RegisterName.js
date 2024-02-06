@@ -146,9 +146,9 @@ function RegisterName(props) {
       );
       if (response.ok) {
         const responseJson = await response.json();
-        console.log("got response");
+        // console.log("got response");
 
-        console.log(responseJson.metadata_uri);
+        // console.log(responseJson.metadata_uri);
         return responseJson.metadata_uri;
       } else {
         console.error("Error uploading metadata:", response.statusText);
@@ -202,7 +202,7 @@ function RegisterName(props) {
         );
 
         setExtrData(extraData);
-        console.log(extraData);
+        // console.log(extraData);
         return extraData;
       } else return "";
     } catch (error) {
@@ -226,7 +226,7 @@ function RegisterName(props) {
           ],
           provider
         );
-        console.log(contract);
+        // console.log(contract);
         // Call the isEligibleToClaimFreeDomain function
         const result = await contract.isEligibleToClaimFreeDomain(
           address,
@@ -235,7 +235,7 @@ function RegisterName(props) {
 
         // Update state based on the result
         setAfterDomainPurchasedPopup({ show: false, freeDomain: result });
-        console.log(result);
+        // console.log(result);
         if (result) {
           props.setuserEligibleForFreeDomain(true);
         }
@@ -280,7 +280,7 @@ function RegisterName(props) {
         }
       );
 
-      console.log(JSON.stringify(response.data));
+      // console.log(JSON.stringify(response.data));
     } catch (error) {
       console.error(error);
     }
@@ -338,16 +338,16 @@ function RegisterName(props) {
         name, // Replace with a label for your domain
         registrationDuration
       );
-      console.log(estimatedPriceArray);
+      // console.log(estimatedPriceArray);
       // Access individual BigNumber objects in the array
       const base = parseInt(estimatedPriceArray[0]);
       const premium = parseInt(estimatedPriceArray[1]);
       let finalPrice = base + premium;
-      console.log(finalPrice);
+      // console.log(finalPrice);
       if (chainId === 919) {
         finalPrice = finalPrice * 1.1;
       }
-      console.log(finalPrice);
+      // console.log(finalPrice);
       // console.log("Base Price (Wei):", base.toString());
       // console.log("Premium Price (Wei):", premium.toString());
       console.log(
@@ -359,7 +359,7 @@ function RegisterName(props) {
         parseInt(finalPrice).toString(),
         chainId === 919 ? [extrData] : ["0x"]
       );
-      console.log(contract);
+      // console.log(contract);
       const tx = await contract.bulkRegister(
         identifier,
         [name],

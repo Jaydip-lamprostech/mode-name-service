@@ -53,7 +53,7 @@ function RegistrationPopup(props) {
         provider
       );
       const registrationDuration = 31556952 * props.registrationPeriod;
-      console.log(props.registrationPeriod);
+      // console.log(props.registrationPeriod);
       // const price = await con.getRegistrationPrice(name);
       const identifier =
         chain.id === 919
@@ -67,18 +67,14 @@ function RegistrationPopup(props) {
         name, // Replace with a label for your domain
         registrationDuration
       );
-      console.log(estimatedPriceArray);
       // Access individual BigNumber objects in the array
       const base = parseInt(estimatedPriceArray[0]);
       const premium = parseInt(estimatedPriceArray[1]);
       const price = base + parseInt(premium);
-      console.log(price);
-      console.log(price / 10 ** 18);
 
       // console.log(ethers.utils.formatEther(price));
       let x = price / 10 ** 18;
       let priceshort = parseFloat(x.toFixed(7));
-      console.log(priceshort);
       setDomainPricewithRegistrationTime(priceshort + " ETH");
       setfetchingValue(false);
       // props.setRegisterdomainPriceInWei(price);
@@ -118,7 +114,6 @@ function RegistrationPopup(props) {
 
         // Extract the ETH price from the response
         const price = response.data.ethereum.usd;
-        console.log(price);
 
         // Set the ETH price in the component state
         setEthPrice(price);

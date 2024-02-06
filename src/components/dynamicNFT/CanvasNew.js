@@ -62,7 +62,7 @@ const CanvasNew = ({
           animate();
         } else if (isRegular && !isVip && !isPremium) {
           rendererRef.current.setClearColor(new THREE.Color("#000"));
-          console.log("normal domain name");
+          // console.log("normal domain name");
           updateHelixAndLights();
           animate();
         }

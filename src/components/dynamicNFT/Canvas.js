@@ -154,7 +154,7 @@ const Canvas = ({ input, setImgUrl, imgUrl, isPremium, canvas, setCanvas }) => {
   }, [input]);
 
   const setFileNft = async () => {
-    console.log("setFileNFT start");
+    // console.log("setFileNFT start");
     // Convert canvas to blob after rendering
     const final = await canvas.toDataURL();
     const file = await canvasToBlob(canvas);
@@ -180,7 +180,7 @@ const Canvas = ({ input, setImgUrl, imgUrl, isPremium, canvas, setCanvas }) => {
   };
 
   const updateHelixAndLights = () => {
-    console.log("updateHelix start");
+    // console.log("updateHelix start");
     rng = seedrandom(input);
     numBoxes = 320 + Math.floor(rng() * 20 - 10);
     baseDistance = 0.035 + rng() * 0.005 - 0.0025;
@@ -242,7 +242,7 @@ const Canvas = ({ input, setImgUrl, imgUrl, isPremium, canvas, setCanvas }) => {
     // Define ambient light color and intensity
     // Adjust the color to your liking
 
-    console.log("updateHelix ends");
+    // console.log("updateHelix ends");
     setFileNft();
   };
 

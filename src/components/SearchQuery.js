@@ -305,7 +305,7 @@ function SearchQuery(props) {
     const tokenId = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(name));
     const expiryDate = await con.nameExpires(tokenId);
     const tokenUri = await con.tokenURI(tokenId);
-    console.log(tokenUri);
+    // console.log(tokenUri);
     //getting metadata
     fetch(tokenUri)
       .then((response) => {
@@ -316,13 +316,13 @@ function SearchQuery(props) {
       })
       .then((data) => {
         // Process the API response data
-        console.log(data);
+        // console.log(data);
       })
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
       });
     const test = new Date(expiryDate * 1000);
-    console.log(test);
+    // console.log(test);
     const humanDateExp = new Date(expiryDate * 1000).toLocaleDateString(
       "en-US",
       {
@@ -331,7 +331,7 @@ function SearchQuery(props) {
         year: "numeric",
       }
     );
-    console.log(humanDateExp);
+    // console.log(humanDateExp);
     props.setDomainExpiryDate(humanDateExp);
   };
   const domainPriceCheck = async (name) => {
@@ -358,7 +358,7 @@ function SearchQuery(props) {
         provider
       );
       const registrationDuration = 31556952 * props.registrationPeriod;
-      console.log(props.registrationPeriod);
+      // console.log(props.registrationPeriod);
       // const price = await con.getRegistrationPrice(name);
       const identifier =
         chain.id === 919
@@ -372,7 +372,7 @@ function SearchQuery(props) {
         name, // Replace with a label for your domain
         registrationDuration
       );
-      console.log(estimatedPriceArray);
+      // console.log(estimatedPriceArray);
       // Access individual BigNumber objects in the array
       const base = parseInt(estimatedPriceArray[0]);
       const premium = parseInt(estimatedPriceArray[1]);

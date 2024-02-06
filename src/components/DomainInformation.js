@@ -29,7 +29,7 @@ function DomainInformation(props) {
         signer
       );
       const expiryDateInEpoch = await baseContract.nameExpires(tokenId);
-      console.log("expiryDateInEpoch - ", expiryDateInEpoch);
+      // console.log("expiryDateInEpoch - ", expiryDateInEpoch);
 
       setExpiryDate(expiryDateInEpoch);
     } catch (error) {}

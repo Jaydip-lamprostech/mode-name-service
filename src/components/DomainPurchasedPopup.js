@@ -10,9 +10,7 @@ function DomainPurchasedPopup(props) {
   const [userAddress, setUserAddress] = useState("");
   useEffect(() => {
     if (address) {
-      console.log(address);
       let addInString = address.toString();
-      console.log(addInString);
       let shortAdd =
         addInString.slice(0, 4) +
         "..." +

@@ -48,7 +48,7 @@ const Profile = () => {
       if (data && data.length > 0) {
         setDomainFound(true);
         setDomains(data);
-        console.log(data);
+        // console.log(data);
       } else {
         setDomainFound(false);
         setDomains([]);
@@ -99,7 +99,7 @@ const Profile = () => {
 
       // console.log(reverseNode);
       const primaryName = await resolverContract.name(reverseNode);
-      console.log(primaryName);
+      // console.log(primaryName);
 
       return primaryName;
     } catch (error) {
@@ -167,6 +167,7 @@ const Profile = () => {
               <ProfileDetails
                 modenft={modenft}
                 domainDetails={domain}
+                primaryDomain={primaryDomain}
                 expiryDateInEpoch={
                   domain.attributes.find(
                     (attr) => attr.trait_type === "Expiration Date"
