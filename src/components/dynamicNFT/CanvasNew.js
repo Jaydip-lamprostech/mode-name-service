@@ -461,7 +461,7 @@ const CanvasNew = ({
 
     controlsRef.current.update();
     composerRef.current.render();
-    setCanvasUrl(canvas.toDataURL());
+    // setCanvasUrl(canvas.toDataURL());
   };
 
   // const downloadNFT = async () => {
