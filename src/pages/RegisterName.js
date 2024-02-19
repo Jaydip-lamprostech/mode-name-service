@@ -347,6 +347,7 @@ function RegisterName(props) {
       if (chainId === 919) {
         finalPrice = finalPrice * 1.1;
       }
+      const extDt = chainId === 919 ? [extrData] : ["0x"];
       // console.log(finalPrice);
       // console.log("Base Price (Wei):", base.toString());
       // console.log("Premium Price (Wei):", premium.toString());
@@ -357,9 +358,10 @@ function RegisterName(props) {
         registrationDuration,
         resolverAddress,
         parseInt(finalPrice).toString(),
-        chainId === 919 ? [extrData] : ["0x"]
+        extDt
       );
       // console.log(contract);
+
       const tx = await contract.bulkRegister(
         identifier,
         [name],
@@ -367,7 +369,7 @@ function RegisterName(props) {
         registrationDuration,
         resolverAddress,
         true,
-        chainId === 919 ? [extrData] : ["0x"],
+        extDt,
         {
           value: parseInt(finalPrice).toString(),
           // gasLimit: 2000000, // Manually set a sufficient gas limit
@@ -412,18 +414,19 @@ function RegisterName(props) {
       // const parsedEthersError = getParsedEthersError(error);
       // // const err = parsedEthersError.context?.split("(")[0];
       console.log(error.reason ? error.reason : error);
-      if (error.message.includes("Address is already registered with a name"))
-        setErrorMessage(
-          "You already have claimed one handle, get more on Mainnet."
-        );
-      else if (error.data?.message.includes("insufficient funds for gas"))
-        setErrorMessage(
-          "Insufficient funds for gas. Get some from Mode Faucet."
-        );
-      else if (error.message.includes("Insufficient funds sent"))
-        setErrorMessage("Insufficient funds to cover the transaction.");
+      // if (error.message.includes("Address is already registered with a name"))
+      //   setErrorMessage(
+      //     "You already have claimed one handle, get more on Mainnet."
+      //   );
+      if (error.data?.message) setErrorMessage(error.data?.message);
+      // else if (error.message.includes("Insufficient funds sent"))
+      //   setErrorMessage("Insufficient funds to cover the transaction.");
       else {
-        setErrorMessage("An error occurred while processing your transaction");
+        setErrorMessage(
+          error.reason
+            ? `An error occurred while processing your transaction (${error.reason})`
+            : `An error occurred while processing your transaction (${error.message})`
+        );
       }
       props.setNameRegistered(false);
       // setErrorMessage(error.message);

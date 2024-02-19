@@ -13,53 +13,53 @@ function SearchQuery(props) {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    // const timer = setTimeout(() => {
-    if (searchQuery.length === 0) {
-      props.setDomainAvailability("-");
-      props.setDomainPrice("N/A");
-      props.setDomainExpiryDate("N/A");
-      props.setDomainRegisteredPrice("N/A");
-      props.setLoading({
-        status: false,
-        cost: false,
-        expiry: false,
-        lastSale: false,
-      });
-    }
-    // else if (!/^[a-zA-Z0-9\p{Emoji}]+$/u.test(searchQuery)) {
-    else if (!validate(searchQuery)) {
-      // Input is valid, proceed with your logic
-      console.log("Invalid Input");
-      props.setDomainAvailability("invalid input");
-      props.setDomainPrice("N/A");
-      props.setDomainExpiryDate("N/A");
-      props.setDomainRegisteredPrice("N/A");
-      props.setLoading({
-        status: false,
-        cost: false,
-        expiry: false,
-        lastSale: false,
-      });
-    } else if (searchQuery.length < 3) {
-      // Set static values for card here
-      props.setDomainAvailability("too short");
-      props.setDomainPrice("N/A");
-      props.setDomainExpiryDate("N/A");
-      props.setDomainRegisteredPrice("N/A");
-      props.setLoading({
-        status: false,
-        cost: false,
-        expiry: false,
-        lastSale: false,
-      });
-    } else {
-      getName(searchQuery);
-    }
-    // }, 300);
+    const timer = setTimeout(() => {
+      if (searchQuery.length === 0) {
+        props.setDomainAvailability("-");
+        props.setDomainPrice("N/A");
+        props.setDomainExpiryDate("N/A");
+        props.setDomainRegisteredPrice("N/A");
+        props.setLoading({
+          status: false,
+          cost: false,
+          expiry: false,
+          lastSale: false,
+        });
+      }
+      // else if (!/^[a-zA-Z0-9\p{Emoji}]+$/u.test(searchQuery)) {
+      else if (!validate(searchQuery)) {
+        // Input is valid, proceed with your logic
+        console.log("Invalid Input");
+        props.setDomainAvailability("invalid input");
+        props.setDomainPrice("N/A");
+        props.setDomainExpiryDate("N/A");
+        props.setDomainRegisteredPrice("N/A");
+        props.setLoading({
+          status: false,
+          cost: false,
+          expiry: false,
+          lastSale: false,
+        });
+      } else if (searchQuery.length < 3) {
+        // Set static values for card here
+        props.setDomainAvailability("too short");
+        props.setDomainPrice("N/A");
+        props.setDomainExpiryDate("N/A");
+        props.setDomainRegisteredPrice("N/A");
+        props.setLoading({
+          status: false,
+          cost: false,
+          expiry: false,
+          lastSale: false,
+        });
+      } else {
+        getName(searchQuery);
+      }
+    }, 300);
 
-    // return () => {
-    //   clearTimeout(timer);
-    // };
+    return () => {
+      clearTimeout(timer);
+    };
   }, [searchQuery]);
 
   const handleInputChange = (event) => {
