@@ -8,61 +8,61 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 function ForthSection() {
   const forthSectionRef = useRef();
   // gsap animation code start - DO NOT REMOVE THIS CODE
-  // useLayoutEffect(() => {
-  //   gsap.registerPlugin(ScrollTrigger);
-  //   let ctx = gsap.context(() => {
-  //     // use scoped selectors
-  //     gsap.set(".forth-title-gsap", { x: 0, opacity: 1 });
-  //     // gsap.from(".second-title-gsap", { opacity: 0, x: -50, duration: 1 });
-  //     gsap.from(".forth-title-gsap", {
-  //       opacity: 0,
-  //       y: 110,
-  //       duration: 1,
-  //       scrollTrigger: {
-  //         trigger: ".forth-main",
-  //         start: "top 80%", // Change start position to trigger the animation
+  useLayoutEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    let ctx = gsap.context(() => {
+      // use scoped selectors
+      gsap.set(".forth-title-gsap", { x: 0, opacity: 1 });
+      // gsap.from(".second-title-gsap", { opacity: 0, x: -50, duration: 1 });
+      gsap.from(".forth-title-gsap", {
+        opacity: 0,
+        y: 110,
+        duration: 1,
+        scrollTrigger: {
+          trigger: ".forth-main",
+          start: "top 80%", // Change start position to trigger the animation
 
-  //         toggleActions: "play none none reverse",
-  //       },
-  //     });
+          toggleActions: "play none none reverse",
+        },
+      });
 
-  //     // gsap.from(".second-title-gsap", { opacity: 0, x: -50, duration: 1 });
-  //     gsap.from(".forth-image-gsap", {
-  //       opacity: 0,
-  //       scrollTrigger: {
-  //         trigger: ".forth-main",
-  //         start: "top 70%", // Change start position to trigger the animation
-  //         toggleActions: "play none none reverse",
-  //       },
-  //     });
-  //     // gsap.utils.toArray(".sc-right-item").forEach((element) => {
+      // gsap.from(".second-title-gsap", { opacity: 0, x: -50, duration: 1 });
+      gsap.from(".forth-image-gsap", {
+        opacity: 0,
+        scrollTrigger: {
+          trigger: ".forth-main",
+          start: "top 70%", // Change start position to trigger the animation
+          toggleActions: "play none none reverse",
+        },
+      });
+      // gsap.utils.toArray(".sc-right-item").forEach((element) => {
 
-  //     gsap.from(".forth-icon", {
-  //       opacity: 0,
-  //       x: 100,
-  //       duration: 2,
-  //       scrollTrigger: {
-  //         trigger: ".forth-icon",
-  //         start: "top 75%", // Change start position to trigger the animation
-  //         toggleActions: "play none none reverse",
-  //       },
-  //     });
-  //     gsap.from(".partner-text", {
-  //       opacity: 0,
-  //       duration: 2,
-  //       scrollTrigger: {
-  //         trigger: ".forth-icon",
-  //         start: "top 70%", // Change start position to trigger the animation
+      gsap.from(".forth-icon", {
+        opacity: 0,
+        x: 100,
+        duration: 2,
+        scrollTrigger: {
+          trigger: ".forth-icon",
+          start: "top 75%", // Change start position to trigger the animation
+          toggleActions: "play none none reverse",
+        },
+      });
+      gsap.from(".partner-text", {
+        opacity: 0,
+        duration: 2,
+        scrollTrigger: {
+          trigger: ".forth-icon",
+          start: "top 70%", // Change start position to trigger the animation
 
-  //         toggleActions: "play none none reverse",
-  //       },
-  //     });
+          toggleActions: "play none none reverse",
+        },
+      });
 
-  //     // });
-  //   }, forthSectionRef);
-  //   // clean up function
-  //   return () => ctx.revert();
-  // }, []);
+      // });
+    }, forthSectionRef);
+    // clean up function
+    return () => ctx.revert();
+  }, []);
 
   return (
     <div className="forths-container" ref={forthSectionRef}>

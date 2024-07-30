@@ -10,49 +10,49 @@ function SecondSection() {
   const secondSectionRef = useRef();
 
   // gsap animation code start - DO NOT REMOVE THIS CODE
-  // useLayoutEffect(() => {
-  //   gsap.registerPlugin(ScrollTrigger);
-  //   let ctx = gsap.context(() => {
-  //     // use scoped selectors
-  //     gsap.set(".second-title-gsap", { x: 0, opacity: 1, y: 0 });
-  //     gsap.from(".second-title-gsap", {
-  //       opacity: 0,
-  //       x: -110,
-  //       scrollTrigger: {
-  //         trigger: ".second-title-gsap",
-  //         start: "top 80%", // Change start position to trigger the animation
+  useLayoutEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    let ctx = gsap.context(() => {
+      // use scoped selectors
+      gsap.set(".second-title-gsap", { x: 0, opacity: 1, y: 0 });
+      gsap.from(".second-title-gsap", {
+        opacity: 0,
+        x: -110,
+        scrollTrigger: {
+          trigger: ".second-title-gsap",
+          start: "top 80%", // Change start position to trigger the animation
 
-  //         toggleActions: "play none none reverse",
-  //       },
-  //     });
-  //     gsap.set(".second-subtitle-gsap", { x: 0, opacity: 1 });
-  //     gsap.from(".second-subtitle-gsap", {
-  //       opacity: 0,
-  //       x: -90,
-  //       delay: 0.2,
-  //       scrollTrigger: {
-  //         trigger: ".second-title-gsap",
-  //         start: "top 75%", // Change start position to trigger the animation
-  //         // end: "top center",
-  //         toggleActions: "play none none reverse",
-  //       },
-  //     });
-  //     gsap.from(".sc-right-item", {
-  //       opacity: 0,
-  //       y: 40,
-  //       stagger: 0.2,
-  //       duration: 1,
-  //       scrollTrigger: {
-  //         trigger: ".second-title-gsap",
-  //         start: "top 80%", // Change start position to trigger the animation
+          toggleActions: "play none none reverse",
+        },
+      });
+      gsap.set(".second-subtitle-gsap", { x: 0, opacity: 1 });
+      gsap.from(".second-subtitle-gsap", {
+        opacity: 0,
+        x: -90,
+        delay: 0.2,
+        scrollTrigger: {
+          trigger: ".second-title-gsap",
+          start: "top 75%", // Change start position to trigger the animation
+          // end: "top center",
+          toggleActions: "play none none reverse",
+        },
+      });
+      gsap.from(".sc-right-item", {
+        opacity: 0,
+        y: 40,
+        stagger: 0.2,
+        duration: 1,
+        scrollTrigger: {
+          trigger: ".second-title-gsap",
+          start: "top 80%", // Change start position to trigger the animation
 
-  //         toggleActions: "play none none reverse",
-  //       },
-  //     });
-  //   }, secondSectionRef);
-  //   // clean up function
-  //   return () => ctx.revert();
-  // }, []);
+          toggleActions: "play none none reverse",
+        },
+      });
+    }, secondSectionRef);
+    // clean up function
+    return () => ctx.revert();
+  }, []);
   return (
     <div id="secondSection" className="sc-main" ref={secondSectionRef}>
       <div className="sc-left">

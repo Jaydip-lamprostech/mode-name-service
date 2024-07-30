@@ -44,203 +44,203 @@ function FirstSection() {
     }
   };
   // gsap animation code start - DO NOT REMOVE THIS CODE
-  // useLayoutEffect(() => {
-  //   // gsap.registerPlugin(ScrollTrigger);
-  //   let ctx = gsap.context(() => {
-  //     // use scoped selectors
-  //     gsap.from(".fs-heading", { opacity: 0, y: -50, duration: 2, delay: 3.4 });
+  useLayoutEffect(() => {
+    // gsap.registerPlugin(ScrollTrigger);
+    let ctx = gsap.context(() => {
+      // use scoped selectors
+      gsap.from(".fs-heading", { opacity: 0, y: -50, duration: 2, delay: 3.4 });
 
-  //     gsap.from(".sub-heading", {
-  //       opacity: 0,
-  //       y: 50,
-  //       duration: 2,
-  //       delay: 3.4,
-  //     });
-  //     gsap.from(".hero-buttons", {
-  //       opacity: 0,
-  //       y: 50,
-  //       duration: 1,
-  //       delay: 3.4,
-  //       // ease: "elastic.out(1, 0.3)",
-  //     });
+      gsap.from(".sub-heading", {
+        opacity: 0,
+        y: 50,
+        duration: 2,
+        delay: 3.4,
+      });
+      gsap.from(".hero-buttons", {
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        delay: 3.4,
+        // ease: "elastic.out(1, 0.3)",
+      });
 
-  //     const tl = gsap.timeline();
-  //     tl.delay(3.3)
-  //       .fromTo(
-  //         ".big-hexagon",
-  //         {
-  //           opacity: 0,
-  //           duration: 2,
-  //         },
-  //         {
-  //           opacity: 1,
-  //           duration: 2,
-  //         },
+      const tl = gsap.timeline();
+      tl.delay(3.3)
+        .fromTo(
+          ".big-hexagon",
+          {
+            opacity: 0,
+            duration: 2,
+          },
+          {
+            opacity: 1,
+            duration: 2,
+          },
 
-  //         1
-  //       )
-  //       .to(".small-hexagon", { opacity: 1, duration: 1 }, 1)
-  //       .to(".circle-one", { opacity: 1, duration: 1 }, 1)
-  //       .to(".circle-one", { opacity: 1, duration: 1 }, 1)
-  //       .to(".circle-two", { opacity: 1, duration: 1 }, 1)
-  //       .fromTo(
-  //         ".circle-three",
-  //         { opacity: 0, y: -30, duration: 1 },
-  //         { opacity: 1, y: 0, duration: 1 },
-  //         1
-  //       );
-  //     tl.fromTo(
-  //       ".mobile-i3, .mobile-i4",
-  //       {
-  //         opacity: 0,
-  //         duration: 2,
-  //       },
-  //       {
-  //         opacity: 1,
-  //         duration: 2,
-  //       },
+          1
+        )
+        .to(".small-hexagon", { opacity: 1, duration: 1 }, 1)
+        .to(".circle-one", { opacity: 1, duration: 1 }, 1)
+        .to(".circle-one", { opacity: 1, duration: 1 }, 1)
+        .to(".circle-two", { opacity: 1, duration: 1 }, 1)
+        .fromTo(
+          ".circle-three",
+          { opacity: 0, y: -30, duration: 1 },
+          { opacity: 1, y: 0, duration: 1 },
+          1
+        );
+      tl.fromTo(
+        ".mobile-i3, .mobile-i4",
+        {
+          opacity: 0,
+          duration: 2,
+        },
+        {
+          opacity: 1,
+          duration: 2,
+        },
 
-  //       1
-  //     );
+        1
+      );
 
-  //     gsap.utils.toArray(".i5, .i3").forEach((element) => {
-  //       gsap.to(element, {
-  //         scrollTrigger: {
-  //           trigger: ".fs-container",
-  //           start: "top top",
-  //           end: "+=600",
-  //           toggleActions: "play none none reverse",
-  //           scrub: 1,
+      gsap.utils.toArray(".i5, .i3").forEach((element) => {
+        gsap.to(element, {
+          scrollTrigger: {
+            trigger: ".fs-container",
+            start: "top top",
+            end: "+=600",
+            toggleActions: "play none none reverse",
+            scrub: 1,
 
-  //           onUpdate: (self) => {
-  //             const progress = self.progress;
-  //             gsap.to(element, {
-  //               opacity: 1 - progress * 4,
-  //               x: progress * -400,
-  //               y: -progress * 400,
-  //               ease: "none",
-  //             });
-  //           },
-  //         },
-  //       });
-  //     });
-  //     gsap.to(".i2", {
-  //       scrollTrigger: {
-  //         trigger: ".fs-container",
-  //         start: "top top",
-  //         end: "+=600",
-  //         toggleActions: "play none none reverse",
-  //         scrub: 1,
+            onUpdate: (self) => {
+              const progress = self.progress;
+              gsap.to(element, {
+                opacity: 1 - progress * 4,
+                x: progress * -400,
+                y: -progress * 400,
+                ease: "none",
+              });
+            },
+          },
+        });
+      });
+      gsap.to(".i2", {
+        scrollTrigger: {
+          trigger: ".fs-container",
+          start: "top top",
+          end: "+=600",
+          toggleActions: "play none none reverse",
+          scrub: 1,
 
-  //         onUpdate: (self) => {
-  //           const progress = self.progress;
-  //           gsap.to(".i2", {
-  //             opacity: 1 - progress * 4,
-  //             x: progress * 400,
-  //             y: -progress * 400,
-  //             ease: "none",
-  //           });
-  //         },
-  //       },
-  //     });
-  //     gsap.utils.toArray(".circle-one, .circle-two").forEach((element) => {
-  //       gsap.to(element, {
-  //         scrollTrigger: {
-  //           trigger: ".fs-container",
-  //           start: "top top",
-  //           end: "+=600",
-  //           toggleActions: "play none none reverse",
-  //           scrub: 1,
+          onUpdate: (self) => {
+            const progress = self.progress;
+            gsap.to(".i2", {
+              opacity: 1 - progress * 4,
+              x: progress * 400,
+              y: -progress * 400,
+              ease: "none",
+            });
+          },
+        },
+      });
+      gsap.utils.toArray(".circle-one, .circle-two").forEach((element) => {
+        gsap.to(element, {
+          scrollTrigger: {
+            trigger: ".fs-container",
+            start: "top top",
+            end: "+=600",
+            toggleActions: "play none none reverse",
+            scrub: 1,
 
-  //           onUpdate: (self) => {
-  //             const progress = self.progress;
-  //             gsap.to(".circle-one, .circle-two", {
-  //               opacity: 1 - progress * 5,
-  //               ease: "none",
-  //             });
-  //           },
-  //         },
-  //       });
-  //     });
-  //     gsap.utils.toArray(".big-hexagon, .small-hexagon").forEach((element) => {
-  //       gsap.to(element, {
-  //         scrollTrigger: {
-  //           trigger: ".fs-container",
-  //           start: "top top",
-  //           end: "+=500",
-  //           toggleActions: "play none none reverse",
-  //           scrub: 0.1,
+            onUpdate: (self) => {
+              const progress = self.progress;
+              gsap.to(".circle-one, .circle-two", {
+                opacity: 1 - progress * 5,
+                ease: "none",
+              });
+            },
+          },
+        });
+      });
+      gsap.utils.toArray(".big-hexagon, .small-hexagon").forEach((element) => {
+        gsap.to(element, {
+          scrollTrigger: {
+            trigger: ".fs-container",
+            start: "top top",
+            end: "+=500",
+            toggleActions: "play none none reverse",
+            scrub: 0.1,
 
-  //           onUpdate: (self) => {
-  //             const progress = self.progress;
-  //             gsap.to(".big-hexagon, .small-hexagon", {
-  //               opacity: 1 - progress * 1,
-  //               y: -progress * 50,
-  //               scale: 1 - progress * 1,
-  //               ease: "none",
-  //             });
-  //           },
-  //         },
-  //       });
-  //     });
-  //     gsap.to(".bg-hexagon", {
-  //       scrollTrigger: {
-  //         trigger: ".fs-container",
-  //         start: "top top",
-  //         end: "+=500",
-  //         toggleActions: "play none none reverse",
-  //         scrub: 1,
-  //         onUpdate: (self) => {
-  //           const progress = self.progress;
-  //           gsap.to(".bg-hexagon", {
-  //             minHeight: 1000 - progress * 200,
-  //             ease: "none",
-  //           });
-  //         },
-  //       },
-  //     });
-  //     gsap.to(".fs-container", {
-  //       scrollTrigger: {
-  //         trigger: ".fs-container",
-  //         start: "top top",
-  //         end: "+=500",
-  //         toggleActions: "play none none reverse",
-  //         scrub: 1,
-  //         onUpdate: (self) => {
-  //           const progress = self.progress;
-  //           gsap.to(".fs-container", {
-  //             height: 1000 - progress * 200,
-  //             ease: "none",
-  //           });
-  //         },
-  //       },
-  //     });
-  //     gsap.utils
-  //       .toArray(".fs-heading, .sub-heading,.hero-buttons ")
-  //       .forEach((element) => {
-  //         gsap.to(element, {
-  //           scrollTrigger: {
-  //             trigger: ".fs-main",
-  //             start: "top top",
-  //             // end: "+=200",
-  //             toggleActions: "play none none reverse",
-  //             scrub: 0.1,
-  //             onUpdate: (self) => {
-  //               const progress = self.progress;
-  //               gsap.to(element, {
-  //                 opacity: 1 - progress * 6,
-  //                 y: -progress * 500,
-  //                 scale: 1 - progress * 3,
-  //                 ease: "none",
-  //               });
-  //             },
-  //           },
-  //         });
-  //       });
-  //   }, firstSectionRef);
-  //   // clean up function
-  //   return () => ctx.revert();
-  // }, []);
+            onUpdate: (self) => {
+              const progress = self.progress;
+              gsap.to(".big-hexagon, .small-hexagon", {
+                opacity: 1 - progress * 1,
+                y: -progress * 50,
+                scale: 1 - progress * 1,
+                ease: "none",
+              });
+            },
+          },
+        });
+      });
+      gsap.to(".bg-hexagon", {
+        scrollTrigger: {
+          trigger: ".fs-container",
+          start: "top top",
+          end: "+=500",
+          toggleActions: "play none none reverse",
+          scrub: 1,
+          onUpdate: (self) => {
+            const progress = self.progress;
+            gsap.to(".bg-hexagon", {
+              minHeight: 1000 - progress * 200,
+              ease: "none",
+            });
+          },
+        },
+      });
+      gsap.to(".fs-container", {
+        scrollTrigger: {
+          trigger: ".fs-container",
+          start: "top top",
+          end: "+=500",
+          toggleActions: "play none none reverse",
+          scrub: 1,
+          onUpdate: (self) => {
+            const progress = self.progress;
+            gsap.to(".fs-container", {
+              height: 1000 - progress * 200,
+              ease: "none",
+            });
+          },
+        },
+      });
+      gsap.utils
+        .toArray(".fs-heading, .sub-heading,.hero-buttons ")
+        .forEach((element) => {
+          gsap.to(element, {
+            scrollTrigger: {
+              trigger: ".fs-main",
+              start: "top top",
+              // end: "+=200",
+              toggleActions: "play none none reverse",
+              scrub: 0.1,
+              onUpdate: (self) => {
+                const progress = self.progress;
+                gsap.to(element, {
+                  opacity: 1 - progress * 6,
+                  y: -progress * 500,
+                  scale: 1 - progress * 3,
+                  ease: "none",
+                });
+              },
+            },
+          });
+        });
+    }, firstSectionRef);
+    // clean up function
+    return () => ctx.revert();
+  }, []);
   return (
     <div
       className="fs-container fade-out-element1"
